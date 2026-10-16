@@ -6,6 +6,7 @@
 **Phase:** Phase 1 — Research & Requirements  
 **Topic:** Existing Products & Competitor Analysis  
 **Status:** Preliminary Research Completed
+**Screenshots updated:** 2026-10-16
 
 ---
 
@@ -21,6 +22,8 @@ MaestroMate 目前计划包含三个核心模块：
 
 本次研究以产品官方网站和公开功能介绍为主要依据，属于初步桌面调研（Desk Research），尚未完成所有产品的实际交互测试。
 
+2026-10-16 补充五个核心产品的实际官网截图，保存于本仓库并使用相对路径引用。截图用于记录界面与功能入口，不作为教学效果或完整交互测试的证据；页面与插画版权归原权利人所有。
+
 ## 2. Competitor Analysis
 
 综合相关性与代表性，选择五个核心产品进行分析，并补充两个辅助参考案例。
@@ -29,6 +32,10 @@ MaestroMate 目前计划包含三个核心模块：
 
 **Website:** https://app.musiquest.com/welcome  
 **Introduction:** https://app.musiquest.com/how-it-works
+
+![MusiQuest 首页：角色视觉与创作、课程入口](./musiquest.jpg)
+
+*图 1：MusiQuest 首页：角色视觉与创作、课程入口。来源：[官方页面](https://app.musiquest.com/welcome)；截图日期：2026-10-16。*
 
 **Target Audience:** 音乐初学者、儿童及青少年，以及教师和家庭学习者。
 
@@ -45,6 +52,10 @@ AI 音乐家不应只是独立聊天页面中的角色，还可以成为跨模�
 
 **Website:** https://www.classicsforkids.com/  
 **Music Games:** https://www.classicsforkids.com/music-games/
+
+![Classics for Kids：按学习主题组织的游戏目录](./classics-for-kids.jpg)
+
+*图 2：Classics for Kids：按学习主题组织的游戏目录。来源：[官方页面](https://www.classicsforkids.com/music-games/)；截图日期：2026-10-16。*
 
 **Target Audience:** 主要面向小学阶段的儿童，同时为教师和家长提供教学资源。
 
@@ -71,6 +82,10 @@ Music Detective 应围绕明确的聆听能力（Listening Skills）设计，而
 **Website:** https://www.yourclassical.org/kids  
 **Storytime:** https://www.yourclassical.org/
 
+![YourClassical Storytime：故事插画、视频与音频入口](./yourclassical-storytime.jpg)
+
+*图 3：YourClassical Storytime：故事插画、视频与音频入口。来源：[官方页面](https://www.yourclassical.org/episode/2024/12/01/yourclassical-storytime-why-evergreens-never-lose-their-leaves)；截图日期：2026-10-16。*
+
 **Target Audience:** 年轻听众、家庭及教育工作者。
 
 **Core Features:**  
@@ -89,6 +104,10 @@ Interactive Music Theatre 可以借鉴其音乐与艺术叙事的结合方式，
 **Website:** https://kids.carnegiehall.org/  
 **Games:** https://kids.carnegiehall.org/games
 
+![Carnegie Hall Kids：Rhythm Explorer 游戏入口](./carnegie-hall-kids.jpg)
+
+*图 4：Carnegie Hall Kids：Rhythm Explorer 游戏入口。来源：[官方页面](https://kids.carnegiehall.org/games)；截图日期：2026-10-16。*
+
 **Target Audience:** 主要面向儿童音乐探索者。
 
 **Core Features:**  
@@ -106,6 +125,10 @@ Interactive Music Theatre 可以借鉴其音乐与艺术叙事的结合方式，
 
 **Website:** https://musiclab.chromeexperiments.com/  
 **Rhythm:** https://musiclab.chromeexperiments.com/Rhythm/
+
+![Chrome Music Lab — Rhythm：角色、播放按钮与节奏网格](./chrome-music-lab-rhythm.jpg)
+
+*图 5：Chrome Music Lab — Rhythm：角色、播放按钮与节奏网格。来源：[官方页面](https://musiclab.chromeexperiments.com/Rhythm/)；截图日期：2026-10-16。*
 
 **Target Audience:** 音乐初学者及课堂学习者，也适合普通用户自由探索。
 
