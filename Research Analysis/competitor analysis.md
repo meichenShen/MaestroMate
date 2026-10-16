@@ -33,7 +33,7 @@ MaestroMate 目前计划包含三个核心模块：
 **Website:** https://app.musiquest.com/welcome  
 **Introduction:** https://app.musiquest.com/how-it-works
 
-![MusiQuest 首页：角色视觉与创作、课程入口](./musiquest.jpg)
+![MusiQuest 首页：角色视觉与创作、课程入口](../assets/screenshots/musiquest.jpg)
 
 *图 1：MusiQuest 首页：角色视觉与创作、课程入口。来源：[官方页面](https://app.musiquest.com/welcome)；截图日期：2026-10-16。*
 
@@ -53,7 +53,7 @@ AI 音乐家不应只是独立聊天页面中的角色，还可以成为跨模�
 **Website:** https://www.classicsforkids.com/  
 **Music Games:** https://www.classicsforkids.com/music-games/
 
-![Classics for Kids：按学习主题组织的游戏目录](./classics-for-kids.jpg)
+![Classics for Kids：按学习主题组织的游戏目录](../assets/screenshots/classics-for-kids.jpg)
 
 *图 2：Classics for Kids：按学习主题组织的游戏目录。来源：[官方页面](https://www.classicsforkids.com/music-games/)；截图日期：2026-10-16。*
 
@@ -82,7 +82,7 @@ Music Detective 应围绕明确的聆听能力（Listening Skills）设计，而
 **Website:** https://www.yourclassical.org/kids  
 **Storytime:** https://www.yourclassical.org/
 
-![YourClassical Storytime：故事插画、视频与音频入口](./yourclassical-storytime.jpg)
+![YourClassical Storytime：故事插画、视频与音频入口](../assets/screenshots/yourclassical-storytime.jpg)
 
 *图 3：YourClassical Storytime：故事插画、视频与音频入口。来源：[官方页面](https://www.yourclassical.org/episode/2024/12/01/yourclassical-storytime-why-evergreens-never-lose-their-leaves)；截图日期：2026-10-16。*
 
@@ -104,7 +104,7 @@ Interactive Music Theatre 可以借鉴其音乐与艺术叙事的结合方式，
 **Website:** https://kids.carnegiehall.org/  
 **Games:** https://kids.carnegiehall.org/games
 
-![Carnegie Hall Kids：Rhythm Explorer 游戏入口](./carnegie-hall-kids.jpg)
+![Carnegie Hall Kids：Rhythm Explorer 游戏入口](../assets/screenshots/carnegie-hall-kids.jpg)
 
 *图 4：Carnegie Hall Kids：Rhythm Explorer 游戏入口。来源：[官方页面](https://kids.carnegiehall.org/games)；截图日期：2026-10-16。*
 
@@ -126,7 +126,7 @@ Interactive Music Theatre 可以借鉴其音乐与艺术叙事的结合方式，
 **Website:** https://musiclab.chromeexperiments.com/  
 **Rhythm:** https://musiclab.chromeexperiments.com/Rhythm/
 
-![Chrome Music Lab — Rhythm：角色、播放按钮与节奏网格](./chrome-music-lab-rhythm.jpg)
+![Chrome Music Lab — Rhythm：角色、播放按钮与节奏网格](../assets/screenshots/chrome-music-lab-rhythm.jpg)
 
 *图 5：Chrome Music Lab — Rhythm：角色、播放按钮与节奏网格。来源：[官方页面](https://musiclab.chromeexperiments.com/Rhythm/)；截图日期：2026-10-16。*
 
