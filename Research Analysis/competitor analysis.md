@@ -8,6 +8,8 @@
 **Status:** Preliminary Research Completed
 **Screenshots updated:** 2026-10-16
 
+**阶段更新（2026-10-27）：** 下文保留初轮调研记录。目标年龄段仍待定；后续进度与当前安排统一见[第一阶段研究与需求整理](./phase-1-research-overview.md)，文末原计划不代表全部仍未开展。
+
 ---
 
 ## 1. Research Objective
@@ -286,3 +288,4 @@ Music Detective 可以借鉴其“操作—聆听—反馈”的交互逻辑，�
 - [ ] Preliminary System Architecture
 
 **Next Priority:** 明确 MaestroMate 的主要使用者、真实使用场景及核心用户需求，并将竞品分析中提出的设计建议进一步转化为具体的 Functional Requirements。
+
