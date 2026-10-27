@@ -5,6 +5,7 @@
 **Phase:** Phase 1 — Research & Requirements  
 **Status:** 第一轮定向文献梳理；目标用户与年龄段待定  
 **更新草案：** 2026-10-27 复核 L7；修订待项目负责人审核  
+**阶段汇总：** [第一阶段研究与需求整理](./phase-1-research-overview.md)；本文保留详细文献依据。  
 **Previous log:** [竞品调研](./competitor%20analysis.md)
 
 ## 1. 本轮目标与研究顺序
@@ -153,7 +154,7 @@
 - [ ] **再做用户分析：** 以任务样例和访谈了解候选群体的真实困难，决定首轮用户与使用场景。
 - [ ] **形成验证方案：** 写明自变量、主要结果、评分标准、参与者条件与局限，再进入原型开发。
 
-**下一优先项：** 审核 Log 03 的证据复核与任务草案；继续补齐 L6 的全文核查。当前材料尚不足以确定视觉方案、AI 角色价值或最佳年龄段，也未证明以作品连接三个模块优于独立活动。
+**后续安排：** 按[阶段汇总](./phase-1-research-overview.md)推进用户需求、技术与素材核验；根据设计问题继续补充文献。Log 03 的听辨任务仅为候选，不取代三个模块的整体方向。当前证据尚不足以确定视觉方案、AI 角色价值或最佳年龄段，也未证明以作品连接三个模块优于独立活动。
 
 ## 8. 参考文献
 
@@ -166,3 +167,4 @@
 5. Bastani, H., Bastani, O., Sungu, A., Ge, H., Kabakcı, Ö., & Mariman, R. (2025). Generative AI without guardrails can harm learning: Evidence from high school mathematics. *Proceedings of the National Academy of Sciences, 122*(26), e2422633122. https://doi.org/10.1073/pnas.2422633122
 6. Gromko, J. E., & Russell, C. (2002). Relationships among young children's aural perception, listening condition, and accurate reading of graphic listening maps. *Journal of Research in Music Education, 50*(4), 333–342. https://doi.org/10.2307/3345359
 7. Beam-Barber, M. (2002). *The effect of music listening maps on second grade music students' preference for and understanding of orchestral music* [Master’s thesis, Florida International University]. https://doi.org/10.25148/etd.FI14050462
+
