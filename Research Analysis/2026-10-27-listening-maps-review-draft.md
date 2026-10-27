@@ -6,6 +6,8 @@
 **前篇：** [Research Log 02 — Literature Review](./literature-review.md)  
 **范围：** 音乐听赏图、音乐结构可视化及其学习测量；目标年龄段仍待定。
 
+**阶段定位（2026-10-27）：** 本文作为文献研究附录，支持原定三个模块的设计；候选听辨任务不取代整体项目目标。阶段结论、需求、技术与版权安排统一见[第一阶段研究与需求整理](./phase-1-research-overview.md)。
+
 ## 1. 本轮最重要的更新
 
 1. **修正 L7 的证据权重。** 已取得 Beam-Barber（2002）全文。其测验主要要求识别图形中的 AB／ABA 排列；统计显著性的解释也有明显疑点。因此，不再把其摘要中的积极结论当作“听觉理解显著提升”的可靠证明。具体核查见第 3 节。
@@ -156,3 +158,4 @@
 5. **S5** Blair, D. V. (2007). Musical maps as narrative inquiry. *International Journal of Education & the Arts, 8*(15). [ERIC 全文](https://files.eric.ed.gov/fulltext/EJ801220.pdf)。重点：pp.5–9 的制图、修订和同伴解释过程。
 
 未将原论文 PDF 或论文图像加入仓库；本草稿以原始出处链接和页码支持审核。
+
