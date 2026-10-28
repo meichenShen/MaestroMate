@@ -1,167 +1,50 @@
-# Research Log 02 — Literature Review
+# 文献研究：互动、视觉与角色引导的学习依据
 
-**Project:** MaestroMate — AI-Powered Interactive Classical Music Platform  
-**Date:** 2026-10-17  
-**Phase:** Phase 1 — Research & Requirements  
-**Status:** 第一轮定向文献梳理；目标用户与年龄段待定  
-**Previous log:** [竞品调研](./competitor%20analysis.md)
+**MaestroMate｜第一阶段研究｜研究初稿**  
+首次检索：2026-10-17；补充核查：2026-10-27；表达修订：2026-10-28。采用定向综述，围绕三个模块查找原始研究，不声称穷尽全部文献。
 
-## 1. 本轮目标与研究顺序
+研究关注三个问题：操作怎样转化为理解，视觉怎样帮助用户注意音乐，以及 AI 角色怎样提供有依据的引导。共涉及十一项来源；Chi 与 Wylie、Gromko 与 Russell 的判断限于摘要及作者机构资料，其余重点核对公开全文中的方法、结果与讨论，未复核原始数据。听赏图的详细审查保留在[证据附录](./appendix/listening-maps-evidence.md)。
 
-竞品调研提出了以同一部古典音乐作品连接 AI Musician Conversation、Interactive Music Theatre 与 Music Detective 的设想。本轮先核查其学习设计依据，再决定主要用户和使用场景。
+## 一、互动需要让用户处理音乐中的关系
 
-根据 2026-10-17 的项目讨论，**暂不锁定儿童、中学生或成年初学者**。原计划中的用户分析延后，Log 02 改为文献分析；这一调整不表示已经完成用户需求验证。
+ICAP 框架区分被动接收、主动操作、生成性建构与共同建构，强调认知参与的深度。[1] 对音乐侦探而言，点击选项只是可观察的动作；比较两段声音、指出判断依据和根据反馈回听，才使用户如何理解音乐逐渐可见。框架提供了设计与观察的角度，人机交流的轮次本身不能证明已经达到共同建构的层次。
 
-研究问题：
+Macrides 与 Angeli 在包含 191 名中学生的技术支持音乐教学中，同时考虑认知与情绪，并以创作任务呈现研究结果。[2] 这为连接声音特征和个人体验提供了思路，结论的适用范围仍受到任务限制：创作评分的改善不能直接转化为网页听赏的效果证据。MaestroMate 可以据此安排“初听感受—局部比较—回到作品”的活动，让分析与欣赏相互联系；具体活动还需在用户场景中检验。
 
-1. 什么样的互动可能帮助用户理解音乐，而不只是提高点击量？
-2. 视觉呈现、情绪体验和声音应如何配合？
-3. AI 引导怎样支持学习，而不替代用户自己的判断？
-4. 应如何测量“听懂了”，并据此选择用户与场景？
+## 二、视觉提示的价值取决于它帮助用户听见什么
 
-## 2. 检索与证据范围
+视觉可以呈现段落、重复和演奏位置，也可能吸引用户将注意力转向画面。Moreno 与 Mayer 发现，无关声音可能妨碍科学解释的多媒体学习。[3] 该实验中的音乐属于附加信息，MaestroMate 的音乐本身则是学习对象。因此，这项研究在本项目中的启发主要是减少竞争信息：旁白、文字与音效应围绕当前任务安排，避免同时争夺注意。
 
-- **检索日期：** 2026-10-17。
-- **方式：** 通过网络检索定位原始论文、出版社页面和作者公开稿；优先阅读与功能设计直接相关的研究，不以产品宣传或媒体报道作为教学效果依据。
-- **代表检索词：** `music listening visualizations guided listening education`、`ICAP framework interactive constructive active passive`、`Moreno Mayer coherence irrelevant sounds multimedia learning`、`generative AI guardrails learning`、`AI tutoring randomized controlled trial`。
-- **纳入：** 音乐技术教学、多媒体认知、认知参与、生成式 AI 教学的相关框架及实证研究。
-- **本轮排除：** 无可核对出处的结论；只报告模型技术指标、未评价学习的音乐 AI 论文；与作品赏析关系较弱的背景音乐研究。
-- **阅读深度：** L1、L6 为出版社摘要核对（L1 另核对作者机构页面），L7 为学位论文机构库摘要核对；L2—L5 查阅公开全文中的方法、结果与讨论相关部分。未逐项复核补充材料、原始数据或统计代码。
+更直接的音乐研究表明，需要区分视觉读取与听觉学习。Gromko 与 Russell 研究的是儿童跟随听赏图的准确性，不能据此回答“有图是否优于无图”。[6] Beam-Barber 的论文在全文复核后被降低证据权重：测验涉及图片排列识别，统计显著性的解释也存在疑点，难以承担独立听辨改善的效果证明。[7] 核查位置与理由保留在附录中。
 
-本轮选择 7 篇作为起点，属于**定向初步综述**，并非系统综述，也不是对截至检索日全部最新研究的穷尽检索。下文“项目推论”均需原型测试，不能当作文献已经验证的产品结论。
+Tejada 与 Serra 的静态／动态对照未显示动态呈现的明确优势，且缺少纯音频对照，无法把组内进步单独归因于视觉。[9] Chan 等的结构可视化研究支持考察信息读取与使用体验，尚未完成撤去图形后的听觉迁移验证。[10] Blair 的课堂叙事描写了学生反复聆听、制图、讨论与修订的过程，说明“自己生成标记”涉及不同于观看预制图形的活动；它并非因果效果实验，课堂协作的结果也需在网页自主使用中另行考察。[11]
 
-## 3. 文献证据与局限
+这些证据支持保留可关闭的简洁提示，同时分别观察有辅助时的完成、撤去提示后的判断与新材料上的应用。故事和艺术场景仍有体验价值，其对听辨的作用需要另行研究。
 
-### L1｜互动的质量比操作次数更重要
+## 三、AI 引导的潜力伴随新的判断负担
 
-**Chi & Wylie（2014）：** [The ICAP Framework: Linking Cognitive Engagement to Active Learning Outcomes](https://doi.org/10.1080/00461520.2014.965823)。另见[作者机构的研究目录](https://icap.education.asu.edu/research)。
+Kestin 等在大学物理课程中发现，经过教学设计的 AI 辅导具有即时测验优势，但效果来自包含自定节奏等安排的整体条件，不能单独归因于模型。[4] Bastani 等在高中数学中发现，常规 AI 界面改善了辅助练习表现，撤去帮助后独立表现却可能下降；带有学习保护设计的辅导在较大程度上缓解了这一问题。[5] 两项研究提示我们关注提示、反馈与自主判断的关系，其学科和任务条件也限制了向音乐学习的推广。
 
-- **研究类型：** 理论框架与已有研究综合，非 MaestroMate 或音乐网站实验。
-- **核心观点：** 区分被动接收、主动操作、生成性建构和共同建构的互动；框架预测更深入的认知参与有利于学习。
-- **适用边界：** 网页允许点击或聊天，不等于达到 ICAP 的 Interactive 层级；人机往返次数本身不能证明共同建构或学习发生。
-- **项目推论：** Music Detective 除了选答案，还可要求指出听觉证据、比较两个片段或解释判断理由。应观察回答内容，而非只统计操作量。
+与历史角色更接近的 Zhu 等研究，比较了 84 名成年大学生在 VR 历史场景中的角色与动作切换。角色切换在事实知识和感知可信度上有积极结果，未显示概念知识优势；动作切换未显示知识优势，对照条件也包含教学代理。[8] 这项研究不能证明虚拟作曲家优于普通助手，更不能把信任评分等同于回答准确。它为角色一致性与交流方式提供了参考，音乐学习的直接证据仍待补充。
 
-### L2｜音乐技术应连接声音特征与体验
+据此，音乐家对话宜先承担资料解释、问题引导和相关回听推荐。角色身份需要明确说明，事实回答需要核对出处；独立听辨、背景理解与兴趣分别评价。三模块围绕作品整合，是由这些研究启发的项目假设，尚未得到整体效果验证。
 
-**Macrides & Angeli（2020）：** [Music Cognition and Affect in the Design of Technology-Enhanced Music Lessons](https://doi.org/10.3389/feduc.2020.518209)。
-
-- **研究类型：** 教学设计方法与学校实证；本文呈现 191 名中学生的创作任务证据。
-- **核心发现：** 在所研究的教学安排中，使用 MuseScore 的实验组创作评分优于使用课堂乐器的对照组；设计同时关注音乐认知与情绪体验。
-- **适用边界：** 测量重点是创作；工具、演奏负担和指导方式共同构成干预。不能将差异单独归因于动画听赏图，也不能据此认定网页作品赏析同样有效。
-- **项目推论：** 用回听和声音比较连接感受与音乐特征；短片段分析后回到原作品。避免把每段音乐固定为唯一情绪答案。
-
-### L3｜增加媒体可能增加干扰
-
-**Moreno & Mayer（2000）：** [A Coherence Effect in Multimedia Learning: The Case for Minimizing Irrelevant Sounds in the Design of Multimedia Instructional Messages（论文全文）](https://tecfa.unige.ch/tecfa/teaching/methodo/Moreno_Mayer00.pdf)。
-
-- **研究类型：** 两项多媒体学习实验，使用大学生学习科学解释的任务。
-- **核心发现：** 加入无关背景音乐或声音并不保证更好学习；若干附加声音条件的保持、迁移表现较差。
-- **适用边界：** 原研究中的音乐是附加声音；MaestroMate 中的音乐本身是学习内容。不能由此推出“音乐教育网站应去掉音乐”，也不能直接证明某种视觉叙事有害。
-- **项目推论：** 完整听赏时减少同时出现的旁白、长文本和奖励音效；视觉提示应对应当前学习目标，并提供关闭选项。这是待验证的设计策略。
-
-### L4｜有教学设计的 AI 辅导具有潜力
-
-**Kestin 等（2025）：** [AI tutoring outperforms in-class active learning: an RCT introducing a novel research-based design in an authentic educational setting](https://doi.org/10.1038/s41598-025-97652-6)。
-
-- **研究类型：** 大学物理课程中的随机对照交叉研究，围绕两次课程比较定制 AI 辅导与课堂主动学习。
-- **核心发现：** 在该研究条件下，AI 辅导条件的即时测验表现较好；系统包含教学脚手架和针对性反馈。
-- **适用边界：** 比较同时涉及自定节奏、学习地点等安排；结果不能单独归因于语言模型。即时物理测验也不能证明长期音乐理解效果。
-- **项目推论：** AI Musician 可围绕明确问题提供分步提示和回听建议。虚拟音乐家身份是否有额外价值，需要与普通引导助手另行比较。
-
-### L5｜有 AI 帮助时做对，不等于独立学会
-
-**Bastani 等（2025）：** [Generative AI without guardrails can harm learning: Evidence from high school mathematics](https://doi.org/10.1073/pnas.2422633122)；[作者公开稿](https://hamsabastani.github.io/education_llm.pdf)。
-
-- **研究类型：** 高中数学课堂现场实验，比较常规 GPT 界面、带学习保护设计的 GPT Tutor 与对照条件。
-- **核心发现：** AI 可改善辅助练习表现；撤去帮助后，常规界面组出现较差的独立表现，教学保护设计在较大程度上缓解了这一问题。
-- **适用边界：** 数学程序性任务与音乐欣赏不同；不能据此判断 AI 一定损害音乐学习，也不能把两篇 AI 研究概括为简单矛盾。
-- **项目推论：** 先请用户尝试听辨，再逐级提示；最终解释仍应可获得。测试时加入无 AI 提示的新片段，区分辅助完成与独立理解。
-
-### L6｜听赏图表现也受既有听觉能力影响
-
-**Gromko & Russell（2002）：** [Relationships among Young Children’s Aural Perception, Listening Condition, and Accurate Reading of Graphic Listening Maps](https://doi.org/10.2307/3345359)。
-
-- **研究类型：** 41 名小学生，比较三种初听条件，随后测量跟随图形听赏图的准确性；本轮仅核对出版社摘要。
-- **核心发现：** 控制听觉能力指标后，聆听条件差异未达显著；听觉能力与读图准确性有关。
-- **适用边界：** 不是“有图对无图”的直接实验，也不能解释为图形无效。样本较小，测量的是读图表现。
-- **项目推论：** 分开测量听懂音乐与看懂提示；记录先前音乐经验，避免把视觉跟随能力当作听觉学习结果。
-
-### L7｜听赏图有积极先例，但证据仍需细读
-
-**Beam-Barber（2002）：** [The effect of music listening maps on second grade music students’ preference for and understanding of orchestral music](https://digitalcommons.fiu.edu/record/10009?ln=en)。
-
-- **研究类型：** 硕士学位论文，四个二年级班级、交叉平衡的仅后测设计；本轮仅核对大学机构库摘要。
-- **核心发现：** 摘要报告听赏图条件的测验成绩较高，并报告积极偏好结果。
-- **适用边界：** 非期刊论文；尚未核查全文中的具体人数、题目、统计量和长期效果。不据摘要估算效应大小或推广到所有年龄。
-- **项目推论：** 保留图形辅助作为可测试方案，并分别测量理解和喜好。L6 与 L7 的干预及结果指标不同，不能当成对同一问题的直接重复验证。
-
-## 4. 跨文献综合：三个模块的可验证方向
-
-以下均为本项目的设计假设，而非论文已验证的功能。
-
-| 模块 | 可尝试的学习行为 | 文献依据 | 需要检验的问题 |
-|---|---|---|---|
-| AI Musician Conversation | 用户说明疑问；助手给短提示、推荐回听；事实回答链接经核对资料 | L1、L4、L5；事实溯源为本项目独立要求 | 提示是否促进自己的解释？角色身份是否有帮助？回答是否准确？ |
-| Interactive Music Theatre | 初听形成个人感受；再次聆听时可选少量同步提示；最后回到完整片段 | L2、L3、L6、L7 | 视觉是否帮助定位声音变化？故事是否让用户忽略音乐？ |
-| Music Detective | 找重复动机、比较差异、指出时间位置，并在反馈后重听 | L1、L2、L5 | 用户是否依据声音判断？换一个片段后还能否完成？ |
-
-**本轮保留的原则：** 学习目标先于表现形式；操作后应有回听或解释；区分兴趣、使用体验与学习结果。暂不决定年龄段、完整功能数量或最终技术栈。
-
-## 5. 建议先验证的一个研究问题
-
-**在相同片段、时间和任务下，加入与目标对应的视觉提示，是否帮助古典音乐初学者听辨重复动机？**
-
-这是候选研究问题，尚未确定为正式课题。先研究一个变量，可以帮助解释后续结果；AI、故事和游戏同时加入时，很难知道差异来自哪里。
-
-### 第一轮原型对照
-
-| 条件 | 相同内容 | 唯一区别 |
+| 模块 | 可转化的设计依据 | 后续观察重点 |
 |---|---|---|
-| A：音频与简短指引 | 同一录音、播放与重播功能、任务说明、反馈和体验时长 | 无同步视觉提示 |
-| B：音频与简短指引＋提示 | 与 A 一致 | 增加与动机位置对应的视觉提示，可关闭 |
+| 音乐家对话 | 短提示、资料解释、稳定角色设定 | 回答是否可靠，用户是否形成自己的解释 |
+| 音乐小剧场 | 艺术体验、与声音对应的可选提示 | 注意到哪些音乐特征，画面是否造成干扰 |
+| 音乐侦探 | 比较、判断、解释与回听 | 撤去帮助或更换片段后能否继续判断 |
 
-先用低保真原型排查题目与操作问题，不将小规模可用性观察写成有效性证明。正式比较时再预先确定分组、样本量、评分规则及分析方法；若采用交叉设计，需使用难度相近的不同片段并平衡顺序，减少重复学习影响。
+## 参考文献
 
-### 分开记录四类结果
-
-1. **即时理解：** 关闭同步提示后，能否在刚才的片段中标出动机并说明依据。
-2. **迁移／保持：** 在新片段中听辨同类特征；若条件允许，另设延后测验。新片段任务与延后测验不是同一指标。
-3. **体验：** 兴趣、干扰感、是否愿意再听；这些不能代替学习测量。
-4. **可用性：** 是否找到重播、是否理解题目、何处求助。完整记录音乐训练经历和作品熟悉度，以解释差异。
-
-情绪表达可以开放记录，不按固定“悲伤／快乐”标签机械评分。音乐特征任务需先由有音乐背景的评阅者核对片段与答案依据。
-
-## 6. 如何在研究后决定目标用户
-
-| 待判断因素 | 要收集的依据 | 对选择的影响 |
-|---|---|---|
-| 学习问题 | 不同候选群体真实遇到的聆听困难、已有学习方法 | 谁的问题最符合本项目能提供的支持？ |
-| 支持条件 | 是否需要教师／家长协助、可用设备与音频环境 | 自主使用还是课堂引导更可行？ |
-| 内容难度 | 指令理解、术语基础、任务负担 | 同一片段需怎样调整说明和任务？ |
-| 研究可执行性 | 能否接触参与者、完成招募与必要的研究流程 | 首轮测试能否开展，后续能否持续验证？ |
-
-首轮容易招募的参与者不自动等于最终产品用户。不能仅凭竞品面向儿童，或某篇论文研究大学生，就确定 MaestroMate 的年龄范围。
-
-## 7. 后续工作与完成标准
-
-- [x] 将目标用户选择暂缓，并明确本轮研究问题。
-- [x] 核对 7 篇起点文献，记录证据类型、局限与项目推论。
-- [ ] **补充直接证据：** 优先取得并细读 L6、L7 全文，再继续查找古典音乐主动聆听、动画听赏图、音乐动机识别的原始实证研究；提取对象、任务、对照条件与结果。
-- [ ] **补充角色引导研究：** 查找教学代理／历史角色对话的学习与信任研究；不能用一般 AI 辅导证据代替。
-- [ ] **确定学习目标：** 在动机、节奏、音色中先选一个；制作一个有答案依据的示例任务，请音乐专业人士核查。
-- [ ] **再做用户分析：** 以任务样例和访谈了解候选群体的真实困难，决定首轮用户与使用场景。
-- [ ] **形成验证方案：** 写明自变量、主要结果、评分标准、参与者条件与局限，再进入原型开发。
-
-**下一优先项：** 深读音乐聆听与视觉提示的直接研究，补齐 L6、L7 的方法与测量细节。当前材料尚不足以确定视觉方案、AI 角色价值或最佳年龄段，也未证明以作品连接三个模块优于独立活动。
-
-## 8. 参考文献
-
-以下均为原始论文或其作者机构入口；访问日期为 2026-10-17。
-
-1. Chi, M. T. H., & Wylie, R. (2014). The ICAP framework: Linking cognitive engagement to active learning outcomes. *Educational Psychologist, 49*(4), 219–243. https://doi.org/10.1080/00461520.2014.965823
-2. Macrides, E., & Angeli, C. (2020). Music cognition and affect in the design of technology-enhanced music lessons. *Frontiers in Education, 5*, 518209. https://doi.org/10.3389/feduc.2020.518209
-3. Moreno, R., & Mayer, R. E. (2000). A coherence effect in multimedia learning: The case for minimizing irrelevant sounds in the design of multimedia instructional messages. *Journal of Educational Psychology, 92*(1), 117–125. [公开全文](https://tecfa.unige.ch/tecfa/teaching/methodo/Moreno_Mayer00.pdf)
-4. Kestin, G., Miller, K., Klales, A., Milbourne, T., & Ponti, G. (2025). AI tutoring outperforms in-class active learning: An RCT introducing a novel research-based design in an authentic educational setting. *Scientific Reports, 15*, 17458. https://doi.org/10.1038/s41598-025-97652-6
-5. Bastani, H., Bastani, O., Sungu, A., Ge, H., Kabakcı, Ö., & Mariman, R. (2025). Generative AI without guardrails can harm learning: Evidence from high school mathematics. *Proceedings of the National Academy of Sciences, 122*(26), e2422633122. https://doi.org/10.1073/pnas.2422633122
-6. Gromko, J. E., & Russell, C. (2002). Relationships among young children's aural perception, listening condition, and accurate reading of graphic listening maps. *Journal of Research in Music Education, 50*(4), 333–342. https://doi.org/10.2307/3345359
-7. Beam-Barber, M. (2002). *The effect of music listening maps on second grade music students' preference for and understanding of orchestral music* [Master’s thesis, Florida International University]. https://doi.org/10.25148/etd.FI14050462
+1. Chi, M. T. H., & Wylie, R. (2014). [The ICAP framework: Linking cognitive engagement to active learning outcomes](https://doi.org/10.1080/00461520.2014.965823). *Educational Psychologist, 49*(4), 219–243。仅摘要与[作者机构资料](https://icap.education.asu.edu/research)。
+2. Macrides, E., & Angeli, C. (2020). [Music cognition and affect in the design of technology-enhanced music lessons](https://doi.org/10.3389/feduc.2020.518209). *Frontiers in Education, 5*, 518209。
+3. Moreno, R., & Mayer, R. E. (2000). A coherence effect in multimedia learning. *Journal of Educational Psychology, 92*(1), 117–125。[公开全文](https://tecfa.unige.ch/tecfa/teaching/methodo/Moreno_Mayer00.pdf)。
+4. Kestin, G., et al. (2025). [AI tutoring outperforms in-class active learning](https://doi.org/10.1038/s41598-025-97652-6). *Scientific Reports, 15*, 17458。
+5. Bastani, H., et al. (2025). [Generative AI without guardrails can harm learning](https://doi.org/10.1073/pnas.2422633122). *PNAS, 122*(26), e2422633122。
+6. Gromko, J. E., & Russell, C. (2002). [Relationships among young children's aural perception, listening condition, and accurate reading of graphic listening maps](https://doi.org/10.2307/3345359). *JRME, 50*(4), 333–342。仅摘要。
+7. Beam-Barber, M. (2002). *The effect of music listening maps on second grade music students’ preference for and understanding of orchestral music*. FIU 硕士论文。[官方记录](https://digitalcommons.fiu.edu/etd/1472/)；[全文](https://digitalcommons.fiu.edu/record/10009/files/FI14050462.pdf)。
+8. Zhu, Z., Yu, A., Tong, X., & Hui, P. (2025). [Exploring LLM-powered role and action-switching pedagogical agents for history education in virtual reality](https://doi.org/10.1145/3706598.3713109). *CHI 2025*。[作者全文](https://arxiv.org/html/2505.02699v1)，重点 §§3.4、4.1、6。
+9. Tejada, J., & Serra, D. (2018). [The effects of static and dynamic visual representations as aids for primary school children in tasks of auditory discrimination of sound patterns](https://doi.org/10.3991/ijet.v13i02.7430). *iJET, 13*(2), 60–71。
+10. Chan, W.-Y., Qu, H., & Mak, W.-H. (2010). [Visualizing the semantic structure in classical music works](https://doi.org/10.1109/TVCG.2009.63). *IEEE TVCG, 16*(1), 161–173。[作者全文](https://cse.hkust.edu.hk/~huamin/tvcg09_music.pdf)。
+11. Blair, D. V. (2007). Musical maps as narrative inquiry. *International Journal of Education & the Arts, 8*(15)。[ERIC 全文](https://files.eric.ed.gov/fulltext/EJ801220.pdf)。
