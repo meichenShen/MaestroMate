@@ -54,10 +54,15 @@ try {
     );
   }
   await page
-    .getByRole("button", { name: "Follow the clues", exact: true })
+    .getByRole("navigation", { name: "Main navigation" })
+    .getByRole("link", { name: "Play", exact: true })
     .click();
   await page
-    .getByRole("button", { name: "Meet the composer", exact: true })
+    .getByRole("button", { name: "Play Sound Detective", exact: true })
+    .click();
+  await page
+    .getByRole("navigation", { name: "Main navigation" })
+    .getByRole("link", { name: "Chat", exact: true })
     .click();
   await page
     .getByRole("heading", { name: "Camille Saint-Saëns", exact: true })
@@ -68,8 +73,8 @@ try {
     .waitFor();
   assert.equal(
     await page.locator("audio").evaluate((a) => a.paused),
-    false,
-    "Browser back between activities preserves playback",
+    true,
+    "Returning through the game directory keeps the intentional pause",
   );
   console.log(
     "Keyboard navigation, all guide dismissals and browser back: passed",

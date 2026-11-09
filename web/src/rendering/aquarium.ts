@@ -37,7 +37,7 @@ export function createAquarium(
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.25;
+  renderer.toneMappingExposure = 1.0;
   renderer.domElement.setAttribute("aria-hidden", "true");
   host.append(renderer.domElement);
   const scene = new THREE.Scene();
@@ -197,8 +197,18 @@ export function createAquarium(
           template.material as THREE.MeshStandardMaterial
         ).clone();
         material.envMapIntensity = 0.5;
-        material.color.set("#a9c0c3");
-        material.roughness = Math.max(0.45, material.roughness);
+        material.map = null;
+        material.normalMap = null;
+        material.metalnessMap = null;
+        material.roughnessMap = null;
+        material.aoMap = null;
+        material.color.set(
+          ["#67D5B5", "#EE7785", "#C89EC4", "#84B1ED", "#67D5B5", "#EE7785"][
+            index
+          ],
+        );
+        material.metalness = 0.08;
+        material.roughness = 0.44;
         const clock = { value: 0 };
         materials.push(material);
         material.onBeforeCompile = (shader) => {

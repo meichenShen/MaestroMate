@@ -1,22 +1,23 @@
-# MaestroMate modern programme — design QA
-
-final result: passed
+# MaestroMate independent rooms — design QA
 
 ## Target and evidence
 
-- Approved direction: font A (Outfit350 + Onest), first thin-page programme image `/workspace/generated_images/exec-86b13485-0dc5-4e84-b95b-f6a8b23dc933.png`. Latest user explicitly requested realistic rendered3D imagery instead of painted/hand-drawn art and authorized implementation; the black background stays.
-- Source and production-rendered programme captured at the exact same1487×1058 viewport. Compared together in `.tmp/qa/modern/comparison.jpg`; inspected the combined image, not only filenames. Current capture: `.tmp/qa/modern/programme-final.png`.
-- Home, entry modal, work room and mobile captures: `.tmp/qa/modern/`; regression includes320–1440px widths. Local production preview was inspected in Chromium; public HTTP remains subject to the cloud allowlist.
+The latest user request takes precedence over earlier raster-art directions: three genuinely independent rooms, an optional whole-work Program, an actual designed3D theatre, large stroke-drawn icons, directional animation and continuous scrolling that settles on a homepage scene. Retain font A, English, black as the main background and the vertical two-work Program. LOL Colors supplies the mint/coral/lilac/blue accents.
 
-## Iterations and results
+The local production build was captured in Chromium at1440×1000 and390×844. Actual captures were opened and inspected, including:
 
-1. Initial rendered programme showed the Swan's head cropped and the fish preview too small. Corrected Swan fit to preserve the complete animal, increased live model scale, and made work-view scaling responsive. Re-captured and compared the programme: both complete entries visible, metadata beneath art, no clipped headings, thin boundaries and generous black space.
-2. Mobile homepage's panoramic fish crop hid the face. Adjusted the small-screen art focal point toward the head; live work rendering separately adapts model scale to available width.
-3. Final comparison preserves the selected light-weight typography, normal-case readable metadata, mostly-black palette, thin programme surface, vertical pair of works and preview containment. The live CC0 fish species and new rendered Swan differ from the generated reference, as requested by the latest3D direction. The settled page is flat; the thin-fold cue appears during open/close and does not create an ornamental heavy book.
-4. Homepage removes the three-peer entrance strip, uses a full theatre image and three large pictorial experience portals. EntryChoice has exactly two primary choices and one smaller browsing action; it is introduced after the guide and can be reopened.
-5. Work pages provide one large activity surface with notes folded below, preserving the one shared player. Keyboard, audio regression and renderer fallback are checked separately by browser tests.
+- `.tmp/qa/rooms/home-final.png`, `home-mobile-final.png`: original geometry with a full grand piano and curved acoustic stage; headline occupies the separate left space on desktop and sits above the stage on mobile.
+- `doors-final.png`, `doors-mobile-final.png`: three large, staggered icon entrances with room names and readable supporting text. No ruled card grid or peer “Just looking” portal.
+- `listen-final.png`, `program-final.png`: separate listening directory and whole-work Program. Within the Program collection both vertical work entries fit the desktop viewport; Aquarium has a real preview and The Swan is visibly coming soon.
+- `chat-final.png`, `chat-mobile-final.png`: outgoing and incoming bubbles, prepared question chips, source disclosure, one shared player. The log scrolls separately; pages remain freely scrollable.
+- `game-final.png`: a separate Play destination and clear game entrance, without Program progress.
+
+## Functional design checks
+
+`tests/rooms.mjs` checks actual distinct routes, absence of guided progress in standalone rooms, accumulated chat history, one audio element, guided steps, wheel settling and mobile overflow. `tests/snap.mjs` checks motion during a multi-event wheel gesture, final alignment, nested conversation scrolling and reduced motion. `entry.mjs` preserves the two-primary/one-subordinate entrance hierarchy. Dedicated keyboard and focus checks cover modal dismissal, browser back, deep-link first Tab and route focus.
+
+Three-dimensional surfaces contain no generated or photographed environment. The theatre is original geometry; the CC0 fish mesh uses matte materials with its photo textures removed. The aquarium poster was recaptured from this renderer. Icon shapes are Lucide geometry drawn with native path animation, with Smooothy/Vivus acknowledged as technique references.
 
 ## Limits
 
-- Generated3D-style imagery is pre-rendered; the fish scene is actual WebGL. They are not interchangeable claims.
-- Native phone GPU performance and aesthetic preference cannot be established from automated Chromium captures. No unresolved P0/P1/P2 visual-layout finding remains in the inspected states.
+The inspected viewports establish layout and legibility for those states; they do not establish the user's final aesthetic preference or physical-phone GPU performance. Native Sites deployment results verify publication separately. The cloud allowlist blocks an independent public HTTP visit, so local production inspection is not described as a public browser test.

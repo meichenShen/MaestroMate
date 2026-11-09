@@ -1,35 +1,33 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AudioProvider, useAudio } from "./audio/AudioProvider";
-import { type ActivityId } from "./content/aquarium";
+import type { ActivityId } from "./content/aquarium";
 import { BrandHeader } from "./components/BrandHeader";
-import { ActivityNav } from "./components/ActivityNav";
 import { ContextPanel } from "./components/ContextPanel";
 import { Player } from "./components/Player";
 import { Guide } from "./components/Guide";
 import { EntryChoice, type EntryRoute } from "./components/EntryChoice";
+import { JourneyProgress } from "./components/JourneyProgress";
 import { Home } from "./features/home/Home";
+import { Programme } from "./features/home/Programme";
 import { Theater } from "./features/theater/Theater";
 import { Conversation } from "./features/conversation/Conversation";
+import { useComposerChat } from "./features/conversation/useComposerChat";
 import { Detective, initialProgress } from "./features/detective/Detective";
+import { GameRoom } from "./features/detective/GameRoom";
+import { ListeningLibrary } from "./features/library/ListeningLibrary";
 import { useSmoothPage } from "./hooks/useSmoothPage";
-function routeFromHash() {
-  const match = location.hash.match(
-    /^#work\/aquarium\/(theater|conversation|detective)$/,
-  );
-  return match ? (match[1] as ActivityId) : null;
-}
+import { useRoute } from "./navigation/useRoute";
+import { activityHash, navigate } from "./navigation/routes";
 function Site() {
-  const audio = useAudio();
-  useSmoothPage();
-  const [activity, setActivity] = useState<ActivityId>(
-    routeFromHash() || "theater",
-  );
-  const [inWork, setInWork] = useState(!!routeFromHash());
-  const [bookOpen, setBookOpen] = useState(location.hash === "#programme");
-  const [mode, setMode] = useState<ActivityId>("theater");
-  const [selectedQuestion, setSelectedQuestion] = useState("aquarium");
-  const [progress, setProgress] = useState(initialProgress);
-  const [motion, setMotion] = useState(true);
+  const audio = useAudio(),
+    route = useRoute();
+  const previousHash = useRef(location.hash);
+  const scrollTo = useSmoothPage(route.kind === "home");
+  const chat = useComposerChat();
+  const [bookOpen, setBookOpen] = useState(true),
+    [progress, setProgress] = useState(initialProgress),
+    [motion, setMotion] = useState(true),
+    [visited, setVisited] = useState<ActivityId[]>([]);
   const [guide, setGuide] = useState(() => {
     try {
       return sessionStorage.getItem("maestromate-guide-v2") !== "seen";
@@ -41,7 +39,7 @@ function Site() {
     try {
       return (
         !location.hash &&
-        sessionStorage.getItem("maestromate-entry-v1") !== "seen"
+        sessionStorage.getItem("maestromate-entry-v2") !== "seen"
       );
     } catch {
       return !location.hash;
@@ -53,69 +51,50 @@ function Site() {
       sessionStorage.setItem("maestromate-guide-v2", "seen");
     } catch {}
   }, []);
-  const toWork = (id: ActivityId) => {
-    location.hash = "work/aquarium/" + id;
-  };
-  const toSection = (id: string) => {
-    setInWork(false);
-    audio.pause();
-    if (id === "programme") setBookOpen(true);
-    location.hash = id;
-    requestAnimationFrame(() =>
-      requestAnimationFrame(() =>
-        document
-          .getElementById(id)
-          ?.scrollIntoView({ behavior: "smooth", block: "start" }),
-      ),
-    );
-  };
   useEffect(() => {
-    const sync = () => {
-      const next = routeFromHash();
-      setInWork(!!next);
-      if (next) {
-        setActivity(next);
-        window.scrollTo({ top: 0, behavior: "instant" });
-      } else {
-        audio.pause();
-        if (location.hash === "#programme") setBookOpen(true);
-        const id = location.hash.slice(1);
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() =>
-            id
-              ? document
-                  .getElementById(id)
-                  ?.scrollIntoView({ block: "start", behavior: "instant" })
-              : window.scrollTo({ top: 0, behavior: "instant" }),
-          ),
-        );
-      }
-    };
-    window.addEventListener("hashchange", sync);
-    sync();
-    return () => window.removeEventListener("hashchange", sync);
-  }, [audio.pause]);
-  const chooseEntry = (route: EntryRoute) => {
+    const changed = previousHash.current !== location.hash;
+    previousHash.current = location.hash;
+    if (route.kind !== "activity") audio.pause();
+    if (route.kind === "activity" && route.journey)
+      setVisited((items) =>
+        items.includes(route.activity) ? items : [...items, route.activity],
+      );
+    let frame = 0;
+    frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(() => {
+        if (route.kind === "home") {
+          scrollTo(document.getElementById(route.section) || 0, true);
+        } else {
+          window.scrollTo({ top: 0, behavior: "instant" });
+          if (changed && !document.querySelector("dialog[open]"))
+            document.getElementById("main")?.focus({ preventScroll: true });
+        }
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [route, audio.pause, scrollTo]);
+  const chooseEntry = (choice: EntryRoute) => {
     setEntrance(false);
     try {
-      sessionStorage.setItem("maestromate-entry-v1", "seen");
+      sessionStorage.setItem("maestromate-entry-v2", "seen");
     } catch {}
-    if (route === "work") {
-      setMode("theater");
-      toSection("programme");
-    } else if (route === "experience") toSection("experiences");
+    if (choice === "work") {
+      setBookOpen(true);
+      navigate("#program");
+    } else if (choice === "experience") navigate("#explore");
   };
-  const onHome = () => {
+  const startProgram = () => {
+    setVisited([]);
     audio.pause();
-    setInWork(false);
-    location.hash = "";
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    audio.seek(0);
+    navigate(activityHash("theater", true));
   };
+  const activity = route.kind === "activity" ? route.activity : null;
   return (
     <>
       <a
-        href="#main"
         className="skip-link"
+        href="#main"
         onClick={(event) => {
           event.preventDefault();
           const main = document.getElementById("main");
@@ -126,84 +105,151 @@ function Site() {
         Skip to content
       </a>
       <BrandHeader
+        route={route}
         onGuide={() => setGuide(true)}
         onEntry={() => setEntrance(true)}
-        onHome={onHome}
-        onSection={toSection}
       />
-      {inWork ? (
-        <main id="main" tabIndex={-1} className="work-room">
-          <div className="room-topline">
-            <button
-              className="text-button"
-              aria-label="Back to programme"
-              onClick={() => toSection("programme")}
-            >
-              ← <span>Back to programme</span>
-            </button>
-            <span className="micro">Saint-Saëns · Aquarium</span>
-          </div>
-          <ActivityNav active={activity} onChange={toWork} />
+      {route.kind === "home" ? (
+        <Home motion={!guide && !entrance} />
+      ) : route.kind === "library" ? (
+        route.intent === "listen" ? (
+          <ListeningLibrary />
+        ) : (
+          <main id="main" tabIndex={-1} className="program-library page-room">
+            <header className="page-intro">
+              <p className="eyebrow">Take the whole little adventure</p>
+              <h1>
+                One piece.
+                <br />
+                Three ways to get closer.
+              </h1>
+              <p>
+                A Program brings listening, a chat and a little play together.
+                <br />
+                Choose a piece. We'll keep you company along the way.
+              </p>
+            </header>
+            <Programme
+              open={bookOpen}
+              onOpen={() => setBookOpen(true)}
+              onClose={() => setBookOpen(false)}
+              onEnter={startProgram}
+            />
+          </main>
+        )
+      ) : route.kind === "games" ? (
+        <GameRoom />
+      ) : route.kind === "summary" ? (
+        <main id="main" tabIndex={-1} className="program-summary page-room">
+          <p className="eyebrow">Your Aquarium Program</p>
+          <h1>Lovely wandering.</h1>
+          <p>
+            A little time with one lovely piece.
+            <br />
+            There's always another sound to come back for.
+          </p>
+          <a className="solid-button" href="#home">
+            Make yourself at home ↗
+          </a>
+          <a href="#listen">Listen a little more</a>
+        </main>
+      ) : (
+        <main
+          id="main"
+          tabIndex={-1}
+          className={
+            "work-room " + (route.journey ? "in-program" : "standalone-room")
+          }
+          data-room={activity}
+        >
+          {route.journey ? (
+            <JourneyProgress active={route.activity} visited={visited} />
+          ) : (
+            <div className="room-back">
+              <a
+                href={
+                  route.activity === "theater"
+                    ? "#listen"
+                    : route.activity === "detective"
+                      ? "#play"
+                      : "#explore"
+                }
+              >
+                ←{" "}
+                {route.activity === "theater"
+                  ? "Choose another piece"
+                  : route.activity === "detective"
+                    ? "Back to the play room"
+                    : "Back to the rooms"}
+              </a>
+            </div>
+          )}
           <div className="room-layout">
             <div id="activity-panel" className="activity-panel">
               {activity === "theater" ? (
                 <Theater
-                  onDiscover={() => toWork("conversation")}
+                  onDiscover={
+                    route.journey
+                      ? undefined
+                      : () => navigate(activityHash("conversation", false))
+                  }
                   motion={motion}
                   onMotionChange={setMotion}
                 />
               ) : activity === "conversation" ? (
                 <Conversation
-                  selected={selectedQuestion}
-                  onSelect={setSelectedQuestion}
+                  turns={chat.turns}
+                  pending={chat.pending}
+                  onAsk={chat.ask}
                 />
               ) : (
                 <Detective progress={progress} onChange={setProgress} />
               )}
             </div>
-            <ContextPanel activity={activity} />
+            <ContextPanel activity={route.activity} />
           </div>
-          <div className="room-next">
-            <span className="micro">Keep exploring</span>
-            <button
-              onClick={() =>
-                toWork(
+          {route.journey && (
+            <div className="journey-next">
+              <p>
+                {activity === "theater"
+                  ? "Ready to meet the person behind the music?"
+                  : activity === "conversation"
+                    ? "Fancy finding a little detail for yourself?"
+                    : "That was a lovely little visit."}
+              </p>
+              <button
+                className="solid-button"
+                aria-label={
                   activity === "theater"
-                    ? "conversation"
+                    ? "Continue to chat"
                     : activity === "conversation"
-                      ? "detective"
-                      : "theater",
-                )
-              }
-            >
-              {activity === "theater"
-                ? "Next: meet the composer"
-                : activity === "conversation"
-                  ? "Next: follow the clues"
-                  : "Listen again"}{" "}
-              <span>↗</span>
-            </button>
-          </div>
+                      ? "Continue to play"
+                      : "Finish this visit"
+                }
+                onClick={() =>
+                  navigate(
+                    activity === "theater"
+                      ? activityHash("conversation", true)
+                      : activity === "conversation"
+                        ? activityHash("detective", true)
+                        : "#program/aquarium/done",
+                  )
+                }
+              >
+                {activity === "theater"
+                  ? "Continue to chat"
+                  : activity === "conversation"
+                    ? "Continue to play"
+                    : "Finish this visit"}{" "}
+                ↗
+              </button>
+              <a href="#program">Leave this Program</a>
+            </div>
+          )}
         </main>
-      ) : (
-        <Home
-          open={bookOpen}
-          onOpen={() => setBookOpen(true)}
-          onClose={() => setBookOpen(false)}
-          onStart={() => {
-            setMode("theater");
-            toSection("programme");
-          }}
-          onExplore={(id) => {
-            setMode(id);
-            toSection("programme");
-          }}
-          onEnter={() => toWork(mode)}
-          mode={mode}
-        />
       )}
-      {inWork && <Player />}
-      {guide && <Guide onClose={closeGuide} />}
+      {route.kind === "activity" && <Player />}
+      {guide && <Guide onClose={closeGuide} />}{" "}
       {entrance && !guide && <EntryChoice onChoose={chooseEntry} />}
     </>
   );

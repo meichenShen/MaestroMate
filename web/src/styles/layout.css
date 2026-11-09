@@ -3,81 +3,159 @@
   padding: 0 var(--gutter);
   display: flex;
   align-items: center;
-  gap: 45px;
+  justify-content: space-between;
+  gap: 25px;
   position: sticky;
   top: 0;
   z-index: 30;
   background: var(--bg);
-  border-bottom: 1px solid var(--line);
 }
 .brand {
-  font: 400 29px/1 var(--display);
+  font: 400 28px/1 var(--display);
   letter-spacing: -0.04em;
   white-space: nowrap;
 }
-.brand-header nav {
-  margin-left: auto;
+.brand-header > nav {
   display: flex;
   align-items: center;
-  gap: clamp(20px, 2.6vw, 42px);
+  gap: 27px;
   font-size: 16px;
 }
-.brand-header nav button {
+.room-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.room-links a {
+  padding: 10px 0;
+}
+.room-links a[aria-current] {
+  color: var(--mint);
+}
+.brand-header .program-link {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 44px;
+  padding: 10px 20px;
+  background: #18251f;
+  border-radius: 30px;
+  color: #c7eedf;
 }
-.brand-header nav .entry-reopen {
-  color: var(--accent);
+.program-link[aria-current] {
+  background: #244034 !important;
+  color: var(--mint) !important;
 }
-.section-anchor {
-  scroll-margin-top: 0;
-}
-.work-room {
-  padding: 28px var(--gutter) calc(var(--player-height) + 70px);
-  max-width: 1600px;
-  margin: auto;
-}
-.room-topline {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 25px;
-  margin-bottom: 30px;
-}
-.room-topline .micro {
-  font-size: 14px;
-}
-.activity-nav {
-  display: flex;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 46px;
-}
-.activity-nav button {
-  flex: 1;
+.brand-header button {
   display: flex;
   align-items: center;
-  gap: 18px;
-  text-align: left;
-  padding: 20px 0;
+  min-height: 40px;
+}
+.entry-reopen {
   color: var(--muted);
-  font-size: 17px;
 }
-.activity-nav button[aria-current] {
+.guide-link {
+  color: var(--muted);
+}
+.page-room {
+  max-width: 1500px;
+  margin: auto;
+  padding: 50px var(--gutter) 100px;
+}
+.page-intro {
+  margin-bottom: 45px;
+}
+.page-intro h1 {
+  font-size: clamp(48px, 5.2vw, 78px);
+  margin: 20px 0 24px;
+}
+.page-intro > p:not(.eyebrow) {
+  font-size: 19px;
+  color: #bdc7bf;
+  line-height: 1.85;
+}
+.listening-shelves {
+  display: grid;
+  gap: 35px;
+}
+.listening-art {
+  height: 250px;
+  overflow: hidden;
+  border-radius: 24px;
+}
+.swan-outline {
+  display: grid;
+  place-items: center;
+  background: #141319;
+  color: var(--lilac);
+}
+.swan-outline .drawn-icon {
+  height: 160px;
+  width: 160px;
+}
+.work-information {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 20px 0;
+}
+.work-information h2,
+.work-information h3 {
+  font-size: 33px;
+}
+.work-information p {
+  color: var(--muted);
+  font-size: 16px;
+  margin-top: 8px;
+}
+.coming-work .work-information > button {
+  font-size: 16px;
+}
+.game-lounge .page-intro {
+  max-width: 900px;
+}
+.game-door {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+  text-align: left;
+  padding: 25px 0;
+  max-width: 1000px;
+}
+.game-door > .drawn-icon {
+  width: 270px;
+  height: 270px;
+  color: var(--lilac);
+}
+.game-door strong {
+  display: block;
+  font: 350 47px/1.1 var(--display);
   color: var(--fg);
 }
-.activity-nav button[aria-current]::after {
-  content: "";
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
-  margin-left: 15px;
+.game-door small {
+  display: block;
+  font-size: 18px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-top: 18px;
 }
-.activity-nav .micro {
-  font-size: 14px;
+.game-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 30px;
+  font-size: 20px;
+  margin-top: 28px;
+  color: var(--lilac);
+}
+.work-room {
+  max-width: 1500px;
+  margin: auto;
+  padding: 32px var(--gutter) calc(var(--player-height) + 70px);
+}
+.room-back {
+  font-size: 16px;
+  margin-bottom: 38px;
+  color: var(--muted);
 }
 .room-layout {
   display: block;
@@ -86,20 +164,23 @@
   min-width: 0;
 }
 .context-panel {
-  border-top: 1px solid var(--line);
-  margin-top: 40px;
-  padding-top: 20px;
+  margin-top: 38px;
 }
-.context-panel > .context-details > summary {
-  font-size: 17px;
+.context-details {
+  background: #121a17;
+  padding: 17px 24px;
+  border-radius: 22px;
+}
+.context-panel summary {
+  font-size: 16px;
   cursor: pointer;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 .context-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 50px;
-  padding: 30px 0 10px;
+  padding: 25px 0 10px;
   max-width: 1050px;
 }
 .context-panel h3 {
@@ -108,35 +189,90 @@
 }
 .context-panel p {
   font-size: 16px;
-  line-height: 1.9;
+  line-height: 1.85;
   color: var(--muted);
   margin-top: 15px;
-}
-.context-panel details details {
-  margin-top: 24px;
-  font-size: 16px;
-  line-height: 1.7;
 }
 .context-panel details a {
   display: inline-block;
   margin: 16px 20px 0 0;
   text-decoration: underline;
 }
-.room-next {
+.journey-progress {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 30px;
-  margin-top: 40px;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
+  margin-bottom: 40px;
 }
-.room-next button {
+.journey-progress > p {
+  font-size: 16px;
+  color: var(--muted);
+}
+.journey-progress > div {
+  display: flex;
+  gap: 22px;
+}
+.journey-progress button {
   display: flex;
   align-items: center;
-  gap: 30px;
-  font: 350 clamp(23px, 2.4vw, 34px) var(--display);
-  letter-spacing: -0.025em;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 16px;
+}
+.journey-progress button > span {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #17211d;
+  font-size: 14px;
+}
+.journey-progress button[aria-current] {
+  color: var(--mint);
+}
+.journey-progress button[aria-current] > span {
+  background: var(--mint);
+  color: #09251d;
+}
+.journey-next {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 48px;
+  padding-top: 10px;
+}
+.journey-next > p {
+  font-size: 18px;
+  color: var(--muted);
+}
+.journey-next > a {
+  flex-basis: 100%;
+  font-size: 14px;
+  color: var(--muted);
+  text-align: right;
+}
+.program-summary {
+  padding-top: 100px;
+}
+.program-summary h1 {
+  font-size: clamp(60px, 8vw, 110px);
+  margin: 24px 0;
+}
+.program-summary > p:not(.eyebrow) {
+  font-size: 21px;
+  color: var(--muted);
+  margin: 25px 0 35px;
+  line-height: 1.9;
+}
+.program-summary > a:not(.solid-button) {
+  display: block;
+  font-size: 18px;
+  color: var(--muted);
+  margin-top: 25px;
 }
 .player {
   position: fixed;
@@ -144,9 +280,9 @@
   left: 0;
   right: 0;
   z-index: 35;
-  background: var(--bg);
-  border-top: 1px solid #ffffff40;
-  padding: 22px var(--gutter);
+  background: #101613;
+  border-radius: 24px 24px 0 0;
+  padding: 20px var(--gutter);
 }
 .player-inner {
   display: flex;
@@ -163,9 +299,7 @@
 }
 .now-playing strong {
   display: block;
-  font-family: var(--display);
-  font-size: 20px;
-  font-weight: 400;
+  font: 400 20px var(--display);
 }
 .now-playing small {
   display: block;
@@ -198,8 +332,8 @@
   font-size: 9px;
 }
 .play-button {
-  background: var(--fg);
-  color: var(--bg);
+  background: var(--mint);
+  color: #09251d;
   border-radius: 50%;
   width: 48px;
   height: 48px;
@@ -207,8 +341,8 @@
   place-items: center;
 }
 .play-button:hover:not(:disabled) {
-  color: var(--bg);
-  background: var(--accent);
+  color: #09251d;
+  background: #91e4ca;
 }
 .seek-control {
   display: flex;
@@ -224,7 +358,7 @@
   min-width: 30px;
 }
 .player input[type="range"] {
-  accent-color: var(--fg);
+  accent-color: var(--mint);
   height: 3px;
   cursor: pointer;
 }
@@ -234,7 +368,7 @@
   gap: 12px;
 }
 .player select {
-  background: var(--bg);
+  background: #101613;
   color: var(--fg);
   border: 0;
   font-size: 15px;
@@ -260,14 +394,14 @@
   }
 }
 @media (max-width: 1100px) {
-  .brand-header nav {
+  .brand-header > nav {
     gap: 22px;
   }
-  .brand-header nav .about-link {
-    display: none;
+  .room-links {
+    gap: 25px;
   }
   .now-playing {
-    flex-basis: 190px;
+    flex-basis: 185px;
   }
   .record-icon {
     display: none;
@@ -278,93 +412,168 @@
   .volume-control {
     display: none;
   }
-  .activity-nav button {
-    font-size: 16px;
+  .game-door {
+    gap: 40px;
+  }
+  .game-door strong {
+    font-size: 40px;
   }
 }
 @media (max-width: 720px) {
   :root {
-    --header-height: 116px;
+    --header-height: 112px;
     --player-height: 160px;
   }
   .brand-header {
-    height: 116px;
+    height: 112px;
     flex-wrap: wrap;
     align-content: center;
-    gap: 18px;
-    padding-top: 13px;
-    padding-bottom: 15px;
+    gap: 17px;
+    padding-top: 12px;
+    padding-bottom: 14px;
   }
   .brand {
-    font-size: 27px;
+    font-size: 26px;
   }
-  .brand-header nav {
+  .brand-header > nav {
     width: 100%;
-    margin: 0;
+    gap: 14px;
     justify-content: space-between;
-    gap: 12px;
     font-size: 14px;
   }
-  .brand-header nav button {
-    min-height: 26px;
+  .room-links {
+    gap: 24px;
+  }
+  .brand-header .program-link {
+    padding: 7px 14px;
     gap: 7px;
   }
-  .brand-header nav .entry-reopen span {
-    display: none;
+  .brand-header .program-link svg {
+    width: 13px;
+    height: 13px;
   }
-  .brand-header nav .entry-reopen svg {
-    width: 19px;
-    height: 19px;
+  .brand-header button {
+    min-height: 28px;
   }
-  .brand-header nav button > svg {
-    width: 15px;
-    height: 15px;
+  .entry-reopen {
+    display: none !important;
   }
-  .room-topline {
-    margin-bottom: 23px;
+  .page-room {
+    padding-top: 32px;
+    padding-bottom: 70px;
   }
-  .room-topline > .micro {
-    display: none;
-  }
-  .activity-nav {
-    gap: 12px;
+  .page-intro {
     margin-bottom: 30px;
   }
-  .activity-nav button {
-    font-size: 14px;
-    display: block;
-    line-height: 1.4;
-    position: relative;
-    padding: 16px 0;
+  .page-intro h1 {
+    font-size: 47px;
+    margin: 17px 0 20px;
   }
-  .activity-nav .micro {
-    display: none;
+  .page-intro > p:not(.eyebrow) {
+    font-size: 18px;
   }
-  .activity-nav button[aria-current]::after {
-    position: absolute;
-    bottom: 7px;
-    left: 0;
-    width: 4px;
-    height: 4px;
-    margin: 0;
+  .listening-shelves {
+    gap: 30px;
+  }
+  .listening-art {
+    height: 245px;
+    border-radius: 22px;
+  }
+  .work-information {
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 22px;
+  }
+  .work-information h2,
+  .work-information h3 {
+    font-size: 31px;
+  }
+  .work-information p {
+    font-size: 15px;
+  }
+  .work-information .solid-button {
+    font-size: 16px;
+    padding: 13px 22px;
+    min-height: 48px;
+  }
+  .game-door {
+    flex-direction: column;
+    align-items: start;
+    gap: 30px;
+    padding-top: 10px;
+  }
+  .game-door > .drawn-icon {
+    width: 210px;
+    height: 210px;
+    align-self: center;
+  }
+  .game-door strong {
+    font-size: 40px;
+  }
+  .game-door small {
+    font-size: 18px;
+  }
+  .game-cta {
+    margin-top: 23px;
+  }
+  .room-back {
+    margin-bottom: 27px;
+    font-size: 15px;
   }
   .context-grid {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 25px;
+  }
+  .context-details {
+    padding: 16px 20px;
+  }
+  .context-panel summary {
+    font-size: 15px;
   }
   .context-panel p {
     font-size: 16px;
   }
-  .room-next {
-    align-items: start;
+  .journey-progress {
+    display: block;
+    margin-bottom: 32px;
+  }
+  .journey-progress > p {
+    font-size: 14px;
+    margin-bottom: 17px;
+  }
+  .journey-progress > div {
+    justify-content: space-between;
     gap: 15px;
   }
-  .room-next > .micro {
-    display: none;
+  .journey-progress button {
+    font-size: 15px;
+    gap: 9px;
   }
-  .room-next button {
-    font-size: 24px;
-    gap: 16px;
+  .journey-progress button > span {
+    width: 29px;
+    height: 29px;
+  }
+  .journey-next {
+    display: block;
+    margin-top: 35px;
+  }
+  .journey-next > p {
+    font-size: 17px;
+    margin-bottom: 22px;
+  }
+  .journey-next > a {
+    display: block;
+    text-align: left;
+    margin-top: 23px;
+  }
+  .program-summary {
+    padding-top: 70px;
+  }
+  .program-summary h1 {
+    font-size: 62px;
+  }
+  .program-summary > p:not(.eyebrow) {
+    font-size: 18px;
   }
   .player {
     padding: 14px var(--gutter) max(16px, env(safe-area-inset-bottom));
@@ -417,9 +626,15 @@
   }
 }
 @media (max-width: 370px) {
-  .brand-header nav {
+  .brand-header > nav {
     gap: 10px;
     font-size: 13px;
+  }
+  .room-links {
+    gap: 18px;
+  }
+  .brand-header .program-link {
+    padding: 7px 10px;
   }
   .now-playing small {
     font-size: 11px;
@@ -427,5 +642,8 @@
   }
   .player-extras select {
     font-size: 13px;
+  }
+  .page-intro h1 {
+    font-size: 42px;
   }
 }

@@ -1,18 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ArrowDown, Plus, Minus } from "lucide-react";
+import { DrawnIcon } from "../../components/DrawnIcon";
 import { AquariumView } from "../../components/AquariumView";
 export function Programme({
   open,
   onOpen,
   onClose,
   onEnter,
-  mode,
 }: {
   open: boolean;
   onOpen: () => void;
   onClose: () => void;
   onEnter: () => void;
-  mode: string;
 }) {
   const [closing, setClosing] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -32,27 +31,19 @@ export function Programme({
     <section id="programme" className="programme-section section-anchor">
       <div className="programme-heading">
         <div>
-          <p className="eyebrow">Choose a piece</p>
-          <h2>The programme.</h2>
-          <p>A whole world in one piece.</p>
+          <p className="eyebrow">Your next little adventure</p>
+          <h2>Pick a piece.</h2>
+          <p>Listen, chat, then play — all in one Program.</p>
         </div>
         <div className="programme-tools">
-          {mode !== "theater" && (
-            <p>
-              Your way in:{" "}
-              {mode === "conversation"
-                ? "Meet the composer"
-                : "Music Detective"}
-            </p>
-          )}
           {open && (
             <button
               className="text-button"
-              aria-label="Close programme"
+              aria-label="Close Program"
               onClick={close}
               disabled={closing}
             >
-              Close programme <Minus size={18} />
+              Close Program <Minus size={18} />
             </button>
           )}
         </div>
@@ -60,7 +51,7 @@ export function Programme({
       {!open ? (
         <button
           className="programme-cover"
-          aria-label="Open programme"
+          aria-label="Open Program"
           onClick={onOpen}
         >
           <img src="/images/aquarium-poster.webp" alt="" />
@@ -70,7 +61,7 @@ export function Programme({
             of listening.
           </span>
           <span className="cover-action">
-            Open the programme <Plus size={24} />
+            Open your Program <Plus size={24} />
           </span>
         </button>
       ) : (
@@ -87,10 +78,10 @@ export function Programme({
               <button
                 className="round-link"
                 onClick={onEnter}
-                aria-label="Enter Aquarium"
+                aria-label="Start Aquarium Program"
               >
                 <span>
-                  Enter work <small>2 min 24 sec</small>
+                  Start Program <small>Listen · Chat · Play</small>
                 </span>
                 <ArrowUpRight size={25} />
               </button>
@@ -98,12 +89,7 @@ export function Programme({
           </article>
           <article className="work-entry" data-work="swan">
             <div className="work-preview">
-              <img
-                className="swan-image"
-                src="/images/swan.webp"
-                alt="A detailed white swan on dark water"
-                loading="lazy"
-              />
+              <DrawnIcon kind="swan" />
             </div>
             <div className="work-information">
               <div>

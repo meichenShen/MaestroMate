@@ -4,17 +4,17 @@ const steps = [
   {
     number: "01",
     title: "Find your way in.",
-    text: "Start with a work for a guided journey, pick an experience, or simply look around. There is no wrong entrance.",
+    text: "Take a full Program around one piece, choose a room — Listen, Chat or Play — or just have a look around.",
   },
   {
     number: "02",
     title: "Take your time.",
-    text: "Open the programme and scroll down to browse. Preview a work, then enter when something catches your ear.",
+    text: "On the home page, scroll and let each scene settle. Inside a room, take your time. In Chat, choose a question and your conversation will unfold.",
   },
   {
     number: "03",
     title: "Make it your own.",
-    text: "Listen, meet the composer, or follow a sound clue. Pause, replay and switch experiences whenever you like. Open this guide again from the top navigation.",
+    text: "The three rooms work on their own. A Program gently connects them, with a next step when you feel ready. You can leave or come back whenever you like.",
   },
 ];
 export function Guide({ onClose }: { onClose: () => void }) {

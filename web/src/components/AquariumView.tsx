@@ -57,13 +57,8 @@ export function AquariumView({
       className="aquarium-art"
       data-render-status={status}
       role="img"
-      aria-label="A school of textured three-dimensional fish in deep water"
+      aria-label="A small world of matte-coloured three-dimensional fish"
     >
-      <img
-        className="aquarium-environment"
-        src="/images/aquarium.webp"
-        alt=""
-      />
       {status !== "ready" && (
         <img
           className="aquarium-poster"
@@ -76,7 +71,7 @@ export function AquariumView({
       )}
       <div className="aquarium-canvas" ref={host} />
       {status === "loading" && (
-        <span className="scene-loading">Preparing the 3D scene…</span>
+        <span className="scene-loading">Getting our little world ready…</span>
       )}
     </div>
   );

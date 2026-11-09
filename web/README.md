@@ -1,6 +1,6 @@
-# MaestroMate — a listening room
+# MaestroMate — three rooms, one curious visit
 
-An English music experience built around Saint-Saëns' **Aquarium**, using the approved Outfit + Onest direction and a modern thin programme. The homepage offers work-first, experience-first and browsing entrances. The vertical programme keeps previews inside each work; Aquarium is playable and The Swan is explicitly a coming-soon placeholder. The first-visit guide leads to two prominent pictorial entrance choices; the subordinate “Just looking for now” action exists only in that dialog. “Start here” reopens the choices and “Guide” reopens onboarding.
+An English music demo built around Saint-Saëns’ **Aquarium**. Listen, composer Chat and music Play are independent destinations. **Program** is a separate, optional route through all three. The first-visit guide introduces two primary entrances; “Just looking for now” is a smaller action only in the entry dialog.
 
 Live: https://maestromate-aquarium.chirpyapple14.chatgpt.site
 
@@ -17,54 +17,62 @@ npm run build
 npm run preview -- --port 4173
 ```
 
-With the production preview running, run `QA_BASE_URL=http://127.0.0.1:4173 npm run test:browser`. Browser tests use `/usr/bin/chromium` (override `CHROMIUM_PATH`) and the real MP3. Results and screenshots go to ignored `.tmp/qa/`. Do not edit source during a test of the development server: hot reload replaces React contexts and can invalidate the test. The optional `QA_AUDIO_FIXTURE=1 node tests/browser.mjs` uses test-only synthesized media; it is never deployed and does not verify the recording.
+With the production preview running: `QA_BASE_URL=http://127.0.0.1:4173 npm run test:browser`. Tests use `/usr/bin/chromium` (override `CHROMIUM_PATH`) and the actual MP3. Screenshots and transient results stay in ignored `.tmp/qa/`. Keep the production build unchanged during a browser run.
 
 ## Editing map
 
 | Change | File |
 | --- | --- |
-| Brand and main navigation | `src/components/BrandHeader.tsx` |
-| Theatre backdrop, large activity entries, about and feedback links | `src/features/home/Home.tsx` |
-| Programme cover, work previews and work metadata | `src/features/home/Programme.tsx` |
-| Introductory guide | `src/components/Guide.tsx` |
-| First-entry hierarchy | `src/components/EntryChoice.tsx` |
-| Live 3D integration and static fallback | `src/components/AquariumView.tsx` |
-| PBR lights, model animation and render lifecycle | `src/rendering/aquarium.ts` |
-| Shared model/texture loading | `src/rendering/model.ts` |
-| Interface icons | Lucide React imports inside the relevant components |
-| Palette, fonts, page spacing and shared dimensions | `src/styles/tokens.css` |
-| Header, work columns, fixed player and responsive breakpoints | `src/styles/layout.css` |
-| Homepage composition and programme layout | `src/features/home/home.css` |
-| Individual activity presentation | `src/styles/experience.css` (separate activity sections) |
-| Listening, scripted conversation and detective logic | `src/features/theater/`, `conversation/`, `detective/` |
-| Work facts, questions, sources, chapters and clip timestamps | `src/content/aquarium.ts` |
-| Shared audio and clip-end logic | `src/audio/AudioProvider.tsx` |
-| Player controls | `src/components/Player.tsx` |
-| Optional eased scrolling and reveal observation | `src/hooks/useSmoothPage.ts` |
-| Navigation and transient session state | `src/App.tsx` |
+| Independent destinations and Program URLs | `src/navigation/routes.ts`, `useRoute.ts` |
+| Persistent state and page composition | `src/App.tsx` |
+| Brand and global Listen / Chat / Play / Program navigation | `src/components/BrandHeader.tsx` |
+| Four homepage scenes, scattered entrances and contact links | `src/features/home/Home.tsx`, `home.css` |
+| Actual 3D stage geometry, materials, lights and animation | `src/rendering/theatre.ts`, `components/TheatreStage.tsx` |
+| Large icon geometry and path-drawing animation | `src/components/DrawnIcon.tsx` |
+| Independent listening collection | `src/features/library/ListeningLibrary.tsx` |
+| Program fold, vertical work previews and metadata | `src/features/home/Programme.tsx` |
+| Program-only progress and next-step controls | `src/components/JourneyProgress.tsx`, `App.tsx` |
+| Message bubbles, suggested questions and retained turns | `src/features/conversation/Conversation.tsx`, `useComposerChat.ts`, `conversation.css` |
+| Independent game entrance and detective activity | `src/features/detective/GameRoom.tsx`, `Detective.tsx` |
+| Introductory guide and first-entry hierarchy | `src/components/Guide.tsx`, `EntryChoice.tsx` |
+| Live fish rendering and captured fallback | `src/rendering/aquarium.ts`, `components/AquariumView.tsx` |
+| Work facts, prepared answers, sources, chapters and clip timestamps | `src/content/aquarium.ts` |
+| Shared audio and player controls | `src/audio/AudioProvider.tsx`, `components/Player.tsx` |
+| Colours, fonts, sizes and breakpoints | `src/styles/tokens.css`, `layout.css` |
+| Eased scrolling, homepage idle snapping and scene reveals | `src/hooks/useSmoothPage.ts` |
 
-Work pages give the activity the full width. Contextual notes and recording sources sit in an expandable section below. At 720px the player uses two rows; homepage experience portals become one column and programme metadata remains below each preview. Heights follow content, and work pages reserve space below the fixed player. Programme browsing always stays vertical.
+Each room has its own component. The shared player has one persistent audio element; moving between activities preserves playback and position. Directories and the homepage pause playback. Chat retains incoming/outgoing messages during navigation, including a reply pending when the user leaves; refreshing resets this state. No free text, accounts, AI calls or database are present. Sources remain available below individual replies and in recording credits.
 
-Hash routes (`#programme`, `#experiences`, `#about`, `#work/aquarium/theater`, `conversation`, `detective`) support browser back/forward. One AudioProvider stays mounted across every route. Changing activities preserves playback position and answer state; returning to the homepage pauses audio. Page refresh resets activity progress; the guide is remembered only for the browser session. Composer questions are scripted, with no free text or model calls.
+## Routes
 
-## Visual direction, 3D and assets
+| URL hash | Destination |
+| --- | --- |
+| `#home`, `#explore`, `#journey`, `#about` | Homepage scenes |
+| `#listen` → `#listen/aquarium` | Independent listening collection → room |
+| `#chat` | Independent composer conversation |
+| `#play` → `#play/aquarium` | Independent music games → Sound Detective |
+| `#program` | Optional whole-work Program collection |
+| `#program/aquarium/listen`, `/chat`, `/play` | Guided Program steps |
+| `#program/aquarium/done` | End of the Program |
 
-Font A uses Outfit 350 for headings and Onest for body copy. Body text is approximately18px, with normal-case labels and larger readable controls. The black background remains; colour comes from the artwork and small restrained accents. The selected thin-page concept informs the programme, with a light fold transition, large previews and two complete vertically stacked works visible on desktop. Homepage experiences are large pictorial portals; work notes are folded into an expandable section below the full-width activity.
+The old `#programme`, `#experiences` and `#work/aquarium/{theater,conversation,detective}` links remain supported. Old activity links open standalone rooms, never silently create a guided journey.
 
-`AquariumView` displays real-time textured 3D fish using Three.js, a CC0 Microsoft BarramundiFish model distributed by Khronos, direct lights and an environment map. It reads music time, playback rate, pause and motion state; it never creates audio. A single downloaded model/texture promise is shared, while each renderer owns animated materials and environment resources. Geometry stays unchanged on disk; WebP texture repacking reduces the original12.49MB file to0.64MB. Details and checksums are in `public/models/ATTRIBUTION.md`. To reproduce optimization, put the original at `.tmp/modern-render/barramundi-original.glb`, then run `python scripts/optimize-fish.py` (requires Pillow).
+## Design and animation
 
-The theatre, underwater environment, swan, imagined composer sculpture and detective symbol are generated raster assets with realistic rendered 3D art direction. They are images rather than live 3D models. The aquarium poster is a captured frame of the actual renderer and is also the fallback. These assets are stored locally in `public/images/`; visitors do not need access to outside model/font hosts.
+Headings use Outfit350 and body text uses Onest, with normal-case readable labels. Black remains the main background. Mint `#67D5B5`, coral `#EE7785`, lilac `#C89EC4` and blue `#84B1ED` reference a LOL Colors palette. Entrances use large, freely positioned Lucide shapes, animated stroke by stroke via native Web Animations. Scene reveals arrive from different directions. Smooothy’s actual Draw source and Vivus informed the technique; no reference-site models or branded artwork are redistributed.
 
-Smooothy's actual code and preview images informed textured asset use, minimal presentation and eased interaction. `ScottieFox/caustic-volume` was reviewed as a water-light technical reference; its simulation is not bundled. Source and font licenses are linked from `public/credits/README.txt`.
+On the homepage, Lenis permits continuous wheel movement and its installed Snap extension aligns the nearest scene after input stops. Libraries, chat and games do not snap. The conversation log owns its scroll; dialogs suspend snapping. Reduced-motion preference disables eased wheel/snap and animated reveals; coarse pointers also get native proximity snapping. Navigation remains available with normal links and the keyboard.
 
-Reduced motion and Motion off freeze decorative rendering while music continues. Offscreen/hidden pages suspend the animation loop. WebGL or model-load failure leaves a real rendered poster visible and all audio controls usable. App-owned observers, materials, environment render targets, renderer and WebGL context are released on unmount.
+The theatre is original, texture-free Three.js geometry: piano, acoustic shells, curved steps and coloured plinth. It is deliberately sculptural rather than photorealistic. The aquarium uses a real CC0 Microsoft/Khronos fish mesh with matte coloured materials. Generated theatre, portrait, swan and environment rasters from the previous version are removed from the current website. The single fallback image is a captured frame of the actual fish renderer.
+
+`python scripts/optimize-fish.py` downloads a fixed upstream model revision, checks its hash, preserves geometry and removes photographic textures. The final model is129,452 bytes (original12.49MB). Source, transformations and hashes are in `public/models/ATTRIBUTION.md`. Three.js is loaded only for scenes that need it. Renderers pause when offscreen/hidden; reduced motion freezes decoration. WebGL failure leaves accessible navigation and working audio. Native phone GPU performance has not been measured.
 
 ## Recording
 
-Kevin MacLeod's Aquarium (ISRC USUAN1900026), approximately 144 seconds, is stored locally under CC BY 4.0. See [recording attribution](public/audio/ATTRIBUTION.md) for source and checksum. Changing the recording requires checking every timestamp. Visual chapters are editorial interpretations, not claims about the composer's intentions. This prototype has not been evaluated for learning outcomes.
+Kevin MacLeod’s Aquarium (ISRC USUAN1900026), approximately144 seconds, is stored locally under CC BY4.0. See [recording attribution](public/audio/ATTRIBUTION.md). Changing the recording requires reviewing every timestamp. Scenes and chat are explicitly contemporary interpretations, not claims about Saint-Saëns’ intentions. The Swan remains a clearly disabled coming-soon entry.
 
 ## GitHub, publishing and cleanup
 
-Source, necessary media and documentation live in the existing GitHub repository on `feat/aquarium-demo`. Preserve research and `old version/`; use Git history rather than dated source copies. Dependencies, `dist/`, `.tmp/`, logs and secrets are ignored. Only remove verified reproducible files for this project. Never clear other projects or app-wide caches.
+The existing `feat/aquarium-demo` branch stores source, necessary media and instructions. Preserve research and `old version/`; Git history replaces dated copies. Dependencies, `dist/`, `.tmp/`, caches and secrets stay out of GitHub. Only clear reproducible files belonging to this project.
 
-Keep `.openai/hosting.json` and the existing public Sites project. Build and commit the website, then run `python web/scripts/prepare-site-source.py` from the repository root in a PTY. The helper accepts native Sites short-lived credentials on hidden stdin, pushes the committed `web/` subtree, verifies its SHA and packages `dist/` plus the hosting manifest. Credentials must never enter files, command arguments or logs. Save and deploy that version through the native Sites tools. Deployment records are in `VERIFICATION.md`.
+Keep the existing public Sites project in `.openai/hosting.json`. Build and commit the website, then run `python web/scripts/prepare-site-source.py` from the repository root in a PTY. The helper accepts native short-lived credentials on hidden stdin, pushes the committed `web/` subtree, verifies the SHA and packages `dist/` with the hosting manifest. Never put credentials in files, command arguments or logs. Save/deploy through native Sites tools; record returned provenance in `VERIFICATION.md`.

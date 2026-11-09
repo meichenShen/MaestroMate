@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { DrawnIcon } from "./DrawnIcon";
 import { ArrowUpRight } from "lucide-react";
 export type EntryRoute = "work" | "experience" | "browse";
 export function EntryChoice({
@@ -29,19 +30,17 @@ export function EntryChoice({
     >
       <p className="eyebrow">Welcome to MaestroMate</p>
       <h2 id="entry-title">How would you like to begin?</h2>
-      <p className="entry-intro">
-        A piece of music. A little curiosity. Your own way in.
-      </p>
+      <p className="entry-intro">Three rooms. One little world of music.</p>
       <div className="entry-choices">
         <button
           className="entry-primary"
           aria-label="Start with a work"
           onClick={() => choose("work")}
         >
-          <img src="/images/aquarium-poster.webp" alt="" />
+          <DrawnIcon kind="program" />
           <span>
-            <strong>Start with a work</strong>
-            <small>Listen, meet the composer, then follow the clues.</small>
+            <strong>Start with a piece</strong>
+            <small>Take a full Program: listen, chat, then play.</small>
           </span>
           <ArrowUpRight />
         </button>
@@ -50,10 +49,10 @@ export function EntryChoice({
           aria-label="Choose an experience"
           onClick={() => choose("experience")}
         >
-          <img src="/images/composer.webp" alt="" />
+          <DrawnIcon kind="chat" />
           <span>
-            <strong>Choose an experience</strong>
-            <small>Pick what interests you. Find a piece to explore.</small>
+            <strong>Pick a room</strong>
+            <small>Listening, a chat, or a game — where shall we go?</small>
           </span>
           <ArrowUpRight />
         </button>

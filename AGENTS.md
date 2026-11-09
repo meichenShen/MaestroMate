@@ -11,3 +11,8 @@
 - Approved visual direction: Outfit + Onest, mainly black, readable normal-case copy and large rendered imagery. Keep artwork in the programme and keep its browsing vertical.
 - First-entry choices have two primary pictorial actions. Just looking is a subordinate action only in that dialog; do not turn it into a homepage feature.
 - Real-time fish rendering belongs in `web/src/rendering/` and `AquariumView`; pre-rendered illustrations belong in `web/public/images/`. Preserve that distinction in credits and claims. Model/source licenses live with the assets.
+
+- Listen, Chat and Play are independent routes/features. Program is an optional guided route through them; show progress/next only for explicit Program URLs.
+- Retain ordered prepared chat turns above route switches; do not turn them into one replaceable answer or enable free AI input.
+- Home-only scene snapping must respect dialogs, nested chat scrolling and reduced motion. Keep libraries and rooms freely scrollable.
+- Theatre art is original texture-free3D geometry. Large icons may draw their strokes. Do not reintroduce generated theatre/portrait/environment rasters; static fallback should be captured from actual rendering.

@@ -8,7 +8,7 @@ export function Theater({
   motion,
   onMotionChange,
 }: {
-  onDiscover: () => void;
+  onDiscover?: () => void;
   motion: boolean;
   onMotionChange: (value: boolean) => void;
 }) {
@@ -69,9 +69,11 @@ export function Theater({
       </nav>
       <div className="theater-footer">
         <p>An imagined scene. A real recording. Your own way in.</p>
-        <button className="text-button" onClick={onDiscover}>
-          Meet the composer ↗
-        </button>
+        {onDiscover && (
+          <button className="text-button" onClick={onDiscover}>
+            Fancy a chat? ↗
+          </button>
+        )}
       </div>
     </section>
   );
