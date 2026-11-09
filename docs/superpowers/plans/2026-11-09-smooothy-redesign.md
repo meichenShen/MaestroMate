@@ -35,7 +35,7 @@
 
 ### Task 3: Handoff
 - [x] Run the complete tests/build and a separate final review; address material findings.
-- [ ] Update docs and the existing GitHub PR, publish to the existing public Site, verify deployment state and open the URL.
+- [x] Update docs and the existing GitHub PR, publish to the existing public Site, verify deployment state and open the URL.
 
 ## Ledger
 - Ruling: Work in the existing feature branch and project directory; avoid a duplicate worktree and dependency tree, following the user's storage preference.
@@ -48,3 +48,5 @@
 - Final review: fresh reviewer found two P2s: skip link exited current activity; guide button closure lost focus. Both reproduced before fixes, then keyboard regression passed. Whole suite green.
 - Review limits: inaccessible live reference, real-device GPU lifecycle and deployment were not judged by reviewer. Source evidence follows the authorized GitHub fallback; deployment is verified separately.
 - Browser QA uses production preview to avoid hot reload replacing a React context. The ending assertion waits for route scroll-to-top before simulating bottom scroll; actual mobile padding was sufficient.
+
+- Task 3: Sites version 2 deployed successfully to the existing public URL; source 69d9806e0d8560b97fac30a17397b4dce8fa720f, GitHub 34022ba16f1bb001d0d38920d5b26e60f76b7f77. Public URL opened in Codex; cloud HTTP returned 403, so public-browser access is not independently confirmed. Removed only the reproducible project npm cache (52.4 MiB).
