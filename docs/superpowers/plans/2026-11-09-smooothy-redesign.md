@@ -50,3 +50,4 @@
 - Browser QA uses production preview to avoid hot reload replacing a React context. The ending assertion waits for route scroll-to-top before simulating bottom scroll; actual mobile padding was sufficient.
 
 - Task 3: Sites version 2 deployed successfully to the existing public URL; source 69d9806e0d8560b97fac30a17397b4dce8fa720f, GitHub 34022ba16f1bb001d0d38920d5b26e60f76b7f77. Public URL opened in Codex; cloud HTTP returned 403, so public-browser access is not independently confirmed. Removed only the reproducible project npm cache (52.4 MiB).
+- Final release: version 3 succeeded after black browser-theme metadata correction. Source 5bcff30598ab1ea56787acdae93e3df72ca11480; GitHub runtime 85ea7ef164cc6420bd21fe72525010496e310a2b; deployment appgdep_6af18c028e288191a8306a777dbb72c7. Cloud network status confirms restricted revision 1 with no public-site hostname allowance; no bypass attempted.
