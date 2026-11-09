@@ -68,3 +68,14 @@
 - 独立最终代码审查发现1项 P2：加载期间丢失 WebGL 上下文，后到模型回调错误地把降级状态改回 ready。`tests/context-loss.mjs` 在旧行为复现 ready/fallback 断言失败，加入 contextLost 保护后通过，随后完整套件重新通过。
 - 同一1487×1058窗口将设计参考与最终节目册并排对照并实际查看，报告见 `design-qa.md`。视觉检查修正了天鹅头部裁切、鱼群大小和手机版图案焦点。后续只调整了移动端静态图像焦点，再次构建与截图复核；音频／路由代码未继续改动。
 - 渲染器单独加载，包约632kB（gzip160kB），仍有构建大包提示；仅打开需要3D的页面时加载。没有进行真实手机显卡性能测试。
+
+### 现代节目册版本公开发布
+
+- Sites 第4版，原 public 访问范围不变，部署状态 `succeeded`。
+- 网址：https://maestromate-aquarium.chirpyapple14.chatgpt.site
+- GitHub 运行代码：`359adcd50083dde71f31a0e8cf6ebae7d7881390`。
+- Sites 对应源码：`01117b21030273eaaaeab58b7ddea47171fb4a07`。
+- 版本：`appgprj_6af14ade2f2c8191825208668540e338~appgver_eb8094360be08191abff8e04ab3ed3c0`。
+- 部署：`appgdep_6af1a81f8e108191afc62b33d5b8146f`。
+- 本地生产构建和浏览器验证通过；Sites 原生结果确认部署成功并已请求在用户浏览器打开。云端仍为 restricted revision1，网址不在白名单内，未声称已完成云端公网 HTTP 直连复核，也未绕过限制。
+- 本轮仅清理可再下载的原始模型和可重建 npm 缓存，共释放 23.0 MiB。正式模型、字体、图像、音频、依赖、研究、旧稿和 Git 历史保留。
