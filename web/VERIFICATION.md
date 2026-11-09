@@ -19,3 +19,14 @@
 - 浏览器测试等待 React 挂载后再执行首次键盘操作，避免把测试时序问题误判为键盘入口失效。
 
 本环境未提供 Sites 脚手架／发布辅助脚本，采用标准 Vite + React + TypeScript 静态应用。`scripts/prepare-site-source.py` 是适用于当前环境的发布准备工具：从标准输入接收短期凭据，将已提交的 `web/` 树作为 Sites 源码根目录推送，核对远端 SHA，并打包 `dist/` 与托管清单。它不将凭据写入磁盘、进程参数或输出。
+
+## 公开发布
+
+- 地址：https://maestromate-aquarium.chirpyapple14.chatgpt.site
+- 2026-11-09 首次发布，Sites 第 1 版，访问范围为 public；原生部署状态为 `succeeded`。
+- GitHub 对应运行代码提交：`1fcf5ea9c6a35cd584e5432576d35537446517b0`。
+- Sites 根目录源码提交：`a352fdfbba9db301c5b4fd4acf0af5d2d9e5c5d2`，内容对应上述 GitHub 提交的 `web/` 子树。
+- 版本：`appgprj_6af14ade2f2c8191825208668540e338~appgver_fb14f2e991f48191a88c65633a844337`。
+- 部署：`appgdep_6af162f01e508191bb5bdf536ea0394f`。
+- 构建包保存成功，托管清单和静态文件一起发布；本地源码与发布包中的 MP3 SHA-256 相同。
+- 浏览器功能验证针对本地实际录音版本进行；发布成功由原生 Sites 部署状态确认，未把预登记地址当成上线证据。
