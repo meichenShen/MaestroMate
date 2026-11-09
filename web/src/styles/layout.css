@@ -30,20 +30,20 @@
   padding: 10px 0;
 }
 .room-links a[aria-current] {
-  color: var(--mint);
+  color: var(--accent);
 }
 .brand-header .program-link {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 20px;
-  background: #18251f;
+  background: #1a1825;
   border-radius: 30px;
-  color: #c7eedf;
+  color: #d5d2e3;
 }
 .program-link[aria-current] {
-  background: #244034 !important;
-  color: var(--mint) !important;
+  background: #2b273d !important;
+  color: var(--accent) !important;
 }
 .brand-header button {
   display: flex;
@@ -70,7 +70,7 @@
 }
 .page-intro > p:not(.eyebrow) {
   font-size: 19px;
-  color: #bdc7bf;
+  color: #bfbdc7;
   line-height: 1.85;
 }
 .listening-shelves {
@@ -167,7 +167,7 @@
   margin-top: 38px;
 }
 .context-details {
-  background: #121a17;
+  background: #13121a;
   padding: 17px 24px;
   border-radius: 22px;
 }
@@ -226,15 +226,15 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: #17211d;
+  background: #191721;
   font-size: 14px;
 }
 .journey-progress button[aria-current] {
-  color: var(--mint);
+  color: var(--accent);
 }
 .journey-progress button[aria-current] > span {
-  background: var(--mint);
-  color: #09251d;
+  background: var(--accent);
+  color: #14121c;
 }
 .journey-next {
   display: flex;
@@ -280,7 +280,7 @@
   left: 0;
   right: 0;
   z-index: 35;
-  background: #101613;
+  background: #111016;
   border-radius: 24px 24px 0 0;
   padding: 20px var(--gutter);
 }
@@ -332,8 +332,8 @@
   font-size: 9px;
 }
 .play-button {
-  background: var(--mint);
-  color: #09251d;
+  background: var(--accent);
+  color: #14121c;
   border-radius: 50%;
   width: 48px;
   height: 48px;
@@ -341,8 +341,8 @@
   place-items: center;
 }
 .play-button:hover:not(:disabled) {
-  color: #09251d;
-  background: #91e4ca;
+  color: #14121c;
+  background: #b1abca;
 }
 .seek-control {
   display: flex;
@@ -358,7 +358,7 @@
   min-width: 30px;
 }
 .player input[type="range"] {
-  accent-color: var(--mint);
+  accent-color: var(--accent);
   height: 3px;
   cursor: pointer;
 }
@@ -368,7 +368,7 @@
   gap: 12px;
 }
 .player select {
-  background: #101613;
+  background: #111016;
   color: var(--fg);
   border: 0;
   font-size: 15px;
@@ -645,5 +645,154 @@
   }
   .page-intro h1 {
     font-size: 42px;
+  }
+}
+
+.brand-header .program-link {
+  background: #292638;
+  color: #e1deff;
+}
+.program-link[aria-current] {
+  background: #39334c !important;
+  color: var(--accent) !important;
+}
+.player,
+.player select {
+  background: #1a1822;
+}
+.play-button {
+  background: var(--accent);
+  color: #171425;
+}
+.play-button:hover:not(:disabled) {
+  background: #d2ceff;
+  color: #171425;
+}
+.solid-button,
+.pill-button {
+  color: #191522;
+}
+.context-details {
+  background: var(--surface);
+}
+.journey-next {
+  background: var(--surface);
+  padding: 25px 28px;
+  border-radius: 24px;
+  margin-top: 28px;
+  gap: 18px;
+}
+.journey-next .solid-button {
+  min-height: 54px;
+  font-size: 19px;
+  padding: 14px 27px;
+}
+.journey-next > p {
+  font-size: 18px;
+}
+.program-summary {
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100svh - var(--header-height));
+  display: flex;
+  align-items: center;
+  padding-top: 60px;
+  padding-bottom: 80px;
+}
+.completion-copy {
+  max-width: 570px;
+  position: relative;
+  z-index: 1;
+  animation: completion-in 0.8s ease both;
+}
+.completion-copy > p:not(.eyebrow) {
+  font-size: 21px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin: 22px 0 32px;
+  max-width: 420px;
+}
+.completion-secondary {
+  display: block;
+  margin-top: 24px;
+  font-size: 17px;
+  color: var(--muted);
+}
+@keyframes completion-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 950px) {
+  .now-playing {
+    flex-basis: 185px;
+  }
+  .player-inner {
+    gap: 15px;
+  }
+  .transport {
+    gap: 6px;
+  }
+}
+@media (max-width: 720px) {
+  .journey-next {
+    padding: 22px;
+    align-items: stretch;
+  }
+  .journey-next .solid-button {
+    justify-content: center;
+    width: 100%;
+  }
+  .program-summary {
+    min-height: 1000px;
+    align-items: start;
+  }
+  .completion-copy {
+    padding-top: 15px;
+  }
+  .program-summary .theatre-stage {
+    top: 370px;
+  }
+  .player-inner .transport {
+    gap: 4px;
+  }
+  .transport .icon-button {
+    width: 34px;
+  }
+  .now-playing {
+    flex-basis: auto;
+  }
+}
+
+.journey-shortcut {
+  font-size: 16px;
+  min-height: 44px;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+.game-door > .drawn-icon,
+.game-cta {
+  color: var(--play);
+}
+@media (max-width: 720px) {
+  .journey-shortcut {
+    margin-top: 20px;
+  }
+  .now-playing {
+    min-width: 105px;
+  }
+  .player-inner {
+    gap: 10px;
+  }
+  .player-extras {
+    margin-left: auto;
+  }
+  .player-extras select {
+    max-width: 55px;
   }
 }

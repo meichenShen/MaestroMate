@@ -33,7 +33,7 @@ export function useSmoothPage(home = false) {
       if (!media.matches) {
         lenis = new Lenis({
           autoRaf: true,
-          lerp: 0.1,
+          lerp: 0.075,
           smoothWheel: true,
           anchors: false,
           prevent: (node) =>
@@ -47,8 +47,8 @@ export function useSmoothPage(home = false) {
         snap = new Snap(lenis, {
           type: "mandatory",
           debounce: 180,
-          duration: 0.72,
-          easing: (t) => 1 - Math.pow(1 - t, 4),
+          duration: 1.12,
+          easing: (t) => 1 - Math.pow(1 - t, 5),
         });
         const points = () => {
           stops.forEach((remove) => remove());

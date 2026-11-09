@@ -11,14 +11,18 @@
   font-display: swap;
 }
 :root {
-  --bg: #090b0b;
+  --bg: #0b0b10;
   --fg: #fffff3;
-  --muted: #a8b2ad;
-  --accent: #67d5b5;
-  --mint: #67d5b5;
-  --rose: #ee7785;
-  --lilac: #c89ec4;
-  --sky: #84b1ed;
+  --muted: #b5b3c1;
+  --accent: #b9b5ff;
+  --listen: #ffae9d;
+  --chat: #b9b5ff;
+  --play: #f6d881;
+  --rose: #ffae9d;
+  --lilac: #b9b5ff;
+  --sky: #9dccff;
+  --surface: #1b1923;
+  --surface-raised: #272432;
   --line: transparent;
   --font: Onest, Arial, sans-serif;
   --display: Outfit, Arial, sans-serif;

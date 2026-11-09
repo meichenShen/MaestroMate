@@ -35,7 +35,7 @@ export function Conversation({
         <div>
           <p className="eyebrow">Come, have a chat</p>
           <h1 id="conversation-title">Camille Saint-Saëns</h1>
-          <p>An imagined conversation, with prepared replies.</p>
+          <p>An imagined conversation, grounded in a real life.</p>
         </div>
       </div>
       <div className="chat-window">
@@ -56,8 +56,8 @@ export function Conversation({
           <div className="chat-message incoming" data-speaker="camille">
             <span className="speaker-name">Camille</span>
             <p>
-              Hi there! Fancy a little trip underwater? Pick a question below.
-              We can take it one sound at a time.
+              I'm Camille. Come closer — music can begin with a question as
+              easily as a note. What would you like to know?
             </p>
           </div>
           {turns.map((turn) => {
@@ -74,7 +74,7 @@ export function Conversation({
                     <p>{q.answer}</p>
                     {q.clip && <ClipButton clip={q.clip} />}
                     <details className="message-source">
-                      <summary>A little background</summary>
+                      <summary>Behind this reply</summary>
                       {q.source ? (
                         <a href={q.source} target="_blank" rel="noreferrer">
                           {q.sourceLabel} ↗
@@ -104,7 +104,10 @@ export function Conversation({
                 follow.current = true;
                 thread.current?.scrollTo({
                   top: thread.current.scrollHeight,
-                  behavior: "smooth",
+                  behavior: matchMedia("(prefers-reduced-motion: reduce)")
+                    .matches
+                    ? "instant"
+                    : "smooth",
                 });
               }}
             >
@@ -127,7 +130,10 @@ export function Conversation({
               </button>
             ))}
           </div>
-          <p className="chat-note">Tap a question. There's no wrong one.</p>
+          <p className="chat-note">
+            Prepared, fictional replies based on the sources shown — not
+            historical quotations.
+          </p>
         </div>
       </div>
     </section>

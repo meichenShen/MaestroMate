@@ -6,6 +6,7 @@ import { ContextPanel } from "./components/ContextPanel";
 import { Player } from "./components/Player";
 import { Guide } from "./components/Guide";
 import { EntryChoice, type EntryRoute } from "./components/EntryChoice";
+import { TheatreStage } from "./components/TheatreStage";
 import { JourneyProgress } from "./components/JourneyProgress";
 import { Home } from "./features/home/Home";
 import { Programme } from "./features/home/Programme";
@@ -141,17 +142,22 @@ function Site() {
         <GameRoom />
       ) : route.kind === "summary" ? (
         <main id="main" tabIndex={-1} className="program-summary page-room">
-          <p className="eyebrow">Your Aquarium Program</p>
-          <h1>Lovely wandering.</h1>
-          <p>
-            A little time with one lovely piece.
-            <br />
-            There's always another sound to come back for.
-          </p>
-          <a className="solid-button" href="#home">
-            Make yourself at home ↗
-          </a>
-          <a href="#listen">Listen a little more</a>
+          <TheatreStage />
+          <div className="completion-copy">
+            <p className="eyebrow">Your Aquarium Program</p>
+            <h1>Lovely wandering.</h1>
+            <p>
+              A little time with one lovely piece.
+              <br />
+              There's always another sound to come back for.
+            </p>
+            <a className="solid-button" href="#home">
+              Make yourself at home ↗
+            </a>
+            <a href="#listen" className="completion-secondary">
+              Listen a little more ↗
+            </a>
+          </div>
         </main>
       ) : (
         <main
@@ -206,7 +212,6 @@ function Site() {
                 <Detective progress={progress} onChange={setProgress} />
               )}
             </div>
-            <ContextPanel activity={route.activity} />
           </div>
           {route.journey && (
             <div className="journey-next">
@@ -246,6 +251,7 @@ function Site() {
               <a href="#program">Leave this Program</a>
             </div>
           )}
+          <ContextPanel activity={route.activity} />
         </main>
       )}
       {route.kind === "activity" && <Player />}

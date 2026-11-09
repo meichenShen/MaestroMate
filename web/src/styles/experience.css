@@ -7,7 +7,7 @@
   margin: 20px 0 18px;
 }
 .feature-heading > p:not(.eyebrow) {
-  color: #bdc5c0;
+  color: #bebdc5;
   font-size: 18px;
   line-height: 1.7;
 }
@@ -43,14 +43,14 @@
 }
 .scene-topline .micro {
   font-size: 14px;
-  color: #c5d2cb;
+  color: #c7c5d2;
 }
 .scene-topline button {
   font-size: 14px;
   border: 1px solid #ffffff50;
   border-radius: 30px;
   padding: 9px 16px;
-  background: #080a0a88;
+  background: #08080a88;
 }
 .scene-caption {
   position: absolute;
@@ -59,11 +59,11 @@
   z-index: 1;
   max-width: 75%;
   padding: 16px 20px;
-  background: #071113ad;
+  background: #0b0a10ad;
 }
 .scene-caption > .micro {
   font-size: 14px;
-  color: #b2c9c1;
+  color: #b6b2c9;
 }
 .scene-caption h2 {
   font-size: 39px;
@@ -73,7 +73,7 @@
   font-size: 17px;
   margin-top: 8px;
   line-height: 1.6;
-  color: #d3ded5;
+  color: #d5d3de;
 }
 .scene-play {
   position: absolute;
@@ -85,7 +85,7 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #080a0a77;
+  background: #08080a77;
 }
 .chapter-navigation {
   display: grid;
@@ -189,7 +189,7 @@
 .answer-card > p:not(.eyebrow) {
   font-size: 18px;
   line-height: 1.85;
-  color: #d0d5ce;
+  color: #cfced5;
   max-width: 660px;
 }
 .answer-source {
@@ -246,7 +246,7 @@
 .case-prompt {
   font-size: 20px;
   line-height: 1.8;
-  color: #cbd2ca;
+  color: #cbcad2;
   margin-top: 27px;
 }
 .clue-clips {
@@ -291,7 +291,7 @@
   background: #ffffff08;
 }
 .answer-option.is-correct {
-  background: #b7cfc514;
+  background: #bbb7cf14;
 }
 .answer-option > span:last-child:not(:nth-child(3)) {
   margin-left: auto;
@@ -306,7 +306,7 @@
 .answer-feedback p {
   font-size: 18px;
   line-height: 1.8;
-  color: #bdc7bd;
+  color: #bfbdc7;
   margin: 18px 0;
 }
 .case-pagination {
@@ -497,5 +497,197 @@
     height: calc(100svh - 500px);
     min-height: 340px;
     max-height: 650px;
+  }
+}
+
+/* A listening surface with quieter controls and a clear onward entrance. */
+.listening-scene {
+  background: radial-gradient(
+    ellipse at 55% 18%,
+    #23283d 0%,
+    #10121e 60%,
+    #0c0d15 100%
+  );
+  border-radius: 26px;
+}
+.scene-caption {
+  background: transparent;
+  padding: 0;
+  max-width: 65%;
+}
+.scene-caption > .micro,
+.scene-caption p {
+  font-size: 15px;
+}
+.scene-caption h2 {
+  font-size: 32px;
+  margin-top: 7px;
+}
+.scene-topline button {
+  background: #282432;
+  border: 0;
+  min-height: 42px;
+  color: var(--accent);
+}
+.scene-play {
+  background: var(--accent);
+  color: #191522;
+  border: 0;
+  width: 60px;
+  height: 60px;
+}
+.theater-footer .solid-button {
+  font-size: 18px;
+  padding: 15px 25px;
+}
+.detective-feature {
+  max-width: 1250px;
+}
+.detective-board {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 0;
+  align-items: start;
+  margin-top: 38px;
+}
+.case-story {
+  padding: 35px 48px 45px 35px;
+  background: #1d1b29;
+  border-radius: 28px;
+  min-height: 430px;
+  transform: rotate(-1deg);
+  position: relative;
+}
+.case-story .case-header {
+  padding: 0;
+  border: 0;
+  gap: 24px;
+}
+.case-story .case-number {
+  color: var(--play);
+  font-size: 95px;
+}
+.case-story .case-prompt {
+  font-size: 21px;
+  color: #d1cedc;
+}
+.case-answer {
+  background: #25212d;
+  border-radius: 28px;
+  padding: 32px;
+  margin: 40px 0 0 -12px;
+  position: relative;
+  box-shadow: 0 15px 50px #0003;
+}
+.case-answer fieldset {
+  margin: 0 0 24px;
+}
+.answer-option {
+  border: 0 !important;
+  border-radius: 15px;
+  margin: 8px 0;
+  padding: 17px 15px;
+  background: #302b3a;
+}
+.answer-option.is-selected {
+  background: #40374f;
+}
+.answer-option.is-correct {
+  background: #4b4052;
+}
+.answer-feedback {
+  border: 0;
+  padding: 0;
+}
+.answer-feedback strong {
+  font-size: 27px;
+  color: var(--play);
+}
+.answer-feedback p {
+  font-size: 17px;
+  color: #d3cddd;
+}
+.game-completion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 38px;
+  animation: completion-in 0.7s ease both;
+}
+.game-completion h2 {
+  font-size: 33px;
+  margin: 8px 0 12px;
+}
+.game-completion p {
+  color: var(--muted);
+}
+.encore {
+  color: var(--play);
+  width: 150px;
+  flex-shrink: 0;
+}
+.encore svg {
+  width: 100%;
+}
+.encore-rays {
+  transform-origin: 90px 75px;
+  animation: encore-rays 0.9s ease both;
+}
+.encore-note {
+  animation: encore-note 0.8s ease both;
+  transform-origin: 90px 80px;
+}
+@keyframes encore-rays {
+  from {
+    opacity: 0;
+    transform: scale(0.4) rotate(-16deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes encore-note {
+  from {
+    transform: translateY(14px) rotate(-12deg);
+  }
+  to {
+    transform: none;
+  }
+}
+@media (min-width: 721px) {
+  .listening-scene {
+    height: clamp(390px, 49svh, 620px);
+    min-height: 390px;
+  }
+}
+@media (max-width: 850px) {
+  .detective-board {
+    grid-template-columns: 1fr;
+  }
+  .case-story {
+    transform: none;
+    min-height: 0;
+    padding: 28px;
+  }
+  .case-answer {
+    margin: 18px 0 0;
+    padding: 25px;
+  }
+  .case-story .case-number {
+    font-size: 72px;
+  }
+  .game-completion {
+    gap: 10px;
+  }
+  .encore {
+    width: 95px;
+  }
+  .game-completion h2 {
+    font-size: 27px;
+  }
+  .game-completion p {
+    font-size: 15px;
   }
 }

@@ -82,7 +82,7 @@ try {
   for (const prompt of [
     "Why an aquarium?",
     "What should I listen for?",
-    "Who was Saint-Saëns?",
+    "How did you become a musician?",
   ]) {
     await p.getByRole("button", { name: prompt, exact: true }).click();
     await p.waitForFunction(() => !document.querySelector(".typing-indicator"));

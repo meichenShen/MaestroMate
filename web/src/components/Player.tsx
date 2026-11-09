@@ -2,6 +2,7 @@ import {
   Play,
   Pause,
   RotateCcw,
+  RotateCw,
   Volume2,
   VolumeX,
   Disc3,
@@ -53,6 +54,14 @@ export function Player() {
             ) : (
               <Play size={20} fill="currentColor" />
             )}
+          </button>
+          <button
+            className="icon-button replay-button"
+            aria-label="Forward ten seconds"
+            onClick={() => audio.seek(audio.time + 10)}
+          >
+            <RotateCw size={18} />
+            <span>10</span>
           </button>
         </div>
         <div className="seek-control">

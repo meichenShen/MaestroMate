@@ -2,7 +2,7 @@ MaestroMate — design, code and media credits
 
 Original authored 3D stage
 MaestroMate's theatre is original texture-free Three.js geometry: a grand piano,
-acoustic shells, coloured stage, bench and curved steps. No generated scene,
+acoustic shells, coloured stage, cello, horn, score stand and curved steps. No generated scene,
 photograph, imported theatre model or pre-rendered illustration is used.
 
 Real-time 3D fish
@@ -27,7 +27,21 @@ no food models or branded lettering are distributed. License: /credits/smooothy-
 Vivus (MIT): https://github.com/maxwellito/vivus
 Reviewed for SVG path-drawing technique; the library is not bundled.
 Palette reference: LOL Colors, https://www.webdesignrankings.com/resources/lolcolors/
-#67D5B5, #EE7785, #C89EC4, #84B1ED on MaestroMate's black background.
+Adapted light periwinkle #B9B5FF, peach #FFAE9D, yellow #F6D881 and blue #9DCCFF.
+Codrops MagneticButtons (MIT), interaction reference:
+https://github.com/codrops/MagneticButtons
+Only artwork responds to pointer position; our link targets stay still. No code,
+GSAP dependency or images from that demonstration are bundled.
+Original seabed geometry, transparent water-light layers and audio-time motion
+use Three.js; fog reference: https://threejs.org/docs/#FogExp2
+
+Composer dialogue
+Fictional first-person adaptations, never historical quotations or live AI.
+Biographical facts are paraphrased from Paris Opera and the BnF exhibition:
+https://www.operadeparis.fr/en/artists/camille-saint-saens
+https://www.bnf.fr/sites/default/files/2021-06/DP_Saint_Saens.pdf
+Listening invitations and visual interpretation are MaestroMate writing.
+
 Water-light research: https://github.com/ScottieFox/caustic-volume (MIT).
 Technical reference only; its tank simulation is not bundled or run here.
 

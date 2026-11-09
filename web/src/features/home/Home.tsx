@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { DrawnIcon } from "../../components/DrawnIcon";
+import { RoomPortal } from "../../components/RoomPortal";
 import { TheatreStage } from "../../components/TheatreStage";
 const scenes = [
   { id: "home", name: "Welcome" },
@@ -51,36 +52,30 @@ export function Home({ motion }: { motion: boolean }) {
           <h2>Follow those curious ears.</h2>
         </div>
         <div className="portal-field">
-          <a
-            className="portal-node listen-node"
+          <RoomPortal
+            kind="listen"
+            title="Listen"
+            hint="Choose a piece and step into its world."
             href="#listen"
-            aria-label="Enter the listening room"
-            data-enter="left"
-          >
-            <DrawnIcon kind="listen" />
-            <strong>Listen</strong>
-            <span>Get a little lost in a piece.</span>
-          </a>
-          <a
-            className="portal-node chat-node"
+            label="Enter the listening room"
+            direction="left"
+          />
+          <RoomPortal
+            kind="chat"
+            title="Chat"
+            hint="Pull up a chair with the person behind the music."
             href="#chat"
-            aria-label="Enter composer chat"
-            data-enter="right"
-          >
-            <DrawnIcon kind="chat" />
-            <strong>Chat</strong>
-            <span>A good question opens a door.</span>
-          </a>
-          <a
-            className="portal-node play-node"
+            label="Enter composer chat"
+            direction="right"
+          />
+          <RoomPortal
+            kind="play"
+            title="Play"
+            hint="A sound, a hunch, a small discovery. Follow your ears."
             href="#play"
-            aria-label="Enter music games"
-            data-enter="bottom"
-          >
-            <DrawnIcon kind="play" />
-            <strong>Play</strong>
-            <span>Let's see what your ears can find.</span>
-          </a>
+            label="Enter music games"
+            direction="bottom"
+          />
         </div>
       </section>
       <section id="journey" className="snap-scene program-scene">

@@ -63,13 +63,18 @@ try {
   await p
     .getByRole("heading", { name: "Familiar waters", exact: true, level: 2 })
     .waitFor();
-  await p.getByRole("button", { name: "Motion off", exact: true }).click();
+  await p.getByRole("switch", { name: "Scene motion", exact: true }).click();
   await nav("Chat").click();
   await nav("Listen").click();
   await p
     .getByRole("button", { name: "Listen to Aquarium", exact: true })
     .click();
-  await p.getByRole("button", { name: "Motion on", exact: true }).waitFor();
+  assert.equal(
+    await p
+      .getByRole("switch", { name: "Scene motion", exact: true })
+      .getAttribute("aria-checked"),
+    "false",
+  );
   await p.locator(".chapter-navigation button").nth(3).click();
   assert.ok(Math.abs((await state()).time - chapters[3].start) < 0.1);
   await p

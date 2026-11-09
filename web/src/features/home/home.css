@@ -37,7 +37,7 @@ html.home-route {
 .welcome-copy > p:not(.eyebrow) {
   font-size: 19px;
   line-height: 1.85;
-  color: #bdc7c1;
+  color: #bfbdc7;
 }
 .welcome-copy .solid-button {
   margin-top: 33px;
@@ -67,7 +67,7 @@ html.home-route {
   gap: 10px;
   min-height: 24px;
   min-width: 35px;
-  color: #788c82;
+  color: #7b788c;
 }
 .scene-navigation span {
   font-size: 10px;
@@ -81,7 +81,7 @@ html.home-route {
   background: currentColor;
 }
 .scene-navigation a[aria-current] {
-  color: var(--mint);
+  color: var(--accent);
 }
 .scene-navigation a[aria-current] span,
 .scene-navigation a:hover span {
@@ -136,7 +136,7 @@ html.home-route {
 .listen-node {
   left: 8%;
   top: 0;
-  color: var(--mint);
+  color: var(--accent);
 }
 .chat-node {
   right: 11%;
@@ -157,7 +157,7 @@ html.home-route {
 }
 .floating-book {
   justify-self: center;
-  color: var(--mint);
+  color: var(--accent);
 }
 .floating-book .drawn-icon {
   width: 300px;
@@ -194,7 +194,7 @@ html.home-route {
 }
 .about-scene > div > p:not(.eyebrow) {
   font-size: 20px;
-  color: #bbc7bd;
+  color: #bdbbc7;
   max-width: 800px;
   line-height: 1.85;
 }
@@ -210,7 +210,7 @@ html.home-route {
   align-items: center;
   gap: 12px;
   font-size: 17px;
-  color: var(--mint);
+  color: var(--accent);
 }
 .about-actions > a:last-child {
   color: var(--muted);
@@ -289,7 +289,7 @@ html.home-route {
   border-radius: 28px;
   overflow: hidden;
   isolation: isolate;
-  background: #131c18;
+  background: #15131c;
 }
 .programme-cover > img {
   position: absolute;
@@ -346,7 +346,7 @@ html.home-route {
   position: relative;
   overflow: hidden;
   border-radius: 22px;
-  background: #111613;
+  background: #121116;
   display: grid;
   place-items: center;
 }
@@ -364,7 +364,7 @@ html.home-route {
   gap: 23px;
   text-align: left;
   font-size: 18px;
-  color: var(--mint);
+  color: var(--accent);
   flex-shrink: 0;
 }
 .round-link small {
@@ -645,4 +645,174 @@ html.home-route {
   .scene-visible .play-node {
     transition-delay: 0s;
   }
+}
+
+/* The entry targets stay still; only the drawing responds to the pointer. */
+.portal-node {
+  max-width: 340px;
+  min-width: 285px;
+  min-height: 360px;
+}
+.portal-art {
+  display: block;
+  transform: translate(var(--px, 0px), var(--py, 0px)) rotate(var(--tilt, 0deg));
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.portal-node .drawn-icon {
+  width: 290px;
+  height: 290px;
+}
+.portal-node:hover .drawn-icon {
+  transform: none;
+}
+.portal-node strong {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 48px;
+}
+.portal-arrow {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: currentColor;
+}
+.portal-arrow svg {
+  color: var(--bg);
+}
+.portal-node .portal-hint {
+  max-width: 275px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.7;
+}
+.listen-node {
+  left: 5%;
+  top: -3%;
+  color: var(--listen);
+}
+.chat-node {
+  right: 7%;
+  top: 7%;
+  color: var(--chat);
+}
+.play-node {
+  left: 40%;
+  bottom: -4%;
+  color: var(--play);
+}
+.portal-node strong {
+  color: inherit;
+}
+.program-scene {
+  height: auto;
+  min-height: max(640px, calc(100svh - var(--header-height)));
+}
+@media (hover: hover) and (pointer: fine) {
+  .portal-node .portal-hint {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.3s,
+      transform 0.4s;
+  }
+  .portal-node:hover .portal-hint,
+  .portal-node:focus-visible .portal-hint {
+    opacity: 1;
+    transform: none;
+  }
+  .portal-node:focus-visible {
+    outline-offset: 14px;
+    border-radius: 22px;
+  }
+}
+@media (min-width: 721px) and (max-height: 850px) {
+  .portal-node .drawn-icon {
+    width: 220px;
+    height: 220px;
+  }
+  .portal-node {
+    min-height: 295px;
+  }
+  .play-node {
+    left: 39%;
+    bottom: -5%;
+  }
+  .portal-node strong {
+    font-size: 40px;
+  }
+  .portal-node .portal-hint {
+    font-size: 15px;
+    max-width: 235px;
+  }
+}
+@media (max-width: 1100px) and (min-width: 721px) {
+  .portal-node {
+    min-width: 225px;
+    max-width: 250px;
+  }
+  .portal-node .drawn-icon {
+    width: 235px;
+    height: 235px;
+  }
+  .listen-node {
+    left: 0;
+  }
+  .chat-node {
+    right: 0;
+  }
+  .play-node {
+    left: 37%;
+  }
+}
+@media (max-width: 720px) {
+  .portal-node {
+    min-width: 0;
+    max-width: 155px;
+    min-height: 0;
+  }
+  .portal-node .drawn-icon {
+    width: 110px;
+    height: 110px;
+  }
+  .portal-node strong {
+    font-size: 29px;
+    gap: 9px;
+  }
+  .portal-arrow {
+    width: 29px;
+    height: 29px;
+  }
+  .portal-arrow svg {
+    width: 18px;
+    height: 18px;
+  }
+  .portal-node .portal-hint {
+    font-size: 14px;
+    max-width: 155px;
+  }
+  .listen-node {
+    left: 0;
+    top: 0;
+  }
+  .chat-node {
+    right: 0;
+    top: 31%;
+  }
+  .play-node {
+    left: 7%;
+    bottom: 0;
+  }
+  .program-scene {
+    min-height: calc(100svh - var(--header-height));
+    padding-top: 35px;
+    padding-bottom: 45px;
+  }
+}
+
+.portal-node > span.portal-art {
+  color: inherit;
+  margin-top: 0;
 }

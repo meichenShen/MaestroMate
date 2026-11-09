@@ -6,10 +6,10 @@ export interface TheatreController {
 }
 
 const PALETTE = {
-  mint: "#67D5B5",
-  coral: "#EE7785",
-  lilac: "#C89EC4",
-  blue: "#84B1ED",
+  mint: "#F6D881",
+  coral: "#FFAE9D",
+  lilac: "#B9B5FF",
+  blue: "#9DCCFF",
 } as const;
 
 // The thick, asymmetric proscenium and swept acoustic leaves are drawn as solid
@@ -54,6 +54,7 @@ export function createTheatre(
     easedY = 0;
   let measuredWidth = 0,
     measuredHeight = 0;
+  const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const canvas = renderer.domElement;
   canvas.setAttribute("aria-hidden", "true");
@@ -489,6 +490,181 @@ export function createTheatre(
     }),
   );
 
+  // Original chamber ensemble, keeping the piano as the visual centre.
+  const tube = (
+    points: number[][],
+    radius: number,
+    surface: THREE.Material,
+    parent: THREE.Object3D,
+  ) =>
+    mesh(
+      new THREE.TubeGeometry(
+        new THREE.CatmullRomCurve3(
+          points.map(
+            (p) => new THREE.Vector3(...(p as [number, number, number])),
+          ),
+        ),
+        28,
+        radius,
+        6,
+        false,
+      ),
+      surface,
+      parent,
+    );
+  const cello = new THREE.Group();
+  cello.position.set(1.75, 0.76, -0.58);
+  cello.rotation.set(0, -0.2, -0.08);
+  root.add(cello);
+  const celloFinish = material("#d89987", 0.62);
+  const outline = new THREE.Shape();
+  outline.moveTo(0, 0);
+  outline.bezierCurveTo(-0.44, 0, -0.53, 0.4, -0.29, 0.62);
+  outline.bezierCurveTo(-0.12, 0.76, -0.25, 0.84, -0.29, 0.99);
+  outline.bezierCurveTo(-0.37, 1.3, -0.18, 1.43, 0, 1.43);
+  outline.bezierCurveTo(0.18, 1.43, 0.37, 1.3, 0.29, 0.99);
+  outline.bezierCurveTo(0.25, 0.84, 0.12, 0.76, 0.29, 0.62);
+  outline.bezierCurveTo(0.53, 0.4, 0.44, 0, 0, 0);
+  mesh(
+    new THREE.ExtrudeGeometry(outline, {
+      depth: 0.16,
+      bevelEnabled: true,
+      bevelSize: 0.035,
+      bevelThickness: 0.04,
+      bevelSegments: 3,
+      curveSegments: 28,
+    }),
+    celloFinish,
+    cello,
+  );
+  const neck = box(0.085, 0.85, 0.085, graphite, cello);
+  neck.position.set(0, 1.72, 0.12);
+  const scroll = mesh(
+    new THREE.TorusGeometry(0.065, 0.022, 7, 20),
+    celloFinish,
+    cello,
+  );
+  scroll.position.set(0, 2.16, 0.13);
+  const bridge = box(0.18, 0.1, 0.04, warmWhite, cello);
+  bridge.position.set(0, 0.65, 0.22);
+  const tailpiece = box(0.095, 0.28, 0.045, graphite, cello);
+  tailpiece.position.set(0, 0.28, 0.21);
+  tailpiece.rotation.z = 0.02;
+  for (let i = 0; i < 4; i++)
+    tube(
+      [
+        [(i - 1.5) * 0.017, 0.15, 0.25],
+        [(i - 1.5) * 0.017, 0.65, 0.25],
+        [(i - 1.5) * 0.017, 2.12, 0.19],
+      ],
+      0.0035,
+      metal,
+      cello,
+    );
+  for (const side of [-1, 1]) {
+    tube(
+      [
+        [side * 0.19, 0.52, 0.23],
+        [side * 0.15, 0.67, 0.23],
+        [side * 0.2, 0.8, 0.23],
+        [side * 0.16, 0.92, 0.23],
+      ],
+      0.012,
+      graphite,
+      cello,
+    );
+    for (let i = 0; i < 2; i++) {
+      const peg = box(0.12, 0.035, 0.035, graphite, cello);
+      peg.position.set(side * 0.06, 2.01 + i * 0.1, 0.12);
+    }
+  }
+  tube(
+    [
+      [0.5, 0.12, 0.2],
+      [0.48, 0.95, 0.18],
+      [0.46, 1.95, 0.17],
+    ],
+    0.012,
+    soundboard,
+    cello,
+  );
+  tube(
+    [
+      [0, -0.14, 0.08],
+      [0, 0, 0.08],
+    ],
+    0.015,
+    metal,
+    cello,
+  );
+  const stand = new THREE.Group();
+  stand.position.set(-2.2, 0.63, -0.2);
+  stand.rotation.y = 0.25;
+  root.add(stand);
+  tube(
+    [
+      [0, 0, 0],
+      [0, 1.45, 0],
+    ],
+    0.023,
+    graphite,
+    stand,
+  );
+  for (let i = 0; i < 3; i++) {
+    const angle = (i * Math.PI * 2) / 3;
+    tube(
+      [
+        [0, 0.2, 0],
+        [Math.cos(angle) * 0.28, 0, Math.sin(angle) * 0.28],
+      ],
+      0.02,
+      graphite,
+      stand,
+    );
+  }
+  const standDesk = box(0.64, 0.46, 0.035, graphite, stand);
+  standDesk.position.set(0, 1.55, 0.06);
+  standDesk.rotation.x = -0.15;
+  const score = box(0.49, 0.34, 0.012, warmWhite, stand);
+  score.position.set(0, 1.57, 0.09);
+  score.rotation.x = -0.15;
+  const brass = material("#ddc584", 0.48, 0.38),
+    horn = new THREE.Group();
+  horn.position.set(2.05, 1.27, 0.25);
+  horn.rotation.y = -0.35;
+  root.add(horn);
+  mesh(new THREE.TorusGeometry(0.24, 0.031, 9, 44), brass, horn);
+  tube(
+    [
+      [-0.22, 0, 0],
+      [-0.3, 0.24, 0],
+      [-0.12, 0.34, 0],
+      [-0.08, 0.26, 0],
+    ],
+    0.025,
+    brass,
+    horn,
+  );
+  const bell = mesh(
+    new THREE.LatheGeometry(
+      [
+        new THREE.Vector2(0.028, 0),
+        new THREE.Vector2(0.035, 0.12),
+        new THREE.Vector2(0.07, 0.22),
+        new THREE.Vector2(0.18, 0.3),
+      ],
+      28,
+    ),
+    brass,
+    horn,
+  );
+  bell.rotation.z = -Math.PI / 2;
+  bell.position.set(0.15, -0.04, 0);
+  for (let i = 0; i < 3; i++) {
+    const valve = box(0.025, 0.13, 0.04, brass, horn);
+    valve.position.set((i - 1) * 0.07, 0.1, 0.04);
+  }
+
   scene.add(new THREE.HemisphereLight("#F1ECE8", "#24242B", 1.4));
   const key = new THREE.DirectionalLight("#FFF2E4", 3.2);
   key.position.set(-3, 9, 7);
@@ -533,9 +709,9 @@ export function createTheatre(
     easedX += (pointerX - easedX) * ease;
     easedY += (pointerY - easedY) * ease;
     root.rotation.y = animated()
-      ? easedX * 0.055 + Math.sin(elapsed * 0.22) * 0.008
+      ? easedX * 0.42 + Math.sin(elapsed * 0.22) * 0.008
       : 0;
-    root.rotation.x = animated() ? -easedY * 0.023 : 0;
+    root.rotation.x = animated() ? -easedY * 0.16 : 0;
     root.position.y = animated() ? Math.sin(elapsed * 0.43) * 0.018 : 0;
     // Reuse the soft shadow atlas between perceptible changes in the diorama.
     if (Math.abs(root.rotation.y - shadowYaw) > 0.009) {
@@ -582,7 +758,7 @@ export function createTheatre(
     const narrow = aspect < 1.05;
     const viewHeight = narrow
       ? Math.max(8, 8.2 / aspect)
-      : Math.max(7.5, 13.5 / aspect);
+      : Math.max(7.5, 12.9 / aspect);
     const viewWidth = viewHeight * aspect;
     const centerX = narrow ? 0.5 : 0.73;
     const centerY = narrow ? 0.72 : 0.52;
@@ -598,7 +774,7 @@ export function createTheatre(
   };
   const pointerTarget = host.closest(".theatre-lobby") || host;
   const pointer = (event: Event) => {
-    if (!animated()) return;
+    if (!animated() || !finePointer.matches) return;
     const e = event as PointerEvent,
       rect = host.getBoundingClientRect();
     pointerX = THREE.MathUtils.clamp(

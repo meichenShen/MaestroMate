@@ -1,4 +1,5 @@
 import { detectiveQuestions } from "../../content/aquarium";
+import { Encore } from "../../components/Encore";
 import { ClipButton } from "../../components/ClipButton";
 export interface DetectiveProgress {
   index: number;
@@ -28,79 +29,99 @@ export function Detective({
         <h1 id="detective-title">Follow the clues.</h1>
         <p>Small details. New discoveries.</p>
       </div>
-      <div className="case-header">
-        <span className="case-number">0{progress.index + 1}</span>
-        <div>
-          <span className="micro">
-            Sound case · {progress.index + 1} of {detectiveQuestions.length}
-          </span>
-          <h2>{question.title}</h2>
+      <div className="detective-board">
+        <div
+          className="case-story"
+          role="group"
+          aria-label="Listen for the clue"
+        >
+          <div className="case-header">
+            <span className="case-number">0{progress.index + 1}</span>
+            <div>
+              <span className="micro">
+                Sound case · {progress.index + 1} of {detectiveQuestions.length}
+              </span>
+              <h2>{question.title}</h2>
+            </div>
+          </div>
+          <p className="case-prompt">{question.prompt}</p>
+          <div className="clue-clips">
+            {question.clips.map((clip) => (
+              <ClipButton key={clip.label} clip={clip} />
+            ))}
+          </div>
         </div>
-      </div>
-      <p className="case-prompt">{question.prompt}</p>
-      <div className="clue-clips">
-        {question.clips.map((clip) => (
-          <ClipButton key={clip.label} clip={clip} />
-        ))}
-      </div>
-      <fieldset>
-        <legend>What do you hear?</legend>
-        {question.options.map((option, index) => (
-          <label
-            className={`answer-option ${selected === index ? "is-selected" : ""} ${revealed && index === question.correct ? "is-correct" : ""}`}
-            key={option}
-          >
-            <input
-              type="radio"
-              name={question.id}
-              checked={selected === index}
-              disabled={revealed}
-              onChange={() =>
+        <div className="case-answer">
+          <fieldset>
+            <legend>What do you hear?</legend>
+            {question.options.map((option, index) => (
+              <label
+                className={`answer-option ${selected === index ? "is-selected" : ""} ${revealed && index === question.correct ? "is-correct" : ""}`}
+                key={option}
+              >
+                <input
+                  type="radio"
+                  name={question.id}
+                  checked={selected === index}
+                  disabled={revealed}
+                  onChange={() =>
+                    onChange({
+                      ...progress,
+                      answers: { ...progress.answers, [question.id]: index },
+                    })
+                  }
+                />
+                <span className="micro">{String.fromCharCode(65 + index)}</span>
+                <span>{option}</span>
+                {revealed && index === question.correct && <span>✓</span>}
+              </label>
+            ))}
+          </fieldset>
+          {!revealed ? (
+            <button
+              className="pill-button"
+              aria-label="Reveal the clue"
+              disabled={selected === undefined}
+              onClick={() =>
                 onChange({
                   ...progress,
-                  answers: { ...progress.answers, [question.id]: index },
+                  revealed: { ...progress.revealed, [question.id]: true },
                 })
               }
-            />
-            <span className="micro">{String.fromCharCode(65 + index)}</span>
-            <span>{option}</span>
-            {revealed && index === question.correct && <span>✓</span>}
-          </label>
-        ))}
-      </fieldset>
-      {!revealed ? (
-        <button
-          className="pill-button"
-          aria-label="Reveal the clue"
-          disabled={selected === undefined}
-          onClick={() =>
-            onChange({
-              ...progress,
-              revealed: { ...progress.revealed, [question.id]: true },
-            })
-          }
-        >
-          Reveal the clue <span>↗</span>
-        </button>
-      ) : (
-        <div className="answer-feedback" role="status">
-          <strong>
-            {correct ? "You found it." : "Try a different angle."}
-          </strong>
-          <p>{question.explanation.replace(/^You found it\.\s*/, "")}</p>
-          <button
-            className="text-button"
-            aria-label="Try again"
-            onClick={() =>
-              onChange({
-                ...progress,
-                answers: { ...progress.answers, [question.id]: undefined },
-                revealed: { ...progress.revealed, [question.id]: false },
-              })
-            }
-          >
-            Try again ↗
-          </button>
+            >
+              Reveal the clue <span>↗</span>
+            </button>
+          ) : (
+            <div className="answer-feedback" role="status">
+              <strong>
+                {correct ? "You found it." : "Try a different angle."}
+              </strong>
+              <p>{question.explanation.replace(/^You found it\.\s*/, "")}</p>
+              <button
+                className="text-button"
+                aria-label="Try again"
+                onClick={() =>
+                  onChange({
+                    ...progress,
+                    answers: { ...progress.answers, [question.id]: undefined },
+                    revealed: { ...progress.revealed, [question.id]: false },
+                  })
+                }
+              >
+                Try again ↗
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+      {detectiveQuestions.every((q) => progress.revealed[q.id]) && (
+        <div className="game-completion">
+          <Encore />
+          <div>
+            <p className="eyebrow">Two clues, a little closer</p>
+            <h2>You noticed something new.</h2>
+            <p>Carry that curiosity into your next listen.</p>
+          </div>
         </div>
       )}
       <div className="case-pagination">

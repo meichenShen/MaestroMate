@@ -17,7 +17,7 @@ try {
     () =>
       document.querySelector(".aquarium-art")?.dataset.renderStatus === "ready",
   );
-  await page.getByRole("button", { name: "Motion off", exact: true }).click();
+  await page.getByRole("switch", { name: "Scene motion", exact: true }).click();
   await page.getByRole("button", { name: "Play music", exact: true }).click();
   await page.waitForFunction(() => !document.querySelector("audio").paused);
   await page.waitForTimeout(200);
@@ -30,7 +30,7 @@ try {
     before,
     "Motion off freezes rendering while audio continues",
   );
-  await page.getByRole("button", { name: "Motion on", exact: true }).click();
+  await page.getByRole("switch", { name: "Scene motion", exact: true }).click();
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.waitForTimeout(180);
   const reduced = await page

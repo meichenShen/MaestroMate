@@ -38,6 +38,23 @@ export function JourneyProgress({
           </button>
         ))}
       </div>
+      <a
+        className="solid-button journey-shortcut"
+        href={
+          active === "theater"
+            ? activityHash("conversation", true)
+            : active === "conversation"
+              ? activityHash("detective", true)
+              : "#program/aquarium/done"
+        }
+      >
+        {active === "theater"
+          ? "Next: Chat"
+          : active === "conversation"
+            ? "Next: Play"
+            : "Finish your visit"}{" "}
+        ↗
+      </a>
     </nav>
   );
 }

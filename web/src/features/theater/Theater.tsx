@@ -19,6 +19,11 @@ export function Theater({
         <span className="micro">Listen & imagine</span>
         <h1 id="theater-title">Aquarium</h1>
         <p>Let the music take its own shape.</p>
+        {onDiscover && (
+          <button className="solid-button" onClick={onDiscover}>
+            Meet Camille ↗
+          </button>
+        )}
       </div>
       <div className={`listening-scene phase-${audio.chapter.id}`}>
         <div className="scene-topline">
@@ -26,10 +31,12 @@ export function Theater({
             {audio.playing ? "Now listening" : "A small world, waiting"}
           </span>
           <button
-            aria-pressed={!motion}
+            role="switch"
+            aria-label="Scene motion"
+            aria-checked={motion}
             onClick={() => onMotionChange(!motion)}
           >
-            {motion ? "Motion off" : "Motion on"}
+            {motion ? "Motion on" : "Motion off"}
           </button>
         </div>
         <AquariumView
@@ -69,11 +76,6 @@ export function Theater({
       </nav>
       <div className="theater-footer">
         <p>An imagined scene. A real recording. Your own way in.</p>
-        {onDiscover && (
-          <button className="text-button" onClick={onDiscover}>
-            Fancy a chat? ↗
-          </button>
-        )}
       </div>
     </section>
   );

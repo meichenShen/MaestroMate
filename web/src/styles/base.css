@@ -76,21 +76,21 @@ a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 summary:focus-visible {
-  outline: 2px solid var(--mint);
+  outline: 2px solid var(--accent);
   outline-offset: 6px;
 }
 ::selection {
-  background: var(--mint);
-  color: #09231d;
+  background: var(--accent);
+  color: #13111b;
 }
 a {
   text-underline-offset: 6px;
 }
 a:hover {
-  color: var(--mint);
+  color: var(--accent);
 }
 button:hover:not(:disabled) {
-  color: var(--mint);
+  color: var(--accent);
 }
 .micro,
 .eyebrow {
@@ -128,16 +128,16 @@ button:hover:not(:disabled) {
   justify-content: center;
   gap: 24px;
   min-height: 52px;
-  background: var(--mint);
-  color: #09231d;
+  background: var(--accent);
+  color: #13111b;
   border-radius: 40px;
   padding: 15px 25px;
   font-size: 17px;
 }
 .solid-button:hover,
 .pill-button:hover {
-  color: #09231d !important;
-  background: #8ce3c8;
+  color: #13111b !important;
+  background: #ada8c7;
 }
 .text-button {
   display: inline-flex;
@@ -167,7 +167,7 @@ button:hover:not(:disabled) {
 .guide,
 .entry-dialog {
   position: fixed;
-  background: #131817;
+  background: #141318;
   color: var(--fg);
   border: 0;
   border-radius: 30px;
@@ -196,7 +196,7 @@ button:hover:not(:disabled) {
   margin: 30px 0 22px;
 }
 .guide > p:not(.micro) {
-  color: #c6cec8;
+  color: #c7c6ce;
   font-size: 18px;
   line-height: 1.85;
 }
@@ -240,7 +240,7 @@ button:hover:not(:disabled) {
 .entry-primary > .drawn-icon {
   width: 170px;
   height: 170px;
-  color: var(--mint);
+  color: var(--accent);
   margin-bottom: 25px;
   transition: transform 0.5s;
 }
@@ -314,7 +314,7 @@ button:hover:not(:disabled) {
   left: 20px;
   bottom: 17px;
   font-size: 14px;
-  color: #c4d4c9;
+  color: #c7c4d4;
 }
 @media (max-width: 720px) {
   .guide {

@@ -88,42 +88,62 @@ export const chapters: Chapter[] = [
     hint: "Notice how the music comes to rest, and listen to the silence that follows.",
   },
 ];
+// Fictional first-person adaptations, not authentic quotations. Historical
+// facts are paraphrased from the linked institutions; listening advice is ours.
 export const questions = [
   {
     id: "aquarium",
     prompt: "Why an aquarium?",
     answer:
-      "Aquarium is the seventh movement of The Carnival of the Animals. Its rippling piano patterns and longer melodic lines offer a starting point for imagining water and movement. There is no single picture you need to see.",
-    sourceLabel: "Orchestra programme notes",
-    source:
-      "https://www.vancouversymphony.ca/site-content/uploads/2025/06/Lang-Lang-Program-Notes-for-VSO-Saint-Saens.pdf",
+      "I placed Aquarium seventh in my Carnival of the Animals. Listen to the piano's rippling figures beneath that long melody. You might hear water, glass, or something entirely your own. Shall we try the opening together?",
+    sourceLabel:
+      "BnF: Saint-Saëns, un esprit libre (p.15); listening interpretation by MaestroMate",
+    source: "https://www.bnf.fr/sites/default/files/2021-06/DP_Saint_Saens.pdf",
     clip: { start: 3, end: 18, label: "Listen to the opening" },
   },
   {
     id: "layers",
     prompt: "What should I listen for?",
     answer:
-      "Try the same passage twice. First, follow the fast, flowing notes. Then shift your attention to the more spacious melody. The recording stays the same; what you notice can change.",
-    sourceLabel: "A MaestroMate listening prompt",
+      "Let me suggest a small experiment. Follow the quick notes once, then return and give your attention to the longer melody. I can offer the notes; the discovery is yours. What changes when you listen again?",
+    sourceLabel: "An imagined listening invitation written by MaestroMate",
     source: "",
     clip: { start: 3, end: 18, label: "Listen from another angle" },
   },
   {
     id: "composer",
-    prompt: "Who was Saint-Saëns?",
+    prompt: "How did you become a musician?",
     answer:
-      "Camille Saint-Saëns was a French composer, pianist and organist who lived from 1835 to 1921. He wrote The Carnival of the Animals in 1886. The recording used here was produced much later.",
-    sourceLabel: "Work and composer information",
-    source:
-      "https://commons.wikimedia.org/wiki/File:Saint-Saens_-_The_Carnival_of_the_Animals_-_07_Aquarium.ogg",
+      "I was born in Paris in 1835, and music entered my life very early. As a child I played the piano; later, at the Conservatoire, I studied the organ. Those two instruments would remain companions throughout my working life.",
+    sourceLabel: "Paris Opera: Camille Saint-Saëns biography",
+    source: "https://www.operadeparis.fr/en/artists/camille-saint-saens",
+    clip: undefined,
+  },
+  {
+    id: "paris",
+    prompt: "What was your life in Paris like?",
+    answer:
+      "For twenty years, from 1857, I was organist at La Madeleine. I also taught piano — Gabriel Fauré was among my pupils. Beyond the organ loft, I wrote for the concert hall and the stage. Paris held many musical lives at once.",
+    sourceLabel: "Paris Opera: appointments, teaching and works",
+    source: "https://www.operadeparis.fr/en/artists/camille-saint-saens",
+    clip: undefined,
+  },
+  {
+    id: "carnival",
+    prompt: "Was your music always so serious?",
+    answer:
+      "Not always! I wrote the Carnival in 1886 for a Mardi Gras gathering among friends. Yet I kept it from publication during my lifetime, concerned that it might overshadow my other music. A private musical joke took on a life far beyond that room.",
+    sourceLabel: "BnF exhibition: private origins and publication (p.15)",
+    source: "https://www.bnf.fr/sites/default/files/2021-06/DP_Saint_Saens.pdf",
     clip: undefined,
   },
   {
     id: "scene",
     prompt: "Did you imagine this scene?",
     answer:
-      "The visual world here is a contemporary interpretation made for MaestroMate. It is not a story left by Saint-Saëns. You can also turn the movement off, close your eyes, and make your own picture.",
-    sourceLabel: "About this interpretation",
+      "This underwater world belongs to MaestroMate's imagination, rather than a scene I left behind. Let it be an invitation. You may turn the movement off, close your eyes, and find a different picture in the same music.",
+    sourceLabel:
+      "Fictional dialogue; contemporary visual interpretation by MaestroMate",
     source: "",
     clip: undefined,
   },

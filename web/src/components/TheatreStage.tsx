@@ -50,7 +50,7 @@ export function TheatreStage({ motion = true }: { motion?: boolean }) {
       className="theatre-stage"
       data-render-status={status}
       role="img"
-      aria-label="A sculptural concert stage with a grand piano, pastel acoustic shells and curved ivory steps"
+      aria-label="A sculptural concert stage with a grand piano, cello, horn and curved ivory steps"
     >
       <div
         ref={host}
@@ -69,7 +69,7 @@ export function TheatreStage({ motion = true }: { motion?: boolean }) {
             aspectRatio: "1",
             display: "grid",
             placeItems: "center",
-            color: "#C89EC4",
+            color: "#B9B5FF",
             background: "#151416",
             borderRadius: "48% 48% 22% 22%",
           }}

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { createUnderwater } from "./underwater";
 import { loadFish } from "./model";
 export interface RenderState {
   time: number;
@@ -12,8 +13,7 @@ export interface AquariumController {
   update: (state: RenderState) => void;
   dispose: () => void;
 }
-// Geometry and PBR texture source: Khronos / Microsoft BarramundiFish (CC0).
-// Lighting/composition are MaestroMate's own. Tail motion is deliberately subtle.
+// Shared CC0 geometry, original matte materials and audio-timed tail motion.
 export function createAquarium(
   host: HTMLElement,
   initial: RenderState,
@@ -37,11 +37,11 @@ export function createAquarium(
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.0;
+  renderer.toneMappingExposure = 1.12;
   renderer.domElement.setAttribute("aria-hidden", "true");
   host.append(renderer.domElement);
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2("#071a20", 0.035);
+  scene.fog = new THREE.FogExp2("#101323", 0.025);
   const camera = new THREE.OrthographicCamera(-8, 8, 3, -3, 0.1, 60);
   camera.position.set(0, 0, 14);
   const pmrem = new THREE.PMREMGenerator(renderer),
@@ -50,15 +50,17 @@ export function createAquarium(
   scene.environment = environment.texture;
   room.dispose();
   pmrem.dispose();
-  scene.add(new THREE.HemisphereLight("#c9e7e0", "#122d37", 1.7));
-  const key = new THREE.DirectionalLight("#e8f3df", 5.0);
+  scene.add(new THREE.HemisphereLight("#e6e1ff", "#24263f", 1.7));
+  const key = new THREE.DirectionalLight("#fff2e9", 4.0);
   key.position.set(3, 5, 7);
   scene.add(key);
-  const fill = new THREE.DirectionalLight("#4a9daf", 2);
+  const fill = new THREE.DirectionalLight("#919dda", 1.7);
   fill.position.set(-5, 1, -2);
   scene.add(fill);
   const root = new THREE.Group();
   scene.add(root);
+  const underwater = initial.preview ? null : createUnderwater();
+  if (underwater) scene.add(underwater.group);
   const actors: {
     mesh: THREE.Mesh;
     nx: number;
@@ -101,13 +103,13 @@ export function createAquarium(
     actors.forEach((actor, index) => {
       actor.mesh.position.set(
         actor.nx * width + Math.sin(t * 0.13 + actor.phase) * 0.25,
-        actor.ny * height + Math.sin(t * 0.31 + actor.phase) * 0.09,
-        index % 2 ? -0.5 : 1,
+        actor.ny * height + Math.sin(t * 0.52 + actor.phase) * 0.15,
+        index === 0 ? 1.5 : -1.2 + (index % 3) * 0.55,
       );
       actor.mesh.rotation.set(
         0.02,
-        Math.sin(t * 0.19 + actor.phase) * 0.12 + 0.38,
-        Math.sin(t * 0.17 + actor.phase) * 0.025,
+        Math.sin(t * 0.42 + actor.phase) * 0.22 + 0.38,
+        Math.sin(t * 0.38 + actor.phase) * 0.045,
       );
       actor.mesh.scale.setScalar(
         actor.scale * Math.min(1, width / 10) * (state.preview ? 1 : 0.74),
@@ -119,6 +121,7 @@ export function createAquarium(
       reduced.matches || !state.motion ? 0 : ry * 0.07,
       0,
     );
+    underwater?.update(t, width);
     renderer.render(scene, camera);
     renderer.domElement.dataset.frame = String(
       Number(renderer.domElement.dataset.frame || 0) + 1,
@@ -203,10 +206,12 @@ export function createAquarium(
         material.roughnessMap = null;
         material.aoMap = null;
         material.color.set(
-          ["#67D5B5", "#EE7785", "#C89EC4", "#84B1ED", "#67D5B5", "#EE7785"][
+          ["#B9B5FF", "#FFAE9D", "#F6D881", "#9DCCFF", "#B9B5FF", "#FFAE9D"][
             index
           ],
         );
+        if (index > 0)
+          material.color.lerp(new THREE.Color("#4c4d75"), 0.16 + index * 0.035);
         material.metalness = 0.08;
         material.roughness = 0.44;
         const clock = { value: 0 };
@@ -217,10 +222,10 @@ export function createAquarium(
             "uniform float uSwimTime;\n" + shader.vertexShader;
           shader.vertexShader = shader.vertexShader.replace(
             "#include <begin_vertex>",
-            `#include <begin_vertex>\n float tail = smoothstep(0.1, 1.25, -position.x);\n transformed.z += sin(position.x * 4.2 + uSwimTime * 2.7) * tail * tail * 0.075;`,
+            `#include <begin_vertex>\n float tail = smoothstep(0.1, 1.25, -position.x);\n transformed.z += sin(position.x * 4.2 + uSwimTime * 3.5) * tail * tail * 0.19;`,
           );
         };
-        material.customProgramCacheKey = () => "maestromate-fish-tail-v1";
+        material.customProgramCacheKey = () => "maestromate-fish-tail-v2";
         const mesh = new THREE.Mesh(template.geometry, material);
         mesh.scale.setScalar(scale);
         root.add(mesh);
@@ -264,6 +269,7 @@ export function createAquarium(
       host.removeEventListener("pointerleave", leave);
       renderer.domElement.removeEventListener("webglcontextlost", lost);
       materials.forEach((m) => m.dispose());
+      underwater?.dispose();
       environment.dispose();
       renderer.dispose();
       renderer.forceContextLoss();

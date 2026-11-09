@@ -16,3 +16,8 @@
 - Retain ordered prepared chat turns above route switches; do not turn them into one replaceable answer or enable free AI input.
 - Home-only scene snapping must respect dialogs, nested chat scrolling and reduced motion. Keep libraries and rooms freely scrollable.
 - Theatre art is original texture-free3D geometry. Large icons may draw their strokes. Do not reintroduce generated theatre/portrait/environment rasters; static fallback should be captured from actual rendering.
+
+- Approved baseline is Git tag `baseline/rooms-v5`. Refine its design; avoid unrelated redesigns. Desktop is the current priority; keep mobile functional.
+- Use light periwinkle/peach/yellow/blue accents and neutral violet/ink surfaces. Do not restore green UI panels.
+- Hover may reveal descriptions, but names and stable accessible entry targets remain visible; keyboard focus reveals the same information and touch keeps it readable.
+- Composer replies are labelled fictional first-person adaptations with institutional biographical sources, never fabricated historical quotations. Nested conversation scrolling must release the page at thread boundaries.
