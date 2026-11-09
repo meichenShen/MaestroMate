@@ -1,12 +1,12 @@
-# MaestroMate ·《水族馆》互动 Demo
+# MaestroMate — a listening room
 
-以一个固定录音连接音乐小剧场、预设导赏问答和两道音乐侦探题。默认进入小剧场，三个入口可自由切换。问答为预设内容，无模型调用、账户或长期数据保存；刷新页面后本次答题和选择重置。
+An English, Smooothy-inspired music experience built around Saint-Saëns' **Aquarium**. The homepage offers work-first, experience-first and browsing entrances. The vertical programme keeps previews inside each work; Aquarium is playable and The Swan is explicitly a coming-soon placeholder. The first-visit guide can be reopened from the header.
 
-公开体验：https://maestromate-aquarium.chirpyapple14.chatgpt.site
+Live: https://maestromate-aquarium.chirpyapple14.chatgpt.site
 
-## 开发
+## Development
 
-需要 Node.js 22.18+（建议 24）。
+Requires Node.js 22.18+ (24 recommended).
 
 ```sh
 cd web
@@ -17,43 +17,45 @@ npm run build
 npm run preview -- --port 4173
 ```
 
-浏览器验证：先运行开发服务器，再执行 `npm run test:browser`。默认使用 `/usr/bin/chromium`，可通过 `CHROMIUM_PATH` 指定浏览器，通过 `QA_BASE_URL` 指定测试地址。截图和日志写入忽略的 `.tmp/qa/`。
+With the production preview running, run `QA_BASE_URL=http://127.0.0.1:4173 npm run test:browser`. Browser tests use `/usr/bin/chromium` (override `CHROMIUM_PATH`) and the real MP3. Results and screenshots go to ignored `.tmp/qa/`. Do not edit source during a test of the development server: hot reload replaces React contexts and can invalidate the test. The optional `QA_AUDIO_FIXTURE=1 node tests/browser.mjs` uses test-only synthesized media; it is never deployed and does not verify the recording.
 
-若录音暂不可用，`QA_AUDIO_FIXTURE=1 npm run test:browser` 可使用只存在于测试进程中的合成音频验证操作。这不代表真实录音已接入，测试音频也不会进入网站。正式构建会检查真实 MP3 是否存在，防止误发布缺失音频的版本。
+## Editing map
 
-## 修改地图
-
-| 想修改什么 | 从哪里开始 |
+| Change | File |
 | --- | --- |
-| 品牌和项目链接 | `src/components/BrandHeader.tsx` |
-| 顶部作品介绍 | `src/components/WorkIntro.tsx` |
-| 三个入口的名称与说明 | `src/content/aquarium.ts` 中的 `activities` |
-| 桌面三栏宽度、区块间距 | `src/styles/tokens.css` 中的 `--layout-*` |
-| 横向／纵向排列与手机断点 | `src/styles/layout.css` |
-| 颜色、字体、圆角 | `src/styles/tokens.css` |
-| 单个功能的样式或逻辑 | `src/features/theater/`、`conversation/`、`detective/` |
-| 作品资料、问答、片段时间和题目 | `src/content/aquarium.ts` |
-| 统一播放控制和片段停止逻辑 | `src/audio/AudioProvider.tsx` |
-| 底部播放器界面 | `src/components/Player.tsx` |
+| Brand and main navigation | `src/components/BrandHeader.tsx` |
+| Theatre entrance, activity entries, about and feedback links | `src/features/home/Home.tsx` |
+| Programme cover, work previews and work metadata | `src/features/home/Programme.tsx` |
+| Introductory guide | `src/components/Guide.tsx` |
+| Original unlit 3D studies and static fallback | `src/components/Sculpture.tsx` |
+| Precise outline icons | `src/components/Mark.tsx` |
+| Palette, fonts, page spacing and shared dimensions | `src/styles/tokens.css` |
+| Header, work columns, fixed player and responsive breakpoints | `src/styles/layout.css` |
+| Homepage composition and programme layout | `src/features/home/home.css` |
+| Individual activity presentation | `src/styles/experience.css` (separate activity sections) |
+| Listening, scripted conversation and detective logic | `src/features/theater/`, `conversation/`, `detective/` |
+| Work facts, questions, sources, chapters and clip timestamps | `src/content/aquarium.ts` |
+| Shared audio and clip-end logic | `src/audio/AudioProvider.tsx` |
+| Player controls | `src/components/Player.tsx` |
+| Optional eased scrolling and reveal observation | `src/hooks/useSmoothPage.ts` |
+| Navigation and transient session state | `src/App.tsx` |
 
-桌面是“入口／活动／说明”三栏；1050px 以下说明落在活动下方；720px 以下导航移到上方，主区纵向排列；380px 以下说明卡片变为单列。区块高度由内容决定。播放器固定底部，页面末端预留空间。
+Desktop work pages place the activity next to contextual notes. At 720px, notes move below the activity and the player uses two rows; at 380px, notes become one column. Heights follow content, and work pages reserve space below the fixed player. Programme items always scroll vertically.
 
-`App.tsx` 负责当前入口、动态开关、问答选择和本次答题进度。一个 `AudioProvider` 包围所有活动，只有它创建 `<audio>`；模块通过 `useAudio()` 读取播放位置或请求跳转。切换入口不会重置录音。添加活动时不要另建播放器。
+Hash routes (`#programme`, `#experiences`, `#about`, `#work/aquarium/theater`, `conversation`, `detective`) support browser back/forward. One AudioProvider stays mounted across every route. Changing activities preserves playback position and answer state; returning to the homepage pauses audio. Page refresh resets activity progress; the guide is remembered only for the browser session. Composer questions are scripted, with no free text or model calls.
 
-## 内容与录音
+## Visual references and assets
 
-录音固定为 Kevin MacLeod 制作的圣桑《水族馆》版本（ISRC USUAN1900026），时长约 144 秒。音频随网站部署，不依赖访客访问外部音乐站。来源、文件校验值和署名见 [音频说明](public/audio/ATTRIBUTION.md)。替换录音时必须同时复核所有场景边界和题目片段，不能直接套用时间。
+The design follows Smooothy's black/white base, large playful type, Geist text, precise SVG line reveals, eased scrolling and unlit 3D. The actual source and its own preview images were inspected at commit `a235a4867e21a0428b62d2340fcf8c71c6e94fdf`. This site uses original music sculptures and open DynaPuff typography, rather than copying food assets, branded lettering or a separately licensed display font. Attribution and licenses are in `public/credits/`.
 
-四个场景是本站的艺术想象与聆听窗口，不是关于作品正式曲式或作曲家意图的断言。两道题是原型练习，尚未开展用户或学习效果验证。
+There are no rejected concept images, paper textures, glossy lighting, glass effects or external 3D downloads. Local fonts and the recording ship with the site. WebGL has a static fallback; reduced-motion preferences disable eased scrolling and continuous sculpture animation. Offscreen sculpture rendering pauses.
 
-## 保存、发布和清理
+## Recording
 
-- GitHub 的 MaestroMate 仓库保存源码、必要音频和说明；使用 `feat/aquarium-demo` 分支保存本次改动。
-- `.openai/hosting.json` 保存 Sites 项目标识；不要重新创建站点或覆盖标识。
-- 网站为静态 React 应用，`npm run build` 生成 `dist/`。本环境缺少 Sites 内置脚手架和工作流脚本，因此使用 Vite 构建与原生 Sites 发布接口。
-- 发布源码只包含 `web/` 子树，研究材料留在 GitHub 项目中。发布前构建、检查，再将对应子树提交推送到 Sites 的源代码仓库；发布包包含 `dist/` 与 `.openai/hosting.json`，须与推送提交一致。
-- 当前环境可使用 `scripts/prepare-site-source.py` 准备源码与发布包。先提交更改并运行生产构建，再从仓库根目录在 PTY 中运行该脚本；其输入为原生 Sites 工具返回的短期凭据 JSON，不能把凭据存入文件或 shell 参数。最后使用原生 Sites 保存版本、部署和状态接口。
-- `node_modules/`、`dist/`、`.tmp/`、测试报告及密钥均不提交。需要重装时使用 `npm ci`；需要重新构建时使用 `npm run build`。
-- 临时文件集中在 `web/.tmp/`。检查是否仍需使用后可删除其中对应文件；不要对仓库执行全局清理，也不要删除 `.git/`、研究资料、最终音频或其他项目的缓存。
+Kevin MacLeod's Aquarium (ISRC USUAN1900026), approximately 144 seconds, is stored locally under CC BY 4.0. See [recording attribution](public/audio/ATTRIBUTION.md) for source and checksum. Changing the recording requires checking every timestamp. Visual chapters are editorial interpretations, not claims about the composer's intentions. This prototype has not been evaluated for learning outcomes.
 
-首次发布后，网址与验证记录保存在 `VERIFICATION.md`。
+## GitHub, publishing and cleanup
+
+Source, necessary media and documentation live in the existing GitHub repository on `feat/aquarium-demo`. Preserve research and `old version/`; use Git history rather than dated source copies. Dependencies, `dist/`, `.tmp/`, logs and secrets are ignored. Only remove verified reproducible files for this project. Never clear other projects or app-wide caches.
+
+Keep `.openai/hosting.json` and the existing public Sites project. Build and commit the website, then run `python web/scripts/prepare-site-source.py` from the repository root in a PTY. The helper accepts native Sites short-lived credentials on hidden stdin, pushes the committed `web/` subtree, verifies its SHA and packages `dist/` plus the hosting manifest. Credentials must never enter files, command arguments or logs. Save and deploy that version through the native Sites tools. Deployment records are in `VERIFICATION.md`.

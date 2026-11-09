@@ -13,11 +13,11 @@ import { work } from "../content/aquarium";
 export function Player() {
   const audio = useAudio();
   return (
-    <footer className="player" aria-label="共享音乐播放器">
+    <footer className="player" aria-label="Music player">
       {audio.error && (
         <div className="audio-error" role="alert">
           <span>{audio.error}</span>
-          <button onClick={audio.retry}>重新加载</button>
+          <button onClick={audio.retry}>Retry audio</button>
         </div>
       )}
       <div className="player-inner">
@@ -26,17 +26,16 @@ export function Player() {
             <Disc3 size={28} strokeWidth={1.3} />
           </span>
           <div>
-            <strong>
-              {work.title}
-              <span>Aquarium</span>
-            </strong>
-            <small>{audio.clipLabel || "圣桑 · 动物狂欢节"}</small>
+            <strong>{work.title}</strong>
+            <small>
+              {audio.clipLabel || "Saint-Saëns · The Carnival of the Animals"}
+            </small>
           </div>
         </div>
         <div className="transport">
           <button
             className="icon-button replay-button"
-            aria-label="后退十秒"
+            aria-label="Back ten seconds"
             onClick={() => audio.seek(audio.time - 10)}
           >
             <RotateCcw size={18} />
@@ -44,7 +43,7 @@ export function Player() {
           </button>
           <button
             className="play-button"
-            aria-label={audio.playing ? "暂停音乐" : "播放音乐"}
+            aria-label={audio.playing ? "Pause music" : "Play music"}
             onClick={audio.toggle}
           >
             {audio.loading ? (
@@ -57,15 +56,17 @@ export function Player() {
           </button>
         </div>
         <div className="seek-control">
-          <output aria-label="当前播放时间">{formatTime(audio.time)}</output>
+          <output aria-label="Current playback time">
+            {formatTime(audio.time)}
+          </output>
           <input
             type="range"
             min={0}
             max={audio.duration}
             step={0.1}
             value={audio.time}
-            aria-label="播放进度"
-            aria-valuetext={`${formatTime(audio.time)}，共 ${formatTime(audio.duration)}`}
+            aria-label="Playback position"
+            aria-valuetext={`${formatTime(audio.time)} of ${formatTime(audio.duration)}`}
             onChange={(event) => audio.seek(Number(event.target.value))}
             style={
               {
@@ -77,9 +78,9 @@ export function Player() {
         </div>
         <div className="player-extras">
           <label className="rate-control">
-            <span className="sr-only">播放速度</span>
+            <span className="sr-only">Playback speed</span>
             <select
-              aria-label="播放速度"
+              aria-label="Playback speed"
               value={audio.rate}
               onChange={(event) => audio.setRate(Number(event.target.value))}
             >
@@ -90,7 +91,7 @@ export function Player() {
           </label>
           <button
             className="icon-button"
-            aria-label={audio.volume ? "静音" : "取消静音"}
+            aria-label={audio.volume ? "Mute" : "Unmute"}
             onClick={() => audio.setVolume(audio.volume ? 0 : 0.8)}
           >
             {audio.volume ? <Volume2 size={18} /> : <VolumeX size={18} />}
@@ -101,14 +102,14 @@ export function Player() {
             min={0}
             max={1}
             step={0.05}
-            aria-label="音量"
+            aria-label="Volume"
             value={audio.volume}
             onChange={(event) => audio.setVolume(Number(event.target.value))}
           />
         </div>
       </div>
       <span className="sr-only" role="status">
-        {audio.playing ? "正在播放" : "已暂停"}
+        {audio.playing ? "Playing" : "Paused"}
       </span>
     </footer>
   );

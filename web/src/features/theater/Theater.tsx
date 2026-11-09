@@ -1,9 +1,11 @@
-import { Play, Pause, Sparkles, MoveRight, CircleHelp } from "lucide-react";
+import { lazy, Suspense } from "react";
+import { Play, Pause } from "lucide-react";
 import { useAudio } from "../../audio/AudioProvider";
 import { formatTime } from "../../audio/timeline";
 import { chapters } from "../../content/aquarium";
-import { AquariumScene } from "./AquariumScene";
-import "./theater.css";
+const Sculpture = lazy(() =>
+  import("../../components/Sculpture").then((m) => ({ default: m.Sculpture })),
+);
 export function Theater({
   onDiscover,
   motion,
@@ -15,73 +17,60 @@ export function Theater({
 }) {
   const audio = useAudio();
   return (
-    <section className="theater-feature" aria-labelledby="theater-title">
+    <section aria-labelledby="theater-title" className="theater-feature">
       <div className="feature-heading">
-        <div>
-          <span className="section-overline">LISTEN & IMAGINE</span>
-          <h2 id="theater-title">让耳朵，带你潜入水底。</h2>
-        </div>
-        <span className="feature-badge">
-          <Sparkles size={12} /> 音乐小剧场
-        </span>
+        <span className="micro">01 / LISTEN & IMAGINE</span>
+        <h1 id="theater-title">Aquarium</h1>
+        <p>Let the music take its own shape.</p>
       </div>
-      <div className="scene-frame">
-        <AquariumScene
-          moving={audio.playing && motion}
-          phase={audio.chapter.id}
-        />
+      <div className={`listening-scene phase-${audio.chapter.id}`}>
         <div className="scene-topline">
-          <span>
-            <i className={audio.playing ? "live-dot" : ""} />
-            {audio.playing ? "正在聆听" : "等待一场声音的旅行"}
+          <span className="micro">
+            {audio.playing ? "NOW LISTENING" : "A SMALL WORLD, WAITING"}
           </span>
           <button
             aria-pressed={!motion}
             onClick={() => onMotionChange(!motion)}
           >
-            {motion ? "关闭动态" : "开启动态"}
+            {motion ? "Motion off" : "Motion on"}
           </button>
         </div>
-        <div className="scene-caption">
-          <span>0{chapters.indexOf(audio.chapter) + 1} / 04</span>
-          <h3>{audio.chapter.title}</h3>
+        <Suspense fallback={<span className="micro">SETTING THE SCENE</span>}>
+          <Sculpture kind="fish" motion={motion && audio.playing} />
+        </Suspense>
+        <div className="scene-caption" aria-live="polite">
+          <span className="micro">
+            0{chapters.indexOf(audio.chapter) + 1} / 04
+          </span>
+          <h2>{audio.chapter.title}</h2>
           <p>{audio.chapter.image}</p>
         </div>
         <button
           className="scene-play"
-          aria-label={audio.playing ? "暂停小剧场音乐" : "开始小剧场音乐"}
+          aria-label={audio.playing ? "Pause the scene" : "Listen to the scene"}
           onClick={audio.toggle}
         >
-          {audio.playing ? (
-            <Pause size={19} fill="currentColor" />
-          ) : (
-            <Play size={19} fill="currentColor" />
-          )}
+          {audio.playing ? <Pause size={20} /> : <Play size={20} />}
         </button>
       </div>
-      <div className="chapter-navigation" aria-label="聆听段落">
+      <nav className="chapter-navigation" aria-label="Listening chapters">
         {chapters.map((chapter, index) => (
           <button
             key={chapter.id}
-            className={chapter.id === audio.chapter.id ? "is-current" : ""}
+            aria-current={audio.chapter.id === chapter.id ? "step" : undefined}
             onClick={() => audio.seek(chapter.start)}
-            aria-current={chapter.id === audio.chapter.id ? "step" : undefined}
           >
-            <span className="chapter-progress" />
-            <small>
-              0{index + 1}
-              <span>{formatTime(chapter.start)}</span>
-            </small>
+            <span className="micro">
+              0{index + 1} / {formatTime(chapter.start)}
+            </span>
             <strong>{chapter.title}</strong>
           </button>
         ))}
-      </div>
+      </nav>
       <div className="theater-footer">
-        <p>
-          <CircleHelp size={15} /> 场景是艺术想象，你也可以只听音乐。
-        </p>
-        <button onClick={onDiscover}>
-          去发现声音线索 <MoveRight size={17} />
+        <p>An imagined scene. A real recording. Your own way in.</p>
+        <button className="text-button" onClick={onDiscover}>
+          Meet the composer ↗
         </button>
       </div>
     </section>

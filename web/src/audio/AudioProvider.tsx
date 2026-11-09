@@ -52,7 +52,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       if (cause instanceof DOMException && cause.name === "AbortError") return;
       setLoading(false);
       setPlaying(false);
-      setError("暂时无法播放。请检查网络后重试。");
+      setError("Unable to play. Check your connection and try again.");
     });
   }, []);
   const pause = useCallback(() => {
@@ -171,7 +171,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
           setClipLabel(null);
         }}
         onError={() => {
-          setError("录音加载失败，请检查网络并重试。");
+          setError(
+            "The recording could not load. Check your connection and try again.",
+          );
           setLoading(false);
           setPlaying(false);
         }}

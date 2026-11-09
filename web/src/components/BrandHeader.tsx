@@ -1,30 +1,62 @@
-import { AudioLines, ArrowUpRight, Waves } from "lucide-react";
-export function BrandHeader() {
+export function BrandHeader({
+  onGuide,
+  onHome,
+  onSection,
+}: {
+  onGuide: () => void;
+  onHome: () => void;
+  onSection: (id: string) => void;
+}) {
   return (
     <header className="brand-header">
-      <a className="brand" href="#main" aria-label="MaestroMate，前往音乐探索">
-        <span className="brand-mark">
-          <AudioLines size={22} />
-        </span>
-        <span>
-          Maestro<span className="brand-light">Mate</span>
-          <small>和音乐，成为朋友</small>
-        </span>
+      <a
+        className="brand"
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          onHome();
+        }}
+        aria-label="MaestroMate home"
+      >
+        maestro<span>mate.</span>
+        <small>A LISTENING ROOM</small>
       </a>
-      <div className="header-right">
-        <span className="header-note">
-          <Waves size={15} /> 一部作品，三种遇见
-        </span>
+      <p className="header-caption">
+        Classical music.
+        <br />A different way in.
+      </p>
+      <nav aria-label="Main navigation">
         <a
-          className="project-link"
-          href="https://github.com/meichenShen/MaestroMate"
-          target="_blank"
-          rel="noreferrer"
+          href="#programme"
+          onClick={(e) => {
+            e.preventDefault();
+            onSection("programme");
+          }}
         >
-          关于项目 <ArrowUpRight size={15} />
+          Programme
         </a>
-        <span className="demo-tag">探索版 01</span>
-      </div>
+        <a
+          href="#experiences"
+          onClick={(e) => {
+            e.preventDefault();
+            onSection("experiences");
+          }}
+        >
+          Experiences
+        </a>
+        <a
+          href="#about"
+          onClick={(e) => {
+            e.preventDefault();
+            onSection("about");
+          }}
+        >
+          About
+        </a>
+        <button onClick={onGuide} aria-label="Open guide">
+          Guide <span>↗</span>
+        </button>
+      </nav>
     </header>
   );
 }

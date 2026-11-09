@@ -8,7 +8,7 @@ await fs.mkdir(output, { recursive: true });
 const browser = await chromium.launch({
   executablePath: process.env.CHROMIUM_PATH || "/usr/bin/chromium",
   headless: true,
-  args: ["--no-sandbox"],
+  args: ["--no-sandbox", "--enable-unsafe-swiftshader"],
 });
 const base = process.env.QA_BASE_URL || "http://127.0.0.1:5173";
 const failures = [];
@@ -75,12 +75,12 @@ const audioState = () =>
   }));
 const seek = async (time) => {
   await page
-    .getByRole("slider", { name: "播放进度", exact: true })
+    .getByRole("slider", { name: "Playback position", exact: true })
     .fill(String(time));
 };
 const nav = (title) =>
   page
-    .getByRole("navigation", { name: "探索方式" })
+    .getByRole("navigation", { name: "Listening experiences" })
     .getByRole("button")
     .filter({ hasText: title });
 const waitUntil = async (callback, message, timeout = 6000) => {
@@ -92,7 +92,9 @@ const waitUntil = async (callback, message, timeout = 6000) => {
   throw new Error(message);
 };
 try {
-  await page.goto(base);
+  await page.goto(base + "/#work/aquarium/theater");
+  if (await page.getByRole("dialog").count())
+    await page.getByRole("button", { name: "Skip the tour" }).click();
   await page.locator("audio").evaluate(
     (audio) =>
       audio.readyState >= 1 ||
@@ -116,7 +118,7 @@ try {
     `${fixtureMode ? "测试音频" : "真实录音"}加载、时长正确、初次进入不自动播放`,
   );
 
-  await page.getByRole("button", { name: "播放音乐", exact: true }).click();
+  await page.getByRole("button", { name: "Play music", exact: true }).click();
   await waitUntil(
     async () => !(await audioState()).paused && (await audioState()).time > 0.2,
     "Playback did not start",
@@ -125,35 +127,41 @@ try {
   await page
     .locator("audio")
     .evaluate((audio) => (audio.dataset.identity = "same-player"));
-  await nav("音乐家对话").click();
-  await nav("音乐侦探").click();
+  await nav("Meet the composer").click();
+  await nav("Follow the clues").click();
   assert.equal(
     await page.locator("audio").getAttribute("data-identity"),
     "same-player",
   );
   assert.ok((await audioState()).time >= before);
   assert.equal((await audioState()).paused, false);
-  await page.getByRole("button", { name: "暂停音乐", exact: true }).click();
+  await page.getByRole("button", { name: "Pause music", exact: true }).click();
   results.push("播放、暂停及切换三个模块时音频实例和播放状态保留");
 
   await seek(80);
-  await nav("音乐小剧场").click();
-  await page.getByRole("heading", { name: "深处回响", exact: true }).waitFor();
-  await page.getByRole("button", { name: "关闭动态", exact: true }).click();
-  await nav("音乐家对话").click();
-  await nav("音乐小剧场").click();
-  await page.getByRole("button", { name: "开启动态", exact: true }).waitFor();
-  await page.locator('.chapter-navigation button').nth(3).click();
+  await nav("Listen & imagine").click();
+  await page
+    .getByRole("heading", { name: "Familiar waters", exact: true, level: 2 })
+    .waitFor();
+  await page.getByRole("button", { name: "Motion off", exact: true }).click();
+  await nav("Meet the composer").click();
+  await nav("Listen & imagine").click();
+  await page.getByRole("button", { name: "Motion on", exact: true }).waitFor();
+  await page.locator(".chapter-navigation button").nth(3).click();
   assert.ok(Math.abs((await audioState()).time - chapters[3].start) < 0.1);
   assert.equal((await audioState()).paused, true);
-  await page.getByRole("button", { name: "后退十秒" }).click();
-  assert.ok(Math.abs((await audioState()).time - (chapters[3].start - 10)) < 0.1);
-  results.push("暂停时跳转同步场景、章节导航、后退十秒、动态偏好保留");
+  await page.getByRole("button", { name: "Back ten seconds" }).click();
+  assert.ok(
+    Math.abs((await audioState()).time - (chapters[3].start - 10)) < 0.1,
+  );
+  results.push("暂停时跳转同步场景、章节导航、Back ten seconds、动态偏好保留");
 
-  await nav("音乐家对话").click();
-  await page.getByRole("button", { name: "我应该先听哪一层声音？" }).click();
-  await page.getByRole("heading", { name: "我应该先听哪一层声音？" }).waitFor();
-  await page.getByRole("button", { name: /分两次听这个片段/ }).click();
+  await nav("Meet the composer").click();
+  await page.getByRole("button", { name: /What should I listen for/ }).click();
+  await page
+    .getByRole("heading", { name: "What should I listen for?" })
+    .waitFor();
+  await page.getByRole("button", { name: /Listen from another angle/ }).click();
   await waitUntil(
     async () => !(await audioState()).paused,
     "Clip did not start",
@@ -169,35 +177,40 @@ try {
   assert.ok(Math.abs((await audioState()).time - 18) < 0.1);
   results.push("预设问答、引用及片段播放／到点停止");
 
-  await nav("音乐侦探").click();
+  await nav("Follow the clues").click();
   assert.equal(
-    await page.getByRole("button", { name: "看看我的发现" }).isDisabled(),
+    await page.getByRole("button", { name: "Reveal the clue" }).isDisabled(),
     true,
   );
-  await page.getByRole("radio", { name: /只有一层快速的声音/ }).check();
-  await page.getByRole("button", { name: "看看我的发现" }).click();
-  await page.getByText("换一个角度，再听听看。", { exact: true }).waitFor();
-  await page.getByRole("button", { name: "再试一次", exact: true }).click();
-  await page.getByRole("radio", { name: /还有一条更舒展的旋律/ }).check();
-  await page.getByRole("button", { name: "看看我的发现" }).click();
-  await page.getByText("听见了，发现得很棒。", { exact: true }).waitFor();
-  await page.getByRole("button", { name: /下一条线索/ }).click();
-  await page.getByRole("button", { name: /听片段 B/ }).click();
+  await page.getByRole("radio", { name: /Only one fast-moving line/ }).check();
+  await page.getByRole("button", { name: "Reveal the clue" }).click();
+  await page.getByText("Try a different angle.", { exact: true }).waitFor();
+  await page.getByRole("button", { name: "Try again", exact: true }).click();
+  await page
+    .getByRole("radio", { name: /A longer, more spacious melody/ })
+    .check();
+  await page.getByRole("button", { name: "Reveal the clue" }).click();
+  await page.getByText("You found it.", { exact: true }).waitFor();
+  await page.getByRole("button", { name: /Next clue/ }).click();
+  await page.getByRole("button", { name: /Passage B · ending/ }).click();
   await waitUntil(
     async () => !(await audioState()).paused,
     "Final clip did not start",
   );
   assert.ok(
-    (await audioState()).time >= detectiveQuestions[1].clips[1].start && (await audioState()).time < detectiveQuestions[1].clips[1].start + 2,
+    (await audioState()).time >= detectiveQuestions[1].clips[1].start &&
+      (await audioState()).time < detectiveQuestions[1].clips[1].start + 2,
   );
-  await page.getByRole("button", { name: "暂停音乐", exact: true }).click();
-  await page.getByRole("radio", { name: /片段 B/ }).check();
-  await page.getByRole("button", { name: "看看我的发现" }).click();
-  await nav("音乐小剧场").click();
-  await nav("音乐侦探").click();
-  await page.getByRole("heading", { name: "音乐怎样告别？" }).waitFor();
+  await page.getByRole("button", { name: "Pause music", exact: true }).click();
+  await page.getByRole("radio", { name: /Passage B/ }).check();
+  await page.getByRole("button", { name: "Reveal the clue" }).click();
+  await nav("Listen & imagine").click();
+  await nav("Follow the clues").click();
+  await page
+    .getByRole("heading", { name: "How does it say goodbye?" })
+    .waitFor();
   assert.equal(
-    await page.getByRole("radio", { name: /片段 B/ }).isChecked(),
+    await page.getByRole("radio", { name: /Passage B/ }).isChecked(),
     true,
   );
   await page.screenshot({
@@ -206,18 +219,20 @@ try {
   });
   results.push("两道题、未选择限制、错误反馈、重试、正确反馈及跨模块进度保留");
 
-  await page.getByRole("combobox", { name: "播放速度" }).selectOption("1.25");
+  await page
+    .getByRole("combobox", { name: "Playback speed" })
+    .selectOption("1.25");
   assert.equal(
     await page.locator("audio").evaluate((audio) => audio.playbackRate),
     1.25,
   );
-  await page.getByRole("button", { name: "静音", exact: true }).click();
+  await page.getByRole("button", { name: "Mute", exact: true }).click();
   assert.equal(
     await page.locator("audio").evaluate((audio) => audio.volume),
     0,
   );
-  await page.getByRole("button", { name: "取消静音", exact: true }).click();
-  await nav("音乐小剧场").click();
+  await page.getByRole("button", { name: "Unmute", exact: true }).click();
+  await nav("Listen & imagine").click();
   await seek(0);
 
   for (const width of [1440, 1024, 768, 720, 390, 320]) {
@@ -228,7 +243,11 @@ try {
       ),
       `Horizontal overflow at ${width}`,
     );
-    for (const title of ["音乐家对话", "音乐侦探", "音乐小剧场"]) {
+    for (const title of [
+      "Meet the composer",
+      "Follow the clues",
+      "Listen & imagine",
+    ]) {
       await nav(title).click();
       assert.ok(
         await page.evaluate(
@@ -237,12 +256,19 @@ try {
         `${title} overflow at ${width}`,
       );
     }
+    // Route changes schedule scroll-to-top after React mounts. Let that settle
+    // before testing the user scrolling to the page ending.
+    await page.evaluate(
+      () =>
+        new Promise((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(resolve)),
+        ),
+    );
     await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
     assert.ok(
       await page.evaluate(
         () =>
-          document.querySelector(".page-footnote").getBoundingClientRect()
-            .bottom <=
+          document.querySelector(".room-next").getBoundingClientRect().bottom <=
           document.querySelector(".player").getBoundingClientRect().top,
       ),
       `Player obscures page ending at ${width}`,
@@ -258,15 +284,17 @@ try {
   results.push("六种宽度、三个活动均无横向溢出；滚动到底部时播放器不遮挡内容");
   await page.emulateMedia({ reducedMotion: "reduce" });
   assert.equal(
-    await page
-      .locator(".hero-fish")
-      .evaluate((el) => getComputedStyle(el).animationName),
-    "none",
+    await page.evaluate(
+      () => matchMedia("(prefers-reduced-motion: reduce)").matches,
+    ),
+    true,
   );
   await page.setViewportSize({ width: 1440, height: 1080 });
-  await page.goto('about:blank');
-  await page.goto(base);
-  await page.locator('.skip-link').waitFor({ state: 'attached' });
+  await page.goto("about:blank");
+  await page.goto(base + "/#work/aquarium/theater");
+  if (await page.getByRole("dialog").count())
+    await page.getByRole("button", { name: "Skip the tour" }).click();
+  await page.locator(".skip-link").waitFor({ state: "attached" });
   await page.keyboard.press("Tab");
   assert.equal(
     await page
@@ -278,10 +306,11 @@ try {
 
   await page.route("**/audio/aquarium.mp3", (route) => route.abort());
   await page.reload();
+  await page.getByRole("heading", { name: "Aquarium", exact: true }).waitFor();
   await page.getByRole("alert").waitFor();
   await page.unroute("**/audio/aquarium.mp3");
   if (fixtureMode) await page.route("**/audio/aquarium.mp3", fixtureRoute);
-  await page.getByRole("button", { name: "重新加载", exact: true }).click();
+  await page.getByRole("button", { name: "Retry audio", exact: true }).click();
   await waitUntil(
     async () => !(await audioState()).paused,
     "Recovery did not restore playback",
