@@ -21,15 +21,14 @@ export const work = {
   composerLatin: "Camille Saint-Saëns",
   year: "1886",
   collection: "《动物狂欢节》· 第七曲",
-  duration: 148.006893,
+  duration: 144.039184,
   audio: "/audio/aquarium.mp3",
-  recording:
-    "Neil 与 Nancy O’Doan（钢琴）· Seattle Youth Symphony · Vilem Sokol（指挥）",
+  recording: "Kevin MacLeod ·《Aquarium》制作版本 · ISRC USUAN1900026",
   source:
-    "https://commons.wikimedia.org/wiki/File:Saint-Saens_-_The_Carnival_of_the_Animals_-_07_Aquarium.ogg",
-  license: "https://creativecommons.org/licenses/by-sa/2.0/",
+    "https://incompetech.com/music/royalty-free/index.html?Search=Search&isrc=USUAN1900026",
+  license: "https://creativecommons.org/licenses/by/4.0/",
   recordingNote:
-    "录音约于 1980 年；源文件由 Wikimedia Commons 提供。本站转码为 MP3，未剪辑作品。CC BY-SA 2.0。",
+    "本录音版本由 Kevin MacLeod 制作。本站对音频进行压缩，未剪辑作品。CC BY 4.0。",
 };
 
 export const activities: {
@@ -63,31 +62,31 @@ export const chapters: Chapter[] = [
   {
     id: "surface",
     start: 0,
-    end: 36,
+    end: 34,
     title: "水光初现",
     image: "一道光，落进安静的水里。",
     hint: "先听高处细密流动的声音，再留意它下面更舒展的旋律。",
   },
   {
     id: "current",
-    start: 36,
-    end: 74,
+    start: 34,
+    end: 70,
     title: "随波漫游",
     image: "跟着水流，游向更远的地方。",
     hint: "把注意力在流动的伴奏与旋律之间切换，听听哪一层更容易被你追踪。",
   },
   {
     id: "deep",
-    start: 74,
-    end: 111,
+    start: 70,
+    end: 106,
     title: "深处回响",
     image: "同一片水域，又有新的光影。",
     hint: "听到熟悉的感觉了吗？试着找出令你产生这种感觉的声音。",
   },
   {
     id: "still",
-    start: 111,
-    end: 148.006893,
+    start: 106,
+    end: work.duration,
     title: "涟漪渐息",
     image: "最后一圈涟漪，慢慢散开。",
     hint: "留意接近结尾时的变化，以及最后一个声音之后的安静。",
@@ -120,7 +119,7 @@ export const questions = [
     answer:
       "卡米耶·圣桑是法国作曲家、钢琴家与管风琴家，生于 1835 年，逝于 1921 年。他在 1886 年写作《动物狂欢节》。本站使用的是作品完成多年后的演奏录音。",
     sourceLabel: "作品及录音资料",
-    source: work.source,
+    source: "https://commons.wikimedia.org/wiki/File:Saint-Saens_-_The_Carnival_of_the_Animals_-_07_Aquarium.ogg",
     clip: undefined,
   },
   {
@@ -151,7 +150,7 @@ export const detectiveQuestions = [
     prompt: "比较开头 A 与结尾 B。哪一段最后留下了声音结束后的安静？",
     clips: [
       { start: 3, end: 14, label: "听片段 A · 开头" },
-      { start: 135, end: 148.006893, label: "听片段 B · 结尾" },
+      { start: 130, end: work.duration, label: "听片段 B · 结尾" },
     ],
     options: ["片段 A", "片段 B", "两段都没有"],
     correct: 1,

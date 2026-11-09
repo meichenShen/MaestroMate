@@ -40,7 +40,7 @@ npm run preview -- --port 4173
 
 ## 内容与录音
 
-录音固定为 Neil 与 Nancy O’Doan（钢琴）、Seattle Youth Symphony、Vilem Sokol（指挥）的《水族馆》，时长约 148 秒。来源和署名见 [音频说明](public/audio/ATTRIBUTION.md)。替换录音时必须同时复核所有场景边界和题目片段，不能直接套用时间。
+录音固定为 Kevin MacLeod 制作的圣桑《水族馆》版本（ISRC USUAN1900026），时长约 144 秒。音频随网站部署，不依赖访客访问外部音乐站。来源、文件校验值和署名见 [音频说明](public/audio/ATTRIBUTION.md)。替换录音时必须同时复核所有场景边界和题目片段，不能直接套用时间。
 
 四个场景是本站的艺术想象与聆听窗口，不是关于作品正式曲式或作曲家意图的断言。两道题是原型练习，尚未开展用户或学习效果验证。
 
@@ -50,6 +50,7 @@ npm run preview -- --port 4173
 - `.openai/hosting.json` 保存 Sites 项目标识；不要重新创建站点或覆盖标识。
 - 网站为静态 React 应用，`npm run build` 生成 `dist/`。本环境缺少 Sites 内置脚手架和工作流脚本，因此使用 Vite 构建与原生 Sites 发布接口。
 - 发布源码只包含 `web/` 子树，研究材料留在 GitHub 项目中。发布前构建、检查，再将对应子树提交推送到 Sites 的源代码仓库；发布包包含 `dist/` 与 `.openai/hosting.json`，须与推送提交一致。
+- 当前环境可使用 `scripts/prepare-site-source.py` 准备源码与发布包。先提交更改并运行生产构建，再从仓库根目录在 PTY 中运行该脚本；其输入为原生 Sites 工具返回的短期凭据 JSON，不能把凭据存入文件或 shell 参数。最后使用原生 Sites 保存版本、部署和状态接口。
 - `node_modules/`、`dist/`、`.tmp/`、测试报告及密钥均不提交。需要重装时使用 `npm ci`；需要重新构建时使用 `npm run build`。
 - 临时文件集中在 `web/.tmp/`。检查是否仍需使用后可删除其中对应文件；不要对仓库执行全局清理，也不要删除 `.git/`、研究资料、最终音频或其他项目的缓存。
 

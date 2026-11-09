@@ -48,7 +48,7 @@ export function ContextPanel({ activity }: { activity: ActivityId }) {
             查看原始录音 <ExternalLink size={12} />
           </a>
           <a href={work.license} target="_blank" rel="noreferrer">
-            CC BY-SA 2.0 <ExternalLink size={12} />
+            CC BY 4.0 <ExternalLink size={12} />
           </a>
         </details>
       </section>

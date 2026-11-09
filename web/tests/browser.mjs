@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import { chromium } from "playwright";
+import { chapters, work, detectiveQuestions } from "../src/content/aquarium.ts";
 
 const output = ".tmp/qa";
 await fs.mkdir(output, { recursive: true });
@@ -18,7 +19,7 @@ const page = await browser.newPage({ viewport: { width: 1440, height: 1080 } });
 const fixtureMode = process.env.QA_AUDIO_FIXTURE === "1";
 const fixtureRoute = async (route) => {
   const sampleRate = 8000;
-  const samples = Math.round(148.006893 * sampleRate);
+  const samples = Math.round(work.duration * sampleRate);
   const wav = Buffer.alloc(44 + samples * 2);
   wav.write("RIFF", 0);
   wav.writeUInt32LE(wav.length - 8, 4);
@@ -110,7 +111,7 @@ try {
   );
   assert.equal(await page.locator("audio").count(), 1);
   assert.equal((await audioState()).paused, true);
-  assert.ok(Math.abs((await audioState()).duration - 148.006893) < 0.2);
+  assert.ok(Math.abs((await audioState()).duration - work.duration) < 0.2);
   results.push(
     `${fixtureMode ? "测试音频" : "真实录音"}加载、时长正确、初次进入不自动播放`,
   );
@@ -142,11 +143,11 @@ try {
   await nav("音乐家对话").click();
   await nav("音乐小剧场").click();
   await page.getByRole("button", { name: "开启动态", exact: true }).waitFor();
-  await page.getByRole("button", { name: "04 1:51 涟漪渐息" }).click();
-  assert.ok(Math.abs((await audioState()).time - 111) < 0.1);
+  await page.locator('.chapter-navigation button').nth(3).click();
+  assert.ok(Math.abs((await audioState()).time - chapters[3].start) < 0.1);
   assert.equal((await audioState()).paused, true);
   await page.getByRole("button", { name: "后退十秒" }).click();
-  assert.ok(Math.abs((await audioState()).time - 101) < 0.1);
+  assert.ok(Math.abs((await audioState()).time - (chapters[3].start - 10)) < 0.1);
   results.push("暂停时跳转同步场景、章节导航、后退十秒、动态偏好保留");
 
   await nav("音乐家对话").click();
@@ -187,7 +188,7 @@ try {
     "Final clip did not start",
   );
   assert.ok(
-    (await audioState()).time >= 135 && (await audioState()).time < 137,
+    (await audioState()).time >= detectiveQuestions[1].clips[1].start && (await audioState()).time < detectiveQuestions[1].clips[1].start + 2,
   );
   await page.getByRole("button", { name: "暂停音乐", exact: true }).click();
   await page.getByRole("radio", { name: /片段 B/ }).check();
@@ -263,7 +264,9 @@ try {
     "none",
   );
   await page.setViewportSize({ width: 1440, height: 1080 });
-  await page.reload();
+  await page.goto('about:blank');
+  await page.goto(base);
+  await page.locator('.skip-link').waitFor({ state: 'attached' });
   await page.keyboard.press("Tab");
   assert.equal(
     await page

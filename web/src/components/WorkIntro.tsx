@@ -20,7 +20,7 @@ export function WorkIntro() {
           <span>{work.collection}</span>
           <i />
           <span>
-            <Clock3 size={14} /> 约 2 分 28 秒
+            <Clock3 size={14} /> 约 {Math.floor(work.duration / 60)} 分 {Math.round(work.duration % 60)} 秒
           </span>
         </div>
       </div>

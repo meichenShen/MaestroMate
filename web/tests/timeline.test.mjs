@@ -10,10 +10,10 @@ import {
 
 test("paused seeks and exact boundaries map to the correct scene", () => {
   assert.equal(chapterAt(0).id, "surface");
-  assert.equal(chapterAt(35.99).id, "surface");
-  assert.equal(chapterAt(36).id, "current");
-  assert.equal(chapterAt(74).id, "deep");
-  assert.equal(chapterAt(111).id, "still");
+  assert.equal(chapterAt(33.99).id, "surface");
+  assert.equal(chapterAt(34).id, "current");
+  assert.equal(chapterAt(70).id, "deep");
+  assert.equal(chapterAt(106).id, "still");
   assert.equal(chapterAt(work.duration).id, "still");
 });
 test("all listening windows are continuous and every clip is inside this recording", () => {
