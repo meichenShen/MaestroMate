@@ -1,23 +1,22 @@
-# MaestroMate independent rooms — design QA
+# Approved baseline refinement — design QA
 
-## Target and evidence
+Baseline: public Sites version5, Git tag `baseline/rooms-v5`. The user explicitly approves this direction and asks for desktop-first refinement, retaining independent rooms/optional Program, black and Outfit/Onest. Current production captures are in ignored `.tmp/qa/polish/`.
 
-The latest user request takes precedence over earlier raster-art directions: three genuinely independent rooms, an optional whole-work Program, an actual designed3D theatre, large stroke-drawn icons, directional animation and continuous scrolling that settles on a homepage scene. Retain font A, English, black as the main background and the vertical two-work Program. LOL Colors supplies the mint/coral/lilac/blue accents.
+## Inspected evidence
 
-The local production build was captured in Chromium at1440×1000 and390×844. Actual captures were opened and inspected, including:
+- `home.png`, `theatre-pointer-left.png`, `theatre-pointer-right.png`: expanded original concert geometry with piano, cello, horn and stand. Pointer positions produce visibly different3D orientations; the copy and entrance remain usable. Touch/reduced-motion keeps the stable composition.
+- `rooms-final.png`: enlarged peach/lavender/yellow icons, freely staggered positions, visible names/arrows. Hover/focus reveals supporting information. Target bounds do not move; touch keeps explanations readable. Initial capture revealed inherited grey icon colour and was corrected before final verification.
+- `aquarium-final.png`: original seabed, rocks, gently swaying stems, translucent light layers and clear foreground/background separation. Initial fog washed out the foreground; final density/exposure restores lighter colours. Fish tails use stronger audio-timed deformation. Default Motion on state is explicit, and Next: Chat is visible above the scene.
+- `chat-final.png`: narrower thread, neutral violet panels, six visible prepared prompts above the desktop player. Reduced thread height keeps controls reachable. First-person messages are labelled fictional adaptations, with factual sources disclosed individually.
+- `game.png`, `game-ending.png`: desktop listening evidence and answer surfaces overlap with distinct hierarchy; completion adds a finite musical flourish. Program thank-you `ending-final.png` returns to the authored theatre.
+- `journey-320.png`: a320×667 content-height scene now scrolls to its CTA/attribution instead of clipping them. Scripted bounds also checked chat/listening and the page width. Mobile remains functional; desktop gets visual priority.
 
-- `.tmp/qa/rooms/home-final.png`, `home-mobile-final.png`: original geometry with a full grand piano and curved acoustic stage; headline occupies the separate left space on desktop and sits above the stage on mobile.
-- `doors-final.png`, `doors-mobile-final.png`: three large, staggered icon entrances with room names and readable supporting text. No ruled card grid or peer “Just looking” portal.
-- `listen-final.png`, `program-final.png`: separate listening directory and whole-work Program. Within the Program collection both vertical work entries fit the desktop viewport; Aquarium has a real preview and The Swan is visibly coming soon.
-- `chat-final.png`, `chat-mobile-final.png`: outgoing and incoming bubbles, prepared question chips, source disclosure, one shared player. The log scrolls separately; pages remain freely scrollable.
-- `game-final.png`: a separate Play destination and clear game entrance, without Program progress.
+## Verification
 
-## Functional design checks
+Five unit tests and the production build pass. The complete nine-script Chromium suite passes, including seven new behavioral contracts. Existing checks retain actual MP3/clip/error recovery, both clues, routes/state, six widths, player clearance, keyboard/focus, continuous scroll/settling, reduced motion, freeze and WebGL-loss coverage. New behavior first failed against baseline before implementation.
 
-`tests/rooms.mjs` checks actual distinct routes, absence of guided progress in standalone rooms, accumulated chat history, one audio element, guided steps, wheel settling and mobile overflow. `tests/snap.mjs` checks motion during a multi-event wheel gesture, final alignment, nested conversation scrolling and reduced motion. `entry.mjs` preserves the two-primary/one-subordinate entrance hierarchy. Dedicated keyboard and focus checks cover modal dismissal, browser back, deep-link first Tab and route focus.
-
-Three-dimensional surfaces contain no generated or photographed environment. The theatre is original geometry; the CC0 fish mesh uses matte materials with its photo textures removed. The aquarium poster was recaptured from this renderer. Icon shapes are Lucide geometry drawn with native path animation, with Smooothy/Vivus acknowledged as technique references.
+One bounded fresh-context final review found no actionable regressions. Its extra production probes verified Lenis thread chaining at both boundaries, stationary hover targets, keyboard hints and the finite completion/retry behavior. No extra packages or copied source trees were added.
 
 ## Limits
 
-The inspected viewports establish layout and legibility for those states; they do not establish the user's final aesthetic preference or physical-phone GPU performance. Native Sites deployment results verify publication separately. The cloud allowlist blocks an independent public HTTP visit, so local production inspection is not described as a public browser test.
+These are local production Chromium checks and actual inspected screenshots. They do not establish physical-phone GPU/touch performance, spoken screen-reader behavior or the user's final aesthetic approval. Native Sites results establish publication separately. Composer facts were checked against the opened Paris Opera biography and BnF exhibition; source links are external, while the working site assets remain local.
