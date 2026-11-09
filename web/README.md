@@ -17,6 +17,8 @@ npm run preview -- --port 4173
 
 浏览器验证：先运行开发服务器，再执行 `npm run test:browser`。默认使用 `/usr/bin/chromium`，可通过 `CHROMIUM_PATH` 指定浏览器，通过 `QA_BASE_URL` 指定测试地址。截图和日志写入忽略的 `.tmp/qa/`。
 
+若录音暂不可用，`QA_AUDIO_FIXTURE=1 npm run test:browser` 可使用只存在于测试进程中的合成音频验证操作。这不代表真实录音已接入，测试音频也不会进入网站。正式构建会检查真实 MP3 是否存在，防止误发布缺失音频的版本。
+
 ## 修改地图
 
 | 想修改什么 | 从哪里开始 |

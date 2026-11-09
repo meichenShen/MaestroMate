@@ -8,8 +8,10 @@
   --color-soft: #edf1e9;
   --color-border: #e3e6dd;
   --color-accent: #bb7955;
-  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
-  --font-display: 'Noto Serif CJK SC', 'Songti SC', 'STSong', Georgia, serif;
+  --font-body:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --font-display: "Noto Serif CJK SC", "Songti SC", "STSong", Georgia, serif;
   --radius-card: 18px;
   --radius-control: 10px;
   --space-panel: 24px;
