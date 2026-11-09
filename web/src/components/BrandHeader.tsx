@@ -1,35 +1,33 @@
+import { ArrowUpRight, Compass } from "lucide-react";
 export function BrandHeader({
   onGuide,
   onHome,
   onSection,
+  onEntry,
 }: {
   onGuide: () => void;
   onHome: () => void;
   onSection: (id: string) => void;
+  onEntry: () => void;
 }) {
   return (
     <header className="brand-header">
       <a
         className="brand"
         href="#"
-        onClick={(e) => {
-          e.preventDefault();
+        onClick={(event) => {
+          event.preventDefault();
           onHome();
         }}
         aria-label="MaestroMate home"
       >
-        maestro<span>mate.</span>
-        <small>A LISTENING ROOM</small>
+        MaestroMate
       </a>
-      <p className="header-caption">
-        Classical music.
-        <br />A different way in.
-      </p>
       <nav aria-label="Main navigation">
         <a
           href="#programme"
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={(event) => {
+            event.preventDefault();
             onSection("programme");
           }}
         >
@@ -37,24 +35,33 @@ export function BrandHeader({
         </a>
         <a
           href="#experiences"
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={(event) => {
+            event.preventDefault();
             onSection("experiences");
           }}
         >
           Experiences
         </a>
         <a
+          className="about-link"
           href="#about"
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={(event) => {
+            event.preventDefault();
             onSection("about");
           }}
         >
           About
         </a>
+        <button
+          className="entry-reopen"
+          aria-label="Choose a way in"
+          onClick={onEntry}
+        >
+          <Compass size={21} />
+          <span>Start here</span>
+        </button>
         <button onClick={onGuide} aria-label="Open guide">
-          Guide <span>↗</span>
+          Guide <ArrowUpRight size={17} />
         </button>
       </nav>
     </header>

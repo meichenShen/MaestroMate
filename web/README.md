@@ -1,6 +1,6 @@
 # MaestroMate — a listening room
 
-An English, Smooothy-inspired music experience built around Saint-Saëns' **Aquarium**. The homepage offers work-first, experience-first and browsing entrances. The vertical programme keeps previews inside each work; Aquarium is playable and The Swan is explicitly a coming-soon placeholder. The first-visit guide can be reopened from the header.
+An English music experience built around Saint-Saëns' **Aquarium**, using the approved Outfit + Onest direction and a modern thin programme. The homepage offers work-first, experience-first and browsing entrances. The vertical programme keeps previews inside each work; Aquarium is playable and The Swan is explicitly a coming-soon placeholder. The first-visit guide leads to two prominent pictorial entrance choices; the subordinate “Just looking for now” action exists only in that dialog. “Start here” reopens the choices and “Guide” reopens onboarding.
 
 Live: https://maestromate-aquarium.chirpyapple14.chatgpt.site
 
@@ -24,11 +24,14 @@ With the production preview running, run `QA_BASE_URL=http://127.0.0.1:4173 npm 
 | Change | File |
 | --- | --- |
 | Brand and main navigation | `src/components/BrandHeader.tsx` |
-| Theatre entrance, activity entries, about and feedback links | `src/features/home/Home.tsx` |
+| Theatre backdrop, large activity entries, about and feedback links | `src/features/home/Home.tsx` |
 | Programme cover, work previews and work metadata | `src/features/home/Programme.tsx` |
 | Introductory guide | `src/components/Guide.tsx` |
-| Original unlit 3D studies and static fallback | `src/components/Sculpture.tsx` |
-| Precise outline icons | `src/components/Mark.tsx` |
+| First-entry hierarchy | `src/components/EntryChoice.tsx` |
+| Live 3D integration and static fallback | `src/components/AquariumView.tsx` |
+| PBR lights, model animation and render lifecycle | `src/rendering/aquarium.ts` |
+| Shared model/texture loading | `src/rendering/model.ts` |
+| Interface icons | Lucide React imports inside the relevant components |
 | Palette, fonts, page spacing and shared dimensions | `src/styles/tokens.css` |
 | Header, work columns, fixed player and responsive breakpoints | `src/styles/layout.css` |
 | Homepage composition and programme layout | `src/features/home/home.css` |
@@ -40,15 +43,21 @@ With the production preview running, run `QA_BASE_URL=http://127.0.0.1:4173 npm 
 | Optional eased scrolling and reveal observation | `src/hooks/useSmoothPage.ts` |
 | Navigation and transient session state | `src/App.tsx` |
 
-Desktop work pages place the activity next to contextual notes. At 720px, notes move below the activity and the player uses two rows; at 380px, notes become one column. Heights follow content, and work pages reserve space below the fixed player. Programme items always scroll vertically.
+Work pages give the activity the full width. Contextual notes and recording sources sit in an expandable section below. At 720px the player uses two rows; homepage experience portals become one column and programme metadata remains below each preview. Heights follow content, and work pages reserve space below the fixed player. Programme browsing always stays vertical.
 
 Hash routes (`#programme`, `#experiences`, `#about`, `#work/aquarium/theater`, `conversation`, `detective`) support browser back/forward. One AudioProvider stays mounted across every route. Changing activities preserves playback position and answer state; returning to the homepage pauses audio. Page refresh resets activity progress; the guide is remembered only for the browser session. Composer questions are scripted, with no free text or model calls.
 
-## Visual references and assets
+## Visual direction, 3D and assets
 
-The design follows Smooothy's black/white base, large playful type, Geist text, precise SVG line reveals, eased scrolling and unlit 3D. The actual source and its own preview images were inspected at commit `a235a4867e21a0428b62d2340fcf8c71c6e94fdf`. This site uses original music sculptures and open DynaPuff typography, rather than copying food assets, branded lettering or a separately licensed display font. Attribution and licenses are in `public/credits/`.
+Font A uses Outfit 350 for headings and Onest for body copy. Body text is approximately18px, with normal-case labels and larger readable controls. The black background remains; colour comes from the artwork and small restrained accents. The selected thin-page concept informs the programme, with a light fold transition, large previews and two complete vertically stacked works visible on desktop. Homepage experiences are large pictorial portals; work notes are folded into an expandable section below the full-width activity.
 
-There are no rejected concept images, paper textures, glossy lighting, glass effects or external 3D downloads. Local fonts and the recording ship with the site. WebGL has a static fallback; reduced-motion preferences disable eased scrolling and continuous sculpture animation. Offscreen sculpture rendering pauses.
+`AquariumView` displays real-time textured 3D fish using Three.js, a CC0 Microsoft BarramundiFish model distributed by Khronos, direct lights and an environment map. It reads music time, playback rate, pause and motion state; it never creates audio. A single downloaded model/texture promise is shared, while each renderer owns animated materials and environment resources. Geometry stays unchanged on disk; WebP texture repacking reduces the original12.49MB file to0.64MB. Details and checksums are in `public/models/ATTRIBUTION.md`. To reproduce optimization, put the original at `.tmp/modern-render/barramundi-original.glb`, then run `python scripts/optimize-fish.py` (requires Pillow).
+
+The theatre, underwater environment, swan, imagined composer sculpture and detective symbol are generated raster assets with realistic rendered 3D art direction. They are images rather than live 3D models. The aquarium poster is a captured frame of the actual renderer and is also the fallback. These assets are stored locally in `public/images/`; visitors do not need access to outside model/font hosts.
+
+Smooothy's actual code and preview images informed textured asset use, minimal presentation and eased interaction. `ScottieFox/caustic-volume` was reviewed as a water-light technical reference; its simulation is not bundled. Source and font licenses are linked from `public/credits/README.txt`.
+
+Reduced motion and Motion off freeze decorative rendering while music continues. Offscreen/hidden pages suspend the animation loop. WebGL or model-load failure leaves a real rendered poster visible and all audio controls usable. App-owned observers, materials, environment render targets, renderer and WebGL context are released on unmount.
 
 ## Recording
 

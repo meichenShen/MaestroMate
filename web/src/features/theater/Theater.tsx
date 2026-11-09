@@ -1,11 +1,8 @@
-import { lazy, Suspense } from "react";
+import { AquariumView } from "../../components/AquariumView";
 import { Play, Pause } from "lucide-react";
 import { useAudio } from "../../audio/AudioProvider";
 import { formatTime } from "../../audio/timeline";
 import { chapters } from "../../content/aquarium";
-const Sculpture = lazy(() =>
-  import("../../components/Sculpture").then((m) => ({ default: m.Sculpture })),
-);
 export function Theater({
   onDiscover,
   motion,
@@ -19,14 +16,14 @@ export function Theater({
   return (
     <section aria-labelledby="theater-title" className="theater-feature">
       <div className="feature-heading">
-        <span className="micro">01 / LISTEN & IMAGINE</span>
+        <span className="micro">Listen & imagine</span>
         <h1 id="theater-title">Aquarium</h1>
         <p>Let the music take its own shape.</p>
       </div>
       <div className={`listening-scene phase-${audio.chapter.id}`}>
         <div className="scene-topline">
           <span className="micro">
-            {audio.playing ? "NOW LISTENING" : "A SMALL WORLD, WAITING"}
+            {audio.playing ? "Now listening" : "A small world, waiting"}
           </span>
           <button
             aria-pressed={!motion}
@@ -35,9 +32,12 @@ export function Theater({
             {motion ? "Motion off" : "Motion on"}
           </button>
         </div>
-        <Suspense fallback={<span className="micro">SETTING THE SCENE</span>}>
-          <Sculpture kind="fish" motion={motion && audio.playing} />
-        </Suspense>
+        <AquariumView
+          time={audio.time}
+          rate={audio.rate}
+          playing={audio.playing}
+          motion={motion}
+        />
         <div className="scene-caption" aria-live="polite">
           <span className="micro">
             0{chapters.indexOf(audio.chapter) + 1} / 04

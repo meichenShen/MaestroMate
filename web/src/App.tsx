@@ -6,6 +6,7 @@ import { ActivityNav } from "./components/ActivityNav";
 import { ContextPanel } from "./components/ContextPanel";
 import { Player } from "./components/Player";
 import { Guide } from "./components/Guide";
+import { EntryChoice, type EntryRoute } from "./components/EntryChoice";
 import { Home } from "./features/home/Home";
 import { Theater } from "./features/theater/Theater";
 import { Conversation } from "./features/conversation/Conversation";
@@ -34,6 +35,16 @@ function Site() {
       return sessionStorage.getItem("maestromate-guide-v2") !== "seen";
     } catch {
       return true;
+    }
+  });
+  const [entrance, setEntrance] = useState(() => {
+    try {
+      return (
+        !location.hash &&
+        sessionStorage.getItem("maestromate-entry-v1") !== "seen"
+      );
+    } catch {
+      return !location.hash;
     }
   });
   const closeGuide = useCallback(() => {
@@ -84,6 +95,16 @@ function Site() {
     sync();
     return () => window.removeEventListener("hashchange", sync);
   }, [audio.pause]);
+  const chooseEntry = (route: EntryRoute) => {
+    setEntrance(false);
+    try {
+      sessionStorage.setItem("maestromate-entry-v1", "seen");
+    } catch {}
+    if (route === "work") {
+      setMode("theater");
+      toSection("programme");
+    } else if (route === "experience") toSection("experiences");
+  };
   const onHome = () => {
     audio.pause();
     setInWork(false);
@@ -106,6 +127,7 @@ function Site() {
       </a>
       <BrandHeader
         onGuide={() => setGuide(true)}
+        onEntry={() => setEntrance(true)}
         onHome={onHome}
         onSection={toSection}
       />
@@ -119,7 +141,7 @@ function Site() {
             >
               ← <span>Back to programme</span>
             </button>
-            <span className="micro">SAINT-SAËNS / AQUARIUM / VII</span>
+            <span className="micro">Saint-Saëns · Aquarium</span>
           </div>
           <ActivityNav active={activity} onChange={toWork} />
           <div className="room-layout">
@@ -142,7 +164,7 @@ function Site() {
             <ContextPanel activity={activity} />
           </div>
           <div className="room-next">
-            <span className="micro">KEEP EXPLORING</span>
+            <span className="micro">Keep exploring</span>
             <button
               onClick={() =>
                 toWork(
@@ -167,6 +189,7 @@ function Site() {
         <Home
           open={bookOpen}
           onOpen={() => setBookOpen(true)}
+          onClose={() => setBookOpen(false)}
           onStart={() => {
             setMode("theater");
             toSection("programme");
@@ -181,6 +204,7 @@ function Site() {
       )}
       {inWork && <Player />}
       {guide && <Guide onClose={closeGuide} />}
+      {entrance && !guide && <EntryChoice onChoose={chooseEntry} />}
     </>
   );
 }

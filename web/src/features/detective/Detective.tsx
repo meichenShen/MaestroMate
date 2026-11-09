@@ -24,7 +24,7 @@ export function Detective({
   return (
     <section className="detective-feature" aria-labelledby="detective-title">
       <div className="feature-heading">
-        <span className="micro">03 / MUSIC DETECTIVE</span>
+        <span className="micro">Music Detective</span>
         <h1 id="detective-title">Follow the clues.</h1>
         <p>Small details. New discoveries.</p>
       </div>
@@ -32,7 +32,7 @@ export function Detective({
         <span className="case-number">0{progress.index + 1}</span>
         <div>
           <span className="micro">
-            SOUND CASE / {progress.index + 1} OF {detectiveQuestions.length}
+            Sound case · {progress.index + 1} of {detectiveQuestions.length}
           </span>
           <h2>{question.title}</h2>
         </div>
@@ -110,7 +110,7 @@ export function Detective({
         >
           ← Previous clue
         </button>
-        <span className="micro">TAKE YOUR TIME</span>
+        <span className="micro">Take your time</span>
         <button
           disabled={
             !revealed || progress.index === detectiveQuestions.length - 1

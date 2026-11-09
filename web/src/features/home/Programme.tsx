@@ -1,83 +1,88 @@
-import { lazy, Suspense } from "react";
-import { Arrow } from "../../components/Arrow";
-const Sculpture = lazy(() =>
-  import("../../components/Sculpture").then((m) => ({ default: m.Sculpture })),
-);
+import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, ArrowDown, Plus, Minus } from "lucide-react";
+import { AquariumView } from "../../components/AquariumView";
 export function Programme({
   open,
   onOpen,
+  onClose,
   onEnter,
   mode,
 }: {
   open: boolean;
   onOpen: () => void;
+  onClose: () => void;
   onEnter: () => void;
   mode: string;
 }) {
+  const [closing, setClosing] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const close = () => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      onClose();
+      return;
+    }
+    setClosing(true);
+    timer.current = setTimeout(() => {
+      onClose();
+      setClosing(false);
+    }, 280);
+  };
   return (
     <section id="programme" className="programme-section section-anchor">
-      <div className="section-side" data-reveal>
-        <span className="micro">01 / THE PROGRAMME</span>
-        <h2 className="display-heading">
-          Pick your
-          <br />
-          <span>first listen.</span>
-        </h2>
-        <p>
-          A whole world in one piece.
-          <br />
-          Stay curious. Take your time.
-        </p>
-        <span className="programme-direction">SCROLL TO EXPLORE ↓</span>
-        {mode !== "theater" && (
-          <p className="entry-note">
-            Your way in:
-            <br />
-            {mode === "conversation" ? "Meet the composer" : "Music Detective"}
-          </p>
-        )}
+      <div className="programme-heading">
+        <div>
+          <p className="eyebrow">Choose a piece</p>
+          <h2>The programme.</h2>
+          <p>A whole world in one piece.</p>
+        </div>
+        <div className="programme-tools">
+          {mode !== "theater" && (
+            <p>
+              Your way in:{" "}
+              {mode === "conversation"
+                ? "Meet the composer"
+                : "Music Detective"}
+            </p>
+          )}
+          {open && (
+            <button
+              className="text-button"
+              aria-label="Close programme"
+              onClick={close}
+              disabled={closing}
+            >
+              Close programme <Minus size={18} />
+            </button>
+          )}
+        </div>
       </div>
       {!open ? (
         <button
           className="programme-cover"
-          onClick={onOpen}
           aria-label="Open programme"
+          onClick={onOpen}
         >
-          <span className="micro">MAESTROMATE / VOLUME 01</span>
-          <span className="cover-title">
-            The
+          <img src="/images/aquarium-poster.webp" alt="" />
+          <span className="cover-heading">
+            A closer kind
             <br />
-            listening
-            <br />
-            programme.
+            of listening.
           </span>
           <span className="cover-action">
-            Open the programme <Arrow />
+            Open the programme <Plus size={24} />
           </span>
         </button>
       ) : (
-        <div className="programme-list">
+        <div className={`programme-list ${closing ? "is-closing" : ""}`}>
           <article className="work-entry" data-work="aquarium">
-            <div className="work-preview aquarium-preview">
-              <span className="preview-index micro">
-                0001 / A WORLD BENEATH THE SURFACE
-              </span>
-              <Suspense fallback={<div className="art-loading" />}>
-                <Sculpture kind="fish" />
-              </Suspense>
-              <span className="preview-caption micro">
-                AN INTERPRETATION, NOT AN ILLUSTRATION.
-              </span>
+            <div className="work-preview">
+              <AquariumView preview />
             </div>
             <div className="work-information">
               <div>
-                <h3>
-                  Aquarium <span>1886</span>
-                </h3>
-                <p>Camille Saint-Saëns · The Carnival of the Animals</p>
-                <p className="work-description">
-                  Follow the ripples. Find your own picture.
-                </p>
+                <h3>Aquarium</h3>
+                <p>Camille Saint-Saëns · 1886</p>
               </div>
               <button
                 className="round-link"
@@ -85,35 +90,34 @@ export function Programme({
                 aria-label="Enter Aquarium"
               >
                 <span>
-                  Enter work
-                  <br />
-                  <small>2 MIN 24 SEC</small>
+                  Enter work <small>2 min 24 sec</small>
                 </span>
-                <Arrow diagonal />
+                <ArrowUpRight size={25} />
               </button>
             </div>
           </article>
           <article className="work-entry" data-work="swan">
-            <div className="work-preview swan-preview">
-              <span className="preview-index micro">
-                0002 / A DIFFERENT KIND OF STILLNESS
-              </span>
-              <Suspense fallback={<div className="art-loading" />}>
-                <Sculpture kind="swan" />
-              </Suspense>
+            <div className="work-preview">
+              <img
+                className="swan-image"
+                src="/images/swan.webp"
+                alt="A detailed white swan on dark water"
+                loading="lazy"
+              />
             </div>
             <div className="work-information">
               <div>
-                <h3>
-                  The Swan <span>1886</span>
-                </h3>
-                <p>Camille Saint-Saëns · The Carnival of the Animals</p>
+                <h3>The Swan</h3>
+                <p>Camille Saint-Saëns · 1886</p>
               </div>
               <button className="coming-soon" disabled>
-                Coming soon <span>↗</span>
+                Coming soon <ArrowUpRight size={22} />
               </button>
             </div>
           </article>
+          <p className="programme-direction">
+            Scroll to explore <ArrowDown size={16} />
+          </p>
         </div>
       )}
     </section>

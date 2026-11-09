@@ -39,7 +39,7 @@ export function Guide({ onClose }: { onClose: () => void }) {
       >
         ×
       </button>
-      <p className="micro">A SMALL INTRODUCTION / {steps[step].number}—03</p>
+      <p className="micro">A small introduction / {steps[step].number}—03</p>
       <h2 id="guide-title">{steps[step].title}</h2>
       <p>{steps[step].text}</p>
       <div className="guide-actions">

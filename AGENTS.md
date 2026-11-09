@@ -8,3 +8,6 @@
 - Put short-lived downloads, QA screenshots, logs and packaging artifacts under the ignored `web/.tmp/` directory. Do not create dated copies of the source tree; use Git history.
 - Do not commit dependencies, build outputs, caches, secrets or test artifacts. Keep original source material and Git history. Only remove verified reproducible artifacts belonging to this project; never clear app-wide or other projects' caches.
 - Keep browser QA and the editing guide current after behavior changes. Public publishing is authorized for this demo; preserve that audience on updates.
+- Approved visual direction: Outfit + Onest, mainly black, readable normal-case copy and large rendered imagery. Keep artwork in the programme and keep its browsing vertical.
+- First-entry choices have two primary pictorial actions. Just looking is a subordinate action only in that dialog; do not turn it into a homepage feature.
+- Real-time fish rendering belongs in `web/src/rendering/` and `AquariumView`; pre-rendered illustrations belong in `web/public/images/`. Preserve that distinction in credits and claims. Model/source licenses live with the assets.

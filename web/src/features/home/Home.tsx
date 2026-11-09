@@ -1,14 +1,16 @@
-import { lazy, Suspense } from "react";
-import { Arrow } from "../../components/Arrow";
-import { Mark } from "../../components/Mark";
+import {
+  ArrowDown,
+  ArrowUpRight,
+  Headphones,
+  MessagesSquare,
+  Search,
+} from "lucide-react";
 import { Programme } from "./Programme";
 import { type ActivityId } from "../../content/aquarium";
-const Sculpture = lazy(() =>
-  import("../../components/Sculpture").then((m) => ({ default: m.Sculpture })),
-);
 export function Home({
   open,
   onOpen,
+  onClose,
   onStart,
   onExplore,
   onEnter,
@@ -16,163 +18,139 @@ export function Home({
 }: {
   open: boolean;
   onOpen: () => void;
+  onClose: () => void;
   onStart: () => void;
   onExplore: (activity: ActivityId) => void;
   onEnter: () => void;
   mode: ActivityId;
 }) {
+  const entries = [
+    {
+      id: "theater" as const,
+      name: "Listen & imagine",
+      description: "Step inside a world of sound.",
+      label: "Start with immersive listening",
+      image: "aquarium-poster",
+      Icon: Headphones,
+    },
+    {
+      id: "conversation" as const,
+      name: "Meet the composer",
+      description: "Let a good question take you somewhere.",
+      label: "Start with composer conversation",
+      image: "composer",
+      Icon: MessagesSquare,
+    },
+    {
+      id: "detective" as const,
+      name: "Music Detective",
+      description: "Listen a little closer. Find a new detail.",
+      label: "Start with Music Detective",
+      image: "detective",
+      Icon: Search,
+    },
+  ];
   return (
     <main id="main" tabIndex={-1}>
       <section className="theatre-lobby">
-        <div className="hero-topline micro">
-          <span>AN INDEPENDENT SPACE FOR CURIOUS EARS</span>
-          <span>NO EXPERIENCE NECESSARY.</span>
-        </div>
-        <div className="hero-composition">
-          <div className="hero-type">
-            <span className="micro">COME ON IN.</span>
-            <h1>
-              Hear
-              <br />
-              <span>something</span>
-              <br />
-              different.
-            </h1>
-            <p>
-              A little listening. A little wondering.
-              <br />A new way to meet classical music.
-            </p>
-          </div>
-          <div className="hero-sculpture">
-            <div className="stage-outline" aria-hidden="true" />
-            <Suspense fallback={<div className="art-loading" />}>
-              <Sculpture kind="ribbon" />
-            </Suspense>
-            <span className="hero-object-label micro">
-              STUDY 001 — MUSIC IN THE MAKING
-            </span>
-            <Mark kind="theatre" />
-          </div>
-        </div>
-        <div className="entrance-options">
-          <button onClick={onStart} aria-label="Start with a work">
-            <span className="micro">01 / THE WHOLE JOURNEY</span>
-            <span>
-              Start with a work <Arrow />
-            </span>
-          </button>
-          <a href="#experiences">
-            <span className="micro">02 / FOLLOW YOUR CURIOSITY</span>
-            <span>
-              Choose an experience <Arrow />
-            </span>
-          </a>
-          <button onClick={onStart} aria-label="Just looking">
-            <span className="micro">03 / NO PLAN NEEDED</span>
-            <span>
-              Just looking <Arrow />
-            </span>
-          </button>
-        </div>
-        <div className="hero-bottom micro">
-          <span>SCROLL FOR A CLOSER LOOK</span>
-          <span>↓</span>
-        </div>
-      </section>
-      <Programme open={open} onOpen={onOpen} onEnter={onEnter} mode={mode} />
-      <section id="experiences" className="experiences section-anchor">
-        <div className="experience-intro" data-reveal>
-          <span className="micro">02 / THREE WAYS IN</span>
-          <h2 className="display-heading">
-            Same music.
+        <img
+          className="theatre-backdrop"
+          src="/images/theatre.webp"
+          alt="A contemporary concert hall with a grand piano"
+          fetchPriority="high"
+        />
+        <div className="hero-type">
+          <p className="eyebrow">A listening room for curious minds</p>
+          <h1>
+            A closer kind
             <br />
-            <span>New perspective.</span>
-          </h2>
+            of listening.
+          </h1>
           <p>
-            Follow a whole journey, or start with whatever catches your
-            curiosity.
+            A little listening. A little wondering.
+            <br />A new way to meet classical music.
           </p>
+          <div className="hero-actions">
+            <button className="solid-button" onClick={onStart}>
+              Open the programme <ArrowUpRight size={23} />
+            </button>
+            <a href="#experiences">
+              Explore experiences <ArrowDown size={19} />
+            </a>
+          </div>
+        </div>
+        <p className="hero-bottom">Come in. Take your time.</p>
+      </section>
+      <Programme
+        open={open}
+        onOpen={onOpen}
+        onClose={onClose}
+        onEnter={onEnter}
+        mode={mode}
+      />
+      <section id="experiences" className="experiences section-anchor">
+        <div className="section-heading" data-reveal>
+          <p className="eyebrow">Three ways into the music</p>
+          <h2>Follow your curiosity.</h2>
+          <p>Listen, ask, discover. Start wherever you like.</p>
         </div>
         <div className="experience-list">
-          {[
-            {
-              id: "theater" as const,
-              kind: "listen" as const,
-              name: "Listen & imagine",
-              description:
-                "Give the music your attention. Let a world take shape.",
-              label: "Start with immersive listening",
-            },
-            {
-              id: "conversation" as const,
-              kind: "meet" as const,
-              name: "Meet the composer",
-              description: "A few good questions can change the way you hear.",
-              label: "Start with composer conversation",
-            },
-            {
-              id: "detective" as const,
-              kind: "discover" as const,
-              name: "Music Detective",
-              description: "Follow a small clue. Discover a new detail.",
-              label: "Start with Music Detective",
-            },
-          ].map((item, i) => (
+          {entries.map(({ id, name, description, label, image, Icon }) => (
             <button
-              key={item.id}
-              className="experience-row"
-              onClick={() => onExplore(item.id)}
-              aria-label={item.label}
+              key={id}
+              className="experience-portal"
+              aria-label={label}
+              onClick={() => onExplore(id)}
               data-reveal
             >
-              <span className="micro">0{i + 1}</span>
-              <Mark kind={item.kind} />
-              <span>
-                <strong>{item.name}</strong>
-                <small>{item.description}</small>
+              <div className="experience-art">
+                <img src={"/images/" + image + ".webp"} alt="" loading="lazy" />
+                <span className="experience-icon">
+                  <Icon size={25} strokeWidth={1.5} />
+                </span>
+              </div>
+              <span className="experience-copy">
+                <strong>{name}</strong>
+                <small>{description}</small>
               </span>
-              <Arrow diagonal />
+              <ArrowUpRight className="portal-arrow" size={26} />
             </button>
           ))}
         </div>
       </section>
       <section id="about" className="about-section section-anchor" data-reveal>
-        <span className="micro">03 / WHY WE'RE HERE</span>
+        <p className="eyebrow">A little wonder helps</p>
         <h2>
-          Music doesn't need
+          Music is a place
           <br />
-          an introduction.
-          <br />
-          <span>But a little wonder helps.</span>
+          to get curious.
         </h2>
         <p>
-          MaestroMate connects listening, context and discovery around the same
-          piece. An invitation to explore at your own pace, with no right way to
-          begin.
+          MaestroMate brings listening, context and discovery together around
+          the same piece. An invitation to explore at your own pace, with no
+          right way to begin.
         </p>
       </section>
       <footer className="site-footer">
-        <span className="footer-wordmark" aria-hidden="true">
-          stay curious.
-        </span>
+        <span className="footer-wordmark">Stay curious.</span>
         <div className="footer-bottom">
-          <p className="micro">MAESTROMATE · AN EXPLORATION IN PROGRESS</p>
+          <p>MaestroMate · An exploration in progress</p>
           <a
             href="https://github.com/meichenShen/MaestroMate"
             target="_blank"
             rel="noreferrer"
           >
-            Project & contact ↗
+            Project & contact <ArrowUpRight size={15} />
           </a>
           <a
             href="https://github.com/meichenShen/MaestroMate/issues/new"
             target="_blank"
             rel="noreferrer"
           >
-            Leave feedback ↗
+            Leave feedback <ArrowUpRight size={15} />
           </a>
           <a href="/credits/README.txt" target="_blank" rel="noreferrer">
-            Credits ↗
+            Credits <ArrowUpRight size={15} />
           </a>
         </div>
       </footer>
