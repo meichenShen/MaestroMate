@@ -598,6 +598,6 @@
 @media (max-width: 720px) {
   .programme-cover > img,
   .experience-portal:first-child .experience-art > img {
-    object-position: 66% center;
+    object-position: 54% center;
   }
 }
