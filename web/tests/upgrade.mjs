@@ -166,3 +166,21 @@ test("concert-hall pointer control spans a wide actual camera angle", async () =
     await p.close();
   }
 });
+test("revealed cases replay their explained reference passage", async () => {
+  const p = await page("#play/aquarium");
+  try {
+    const stage = p.locator("#current-sound-case");
+    for (const [index, start] of [[1, 130], [0, 3], [2, 3]]) {
+      await p.getByRole("button", { name: `Open case ${index + 1}`, exact: true }).click();
+      await stage.getByRole("radio").nth(1).check();
+      await stage.getByRole("button", { name: "Check answer", exact: true }).click();
+      await stage.getByRole("button", { name: /Hear it again/ }).click();
+      await p.waitForFunction(() => !document.querySelector("audio").paused);
+      const time = await p.locator("audio").evaluate((a) => a.currentTime);
+      assert.ok(time >= start && time < start + 2, `Case ${index + 1} replays ${start}s, got ${time}`);
+      await p.getByRole("button", { name: "Pause music", exact: true }).click();
+    }
+  } finally {
+    await p.close();
+  }
+});

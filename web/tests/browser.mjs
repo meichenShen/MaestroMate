@@ -103,6 +103,7 @@ try {
     .getByRole("button", { name: "Play Sound Detective", exact: true })
     .click();
   const stage = p.locator("#current-sound-case");
+  await stage.waitFor();
   assert.equal(await p.getByRole("article").count(), 3);
   assert.equal(
     await stage

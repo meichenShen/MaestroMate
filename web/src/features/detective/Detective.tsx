@@ -199,7 +199,7 @@ export function Detective({
               <>
                 <button
                   className="case-replay"
-                  onClick={() => audio.playClip(q.clips[0])}
+                  onClick={() => audio.playClip(q.clips[q.replayClipIndex])}
                 >
                   Hear it again ↺
                 </button>

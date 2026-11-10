@@ -166,6 +166,7 @@ export const detectiveQuestions = [
     prompt:
       "Beyond the quick, flowing notes, what else can you hear in this opening?",
     clips: [{ start: 3, end: 18, label: "Play the clue" }],
+    replayClipIndex: 0,
     options: ["Only quick notes", "A longer melody", "Only a drum"],
     correct: 1,
     explanation:
@@ -180,6 +181,7 @@ export const detectiveQuestions = [
       { start: 3, end: 14, label: "Passage A · opening" },
       { start: 130, end: work.duration, label: "Passage B · ending" },
     ],
+    replayClipIndex: 1,
     options: ["Passage A", "Passage B"],
     correct: 1,
     explanation: "B is the ending. Stay for the quiet after its last note.",
@@ -194,6 +196,7 @@ export const detectiveQuestions = [
       { start: 70, end: 78, label: "Listen B" },
       { start: 3, end: 11, label: "Listen C" },
     ],
+    replayClipIndex: 2,
     options: ["Clip B", "Clip C"],
     correct: 1,
     explanation: "C repeats A's recording window. B begins later in the piece.",

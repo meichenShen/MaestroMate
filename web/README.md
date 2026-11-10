@@ -39,6 +39,8 @@ With the production preview running: `QA_BASE_URL=http://127.0.0.1:4173 npm run 
 | Work facts, prepared answers, sources, chapters and clip timestamps | `src/content/aquarium.ts` |
 | Shared audio and player controls | `src/audio/AudioProvider.tsx`, `components/Player.tsx` |
 | Colours, fonts, sizes and breakpoints | `src/styles/tokens.css`, `layout.css` |
+| Activity workspace sizing, game stage and chat topic styles | `src/styles/upgrade.css` |
+| Shared hover/focus hints and separate source-notes dialog | `src/components/Hint.tsx`, `ContextPanel.tsx` |
 | Eased scrolling, homepage idle snapping and scene reveals | `src/hooks/useSmoothPage.ts` |
 
 Each room has its own component. The shared player has one persistent audio element; moving between activities preserves playback and position. Directories and the homepage pause playback. Chat retains incoming/outgoing messages during navigation, including a reply pending when the user leaves; refreshing resets this state. No free text, accounts, AI calls or database are present. Sources remain available below individual replies and in recording credits.
@@ -83,6 +85,6 @@ Keep the existing public Sites project in `.openai/hosting.json`. Build and comm
 
 Each activity fits the desktop viewport rather than asking users to scroll to act. The player's actual height is observed so the scene and controls remain above it. Listening has its scene, chapters and onward link in that frame. Chat pairs a profile/topic rail with retained messages and compact question tiles. Hover/focus shows the full question or function; tap works for info triggers. Source notes are a separate dialog that returns focus on close.
 
-Music Detective shows three parallel case overviews and one fixed answer stage. Previous/next changes content with an animation, retaining each answer. Checking replaces the centre visual with animated feedback without increasing the page height; a correct answer draws a circle/check flourish. All three discoveries replace the navigation's middle status with a completion mark. The third clue asks which clip repeats the same recording window as A. No second audio element or model is involved.
+Music Detective shows three parallel case overviews and one fixed answer stage. Previous/next changes content with an animation, retaining each answer. Checking replaces the centre visual with animated feedback without increasing the page height; a correct answer draws a circle/check flourish. All three discoveries replace the navigation's middle status with a completion mark. The third clue asks which clip repeats the same recording window as A. Each content entry's `replayClipIndex` selects the passage explained by its revealed answer. No second audio element or model is involved.
 
 Prepared dialogue remains a fictional first-person adaptation based on Paris Opera/BnF sources, never a historical quotation. Desktop1440×900 and1024×768 are explicit no-document-scroll contracts. Narrow screens retain a readable vertical fallback; physical-phone performance is not claimed.
