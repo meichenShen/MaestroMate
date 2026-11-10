@@ -3,6 +3,7 @@ import { DrawnIcon } from "../../components/DrawnIcon";
 import { RoomPortal } from "../../components/RoomPortal";
 import { TheatreStage } from "../../components/TheatreStage";
 import { LetterHeading } from "../../components/LetterHeading";
+import { FeedbackEntry } from "../feedback/FeedbackEntry";
 const scenes = [
   { id: "home", name: "Welcome" },
   { id: "explore", name: "The rooms" },
@@ -110,19 +111,13 @@ export function Home({ motion }: { motion: boolean }) {
             longer.
           </p>
           <div className="about-actions">
-            <a
-              href="https://github.com/meichenShen/MaestroMate/issues/new"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Tell us how it felt <ArrowUpRight size={18} />
-            </a>
+          <FeedbackEntry />
             <a
               href="https://github.com/meichenShen/MaestroMate"
               target="_blank"
               rel="noreferrer"
             >
-              Say hello <ArrowUpRight size={18} />
+            Say hello on GitHub <ArrowUpRight size={18} />
             </a>
             <a href="/credits/README.txt" target="_blank" rel="noreferrer">
               Credits

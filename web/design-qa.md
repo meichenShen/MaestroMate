@@ -65,3 +65,11 @@ One bounded fresh-context final review found no actionable regressions. Its extr
 ## Limits
 
 These are local production Chromium checks and actual inspected screenshots. They do not establish physical-phone GPU/touch performance, spoken screen-reader behavior or the user's final aesthetic approval. Native Sites results establish publication separately. Composer facts were checked against the opened Paris Opera biography and BnF exhibition; source links are external, while the working site assets remain local.
+
+## 2026-11-10: in-site feedback
+
+The bottom feedback action now opens a native dialog, with a visible note field, feedback type and optional reply email. It uses the existing black/cyan palette and readable sentence-case text. A body portal isolates modal typography from the homepage's large headings; 1280×720 and390×844 screenshots were inspected. The separate repository link explicitly says “Say hello on GitHub”.
+
+Actual local HTTP submissions are inspected through a second SQLite connection; a server restart preserved the saved row. Browser contracts cover acknowledged receipt, no external navigation, draft retention on failure, abort/late-response handling, Escape and focus return. The final typography assertion first failed against the old built dialog and passed after the portal fix. API tests cover anonymous capability issuance/expiry, bounded input, no public reads, duplicate/conflicting/concurrent retries, throttling and storage failure.
+
+Owner feedback stays in the Sites database, outside the public repository and public APIs. Local preview data is isolated from production. Production delivery requires a successful anonymous write plus an owner-side row check; publication status or local SQLite success alone does not establish that. The managed cloud's production-domain CONNECT403 currently prevents that live HTTP check.

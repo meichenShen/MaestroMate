@@ -1,6 +1,7 @@
 # MaestroMate project conventions
 
 - The active website is in `web/`; preserve the research documents, assets and `old version/`.
+- Anonymous feedback belongs to `web/src/features/feedback/`, `worker/` and the private Sites D1 binding. Never expose a public feedback read API, commit real messages/email addresses, or show receipt without a server acknowledgement. Generate and commit Drizzle migrations; runtime requests must not change schema. Local SQLite databases stay in ignored `.tmp/`.
 - Keep navigation, work introduction, contextual notes and player as separate components. Keep each activity in its own feature directory.
 - Shared audio belongs to one provider above the activity switch. Never mount another audio element for a question or remount it when switching activities.
 - Put recording-specific content, questions, chapter times and attribution in `web/src/content/`. Changing a recording requires reviewing every timestamp.

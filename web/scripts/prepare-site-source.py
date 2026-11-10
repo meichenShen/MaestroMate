@@ -63,14 +63,23 @@ try:
     observed = git("ls-remote", remote, f"refs/heads/{branch}", env=environment).split()[0]
     if observed != source_commit:
         raise ValueError("Remote source does not match packaged commit")
-    output = checkout / manifest["static"]["directory"]
-    if not (output / "index.html").is_file() or not (output / "audio/aquarium.mp3").is_file():
-        raise ValueError("Complete static build with audio is required")
+    output = checkout / "dist"
+    if manifest.get("static"):
+        output = checkout / manifest["static"]["directory"]
+        client = output
+    else:
+        client = output / "client"
+        if not (output / "server/index.js").is_file() or not (output / ".openai/drizzle/meta/_journal.json").is_file():
+            raise ValueError("Complete Worker build and database migrations are required")
+        if json.loads((output / ".openai/hosting.json").read_text()) != manifest:
+            raise ValueError("Built hosting metadata must match the source")
+    if not (client / "index.html").is_file() or not (client / "audio/aquarium.mp3").is_file():
+        raise ValueError("Complete client build with audio is required")
     archive = checkout / ".tmp/deployment.tgz"
     archive.parent.mkdir(exist_ok=True)
     with tarfile.open(archive, "w:gz") as package:
         package.add(checkout / ".openai/hosting.json", arcname=".openai/hosting.json")
-        package.add(output, arcname=manifest["static"]["directory"])
+        package.add(output, arcname=manifest.get("static", {}).get("directory", "dist"))
     print(json.dumps({
         "project_id": project_id, "commit_sha": source_commit,
         "github_commit": github_commit, "archive": str(archive),

@@ -6,18 +6,17 @@ Live: https://maestromate-aquarium.chirpyapple14.chatgpt.site
 
 ## Development
 
-Requires Node.js 22.18+ (24 recommended).
+Requires Node.js 24 (local preview/tests use its SQLite support).
 
 ```sh
 cd web
 npm ci --cache .tmp/npm-cache
-npm run dev
 npm test
 npm run build
-npm run preview -- --port 4173
+PORT=4173 npm run preview
 ```
 
-With the production preview running: `QA_BASE_URL=http://127.0.0.1:4173 npm run test:browser`. Tests use `/usr/bin/chromium` (override `CHROMIUM_PATH`) and the actual MP3. Screenshots and transient results stay in ignored `.tmp/qa/`. Keep the production build unchanged during a browser run.
+With the production preview running: `QA_BASE_URL=http://127.0.0.1:4173 npm run test:browser`. The preview runs the real Worker handler with a persistent SQLite database at `.tmp/feedback/local.sqlite`; it does not write production feedback. For hot reload, also run `npm run dev`; its `/api` proxy expects the Worker preview on port8787 (the default). Rebuild/restart preview after Worker changes. Tests use `/usr/bin/chromium` and the actual MP3. Screenshots and transient results stay in ignored `.tmp/qa/`. Keep the production build unchanged during a browser run.
 
 ## Editing map
 
@@ -27,6 +26,7 @@ With the production preview running: `QA_BASE_URL=http://127.0.0.1:4173 npm run 
 | Persistent state and page composition                               | `src/App.tsx`                                                                                                     |
 | Brand and global Listen / Chat / Play / Program navigation          | `src/components/BrandHeader.tsx`                                                                                  |
 | Four homepage scenes, scattered entrances and contact links         | `src/features/home/Home.tsx`, `home.css`                                                                          |
+| Anonymous feedback form, API and database schema                    | `src/features/feedback/`, `worker/feedback.ts`, `db/schema.ts`, `drizzle/`                                          |
 | Large concert hall, camera orbit and instanced architecture         | `src/rendering/theatre.ts`, `hall-architecture.ts`, `hall-view.ts`, `orchestra.ts`, `components/TheatreStage.tsx` |
 | Large icon geometry, stable hover entrances and path drawing        | `src/components/DrawnIcon.tsx`, `RoomPortal.tsx`                                                                  |
 | Independent listening collection                                    | `src/features/library/ListeningLibrary.tsx`                                                                       |
@@ -45,7 +45,17 @@ With the production preview running: `QA_BASE_URL=http://127.0.0.1:4173 npm run 
 | Shared hover/focus hints and separate source-notes dialog           | `src/components/Hint.tsx`, `ContextPanel.tsx`                                                                     |
 | Eased scrolling, homepage idle snapping and scene reveals           | `src/hooks/useSmoothPage.ts`                                                                                      |
 
-Each room has its own component. The shared player has one persistent audio element; moving between activities preserves playback and position. Directories and the homepage pause playback. Chat retains incoming/outgoing messages during navigation, including a reply pending when the user leaves; refreshing resets this state. No free text, accounts, AI calls or database are present. Sources remain available below individual replies and in recording credits.
+Each room has its own component. The shared player has one persistent audio element; moving between activities preserves playback and position. Directories and the homepage pause playback. Chat retains incoming/outgoing messages during navigation, including a reply pending when the user leaves; refreshing resets this state. Composer chat has no free input, accounts or AI calls. Only the optional feedback form uses a database. Sources remain available below individual replies and in recording credits.
+
+## Feedback for the owner
+
+“Tell us how it felt” opens an account-free form. It saves the note, type, optional reply email, route and timestamp in the private Sites D1 `DB` binding. It does not create a GitHub issue or send an automatic email. “Say hello on GitHub” is a separately labelled external repository link.
+
+To see feedback, open this Site’s **Settings → database viewer**, select `DB` and `feedback`, or ask Codex to retrieve/summarize recent feedback using the native Sites database tools. Messages and email addresses must not be copied into the public repository, logs or screenshots. There is no public read/list endpoint or visitor admin page. The capability/session table contains only hashed short-lived anonymous write tokens, without IP addresses; old capability rows are pruned on new session issuance. Feedback is retained until the owner removes it through the platform’s database management; no deletion or export endpoint is public.
+
+The UI preserves drafts in component memory (not browser storage) after errors or dismissal. Receipt requires an acknowledged durable write; exact retries reuse an idempotency ID. A temporary same-origin capability, schema/body limits and per-capability/global intake limits bound anonymous writes. This is lightweight demo spam protection, not identity verification; a determined sender can consume the shared quota. No CAPTCHA/account service is introduced.
+
+For schema changes, edit `db/schema.ts`, run `npx drizzle-kit generate`, review and commit generated SQL plus `drizzle/meta/`. Sites applies these migrations before deploying the Worker. The build stages them under `dist/.openai/drizzle`. Never create or alter schema in a request handler. `npm run test:feedback` runs the API contracts and, with preview running, a browser submission inspected through an independent local database connection. Do not call a local preview check a production delivery test.
 
 ## Routes
 
