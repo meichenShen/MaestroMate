@@ -200,3 +200,12 @@
 - 20项单元测试、真实录音完整性、TypeScript与生产构建通过。构建先清理本项目的可再生dist，避免旧静态输出混入Worker包；客户端为`dist/client`，Worker为`dist/server/index.js`（5267 bytes），不增加前端运行依赖。既有Three.js619.72kB延迟包提示保留。
 - 一次新上下文最终审查无Critical/Important，独立重跑API与空白检查通过；其轻微构建建议（复制迁移前清空staging目录）已采纳。没有重复审查循环。实际检查桌面/390px弹窗截图，修复后的标题42px，滚动与焦点操作正常。
 - 当前云端策略依然对公开站点域名返回CONNECT403；没有可调用的浏览器控制或网络策略修改工具。未绕过策略，也未将本地成功、发布成功或原生数据库建表称作线上匿名投递成功。线上匿名POST加私有记录核验仍需可用的访问路径；原生发布/数据库检查另外记录。
+- 最终完整`QA_BASE_URL=http://127.0.0.1:8787 npm run test:browser`退出码0，15组脚本全部通过，运行期间构建和运行源码不变。包含真实MP3、六种宽度、短屏答题、录音错误恢复、导航/焦点、滚动、动态/上下文丢失和真实本地匿名反馈保存。最终截图1280×720、390×844无横向溢出，弹窗标题分别42px/30px。
+
+### 第10版公开发布
+
+- Sites第10版已发布，保持public范围；原生状态`succeeded`，时间2026-11-10T08:22:44.728203Z（北京时间16:22）。公开网址不变：https://maestromate-aquarium.chirpyapple14.chatgpt.site 。
+- GitHub运行源码：`4357755ab677b55279d0dd4eb8d060e655476d8f`；Sites根目录源码：`344defc28279c3fcf4770bc121e0e5a53d411c0c`。准备工具核对远端SHA后打包2,300,632 bytes；原生接收的归档28项，内容hash`sha256:6a691c42d1c51f4a1d2ca47b287fe8b21f04e727f894fbb5a80364abb743a4a5`。
+- 版本：`appgprj_6af14ade2f2c8191825208668540e338~appgver_612a08f1b7148191a8fe02af9a1cb1e2`；部署：`appgdep_6af2d44d7ef0819182c91b84a5d9b37c`。
+- 发布后原生数据库overview确认`DB`、`feedback`、`feedback_sessions`，再以返回的精确名称读取`feedback`：七列正确、0条记录、无后续页，证明线上迁移和拥有者读取可用，没有把本地测试邮件/反馈上传。匿名HTTP复查仍为CONNECT403/状态000，故线上匿名投递端到端验证仍未完成。
+- Codex打开浏览器与附加现有PR的RPC均返回`connection closed`，没有宣称已经替用户打开页面。交付直接HTTPS网址；PR2保持草稿，发布后仅补充文档记录，不改变运行代码。
