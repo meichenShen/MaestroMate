@@ -141,6 +141,7 @@ test("room drawings use distinct bright reference colours without green", async 
 });
 test("concert-hall hover is gentle, while a deliberate mesh drag gives a wide orbit", async () => {
   const p = await page("#home", "no-preference");
+  await p.setViewportSize({ width: 1100, height: 800 });
   try {
     await p.locator('.theatre-stage[data-render-status="ready"]').waitFor();
     const host = p.locator(".theatre-stage-canvas"),
@@ -210,11 +211,26 @@ test("concert-hall hover is gentle, while a deliberate mesh drag gives a wide or
         ) > 90,
       before,
     );
+    await p
+      .getByRole("button", { name: "Open guide", exact: true })
+      .evaluate((e) => e.click());
+    await p.getByRole("dialog").waitFor();
+    const pausedYaw = Number(await host.getAttribute("data-yaw"));
+    assert.notEqual(await host.evaluate((e) => e.style.cursor), "grabbing");
+    await p
+      .getByRole("button", { name: "Close guide", exact: true })
+      .evaluate((e) => e.click());
+    await p.getByRole("dialog").waitFor({ state: "detached" });
     await p.mouse.up();
     await p.mouse.move(origin.x + r.width * 0.4 - 1, origin.y);
-    await p.waitForTimeout(600);
+    await p.waitForTimeout(1000);
+    const resumedYaw = Number(await host.getAttribute("data-yaw"));
     assert.ok(
-      Math.abs(Number(await host.getAttribute("data-yaw")) - before) > 70,
+      Math.abs(resumedYaw - pausedYaw) < 30,
+      `Modal interruption preserves the chosen orbit: ${pausedYaw}→${resumedYaw}`,
+    );
+    assert.ok(
+      Math.abs(resumedYaw - before) > 70,
       "Releasing preserves the chosen orbit",
     );
   } finally {

@@ -659,12 +659,10 @@ export function createTheatre(
     setMotion(next) {
       if (motion === next) return;
       motion = next;
+      cancelDrag();
       targetYaw = yaw;
       targetPitch = pitch;
       stop();
-      if (drag && host.hasPointerCapture(drag.id))
-        host.releasePointerCapture(drag.id);
-      drag = null;
       host.style.cursor = motion ? "grab" : "default";
       schedule();
     },
