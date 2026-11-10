@@ -25,21 +25,21 @@
 ## Tasks
 ### 1. Clear activity and completion interactions
 Files: Detective.tsx, CaseNavigator.tsx, ProgramComplete.tsx, App.tsx, useComposerChat.ts, refinement.css, tests/clarity.mjs.
-- [ ] RED: prompt visible without hover at1440×900 and1024×768; case track scroll/keyboard; three completion exits and restart resets answers/audio/chat.
-- [ ] Implement explicit prompt + scalable horizontal overview, fixed-stage proportions; finite SVG fireworks, three exits, reset callback.
-- [ ] GREEN the focused contracts. Commit with ledger evidence.
+- [x] RED: prompt visible without hover at1440×900 and1024×768; case track scroll/keyboard; three completion exits and restart resets answers/audio/chat.
+- [x] Implement explicit prompt + scalable horizontal overview, fixed-stage proportions; finite SVG fireworks, three exits, reset callback.
+- [x] GREEN the focused contracts. Commit with ledger evidence.
 
 ### 2. Controlled hall and full orchestra
 Files: hall-view.ts, theatre.ts, orchestra.ts, hall-architecture.ts, TheatreStage.tsx; hall-view.test.mjs, clarity.mjs.
-- [ ] RED: passive span<=30°, drag span>90°, blank press ignored, easing not instant; all four orchestra families in authored geometry.
-- [ ] Implement gentle hover offset plus durable drag base, mesh hit-test, slower time-based damping; enlarge stage, orchestra sections and conductor podium, retain detailed small piano.
-- [ ] GREEN unit/actual camera contracts and inspect rendered hall. Commit.
+- [x] RED: passive span<=30°, drag span>90°, blank press ignored, easing not instant; all four orchestra families in authored geometry.
+- [x] Implement gentle hover offset plus durable drag base, mesh hit-test, slower time-based damping; enlarge stage, orchestra sections and conductor podium, retain detailed small piano.
+- [x] GREEN unit/actual camera contracts and inspect rendered hall. Commit.
 
 ### 3. Softer scroll, letter motion and unobstructed previews
 Files: useSmoothPage.ts, LetterHeading.tsx, Home.tsx, RoomPortal.tsx, refinement.css; snap.mjs, clarity.mjs.
-- [ ] RED: free stop outside scene proximity, close stop settles; portal hint/icon nonintersection; readable individually animated heading chars/reduced fallback.
-- [ ] Implement proximity Snap at18% viewport after280ms with softer easing; deterministic per-letter transforms and finite stagger; reserved hint space and stable targets.
-- [ ] GREEN focused contracts, update changed legacy expectations, run unit/build/full browser suite, inspect desktop/phone production screenshots.
+- [x] RED: free stop outside scene proximity, close stop settles; portal hint/icon nonintersection; readable individually animated heading chars/reduced fallback.
+- [x] Implement proximity Snap at18% viewport after280ms with softer easing; deterministic per-letter transforms and finite stagger; reserved hint space and stable targets.
+- [x] GREEN focused contracts, update changed legacy expectations, run unit/build/full browser suite, inspect desktop/phone production screenshots.
 
 ## Ledger
 Pre-flight: activity prompt consumes existing q.prompt; navigator consumes question metadata/current keyed progress and emits onSelect, does not own playback. Completion emits onRestart to Site which resets existing state/provider. Orchestra uses existing tracked geometry/material factories, so theatre disposal stays authoritative. Heading animation is isolated from parent reveal transforms. User's explicit gentle-hover request supersedes v7 full-turn passive mapping; no other aesthetic redesign.
@@ -52,3 +52,4 @@ Pre-flight: activity prompt consumes existing q.prompt; navigator consumes quest
 - Task2 final drag/cancellation regression passed, including tab hiding, blank press, intentional wide orbit and retained release. Latest unit suite12/12 and production build pass. The complete12-script browser suite and one fresh whole-iteration review are the final gates; keep runtime/build fixed during them.
 - One fresh final review of5b5484e..c662867 found one Important issue: modal motion suspension cleared an in-progress drag before committing yaw/pitch to the durable base, so resumed hover could return toward the old orientation. No Critical or new Minor findings. Existing Hint Escape behavior remains outside this iteration. A real Guide-open/close interruption regression is being run RED→GREEN before the one fix pass and final full suite; no re-review.
 - Final review fix pass: real Guide interruption reproduced119.6°→41.5° return (RED). setMotion now calls the existing cancellation path before clearing captured input, committing displayed yaw/pitch to durable base. The same actual-camera/modal probe passes GREEN; unit12/12 and production rebuild pass. The complete pre-fix12-script suite had passed, and the final fixed-build suite is now running. No second review.
+- Final: fixed modal-interrupted durable orbit — actual Guide open/close test RED119.6°→41.5°, then GREEN with a small resumed hover and preserved orbit. Final unit12/12, build, and complete12-script production browser suite all pass (exit0), including6 clarity and6 upgrade contracts. Runtime/build remained fixed during the final run. No new deferred minor or second review. Ready for exact-source public publication.

@@ -9,7 +9,7 @@ The approved black/cyan/rose/amber palette is unchanged. Current ignored product
 - Home headings use readable accessible labels with original deterministic per-letter offset/rotation/stagger. Reduced-motion captures remain static. Home settling uses an18%-of-viewport proximity threshold after280ms, allowing deliberate stops away from a scene edge.
   -390px captures keep readable vertical fallbacks and no horizontal page overflow. Desktop remains the priority. Physical-phone GPU/touch and spoken screen-reader output have not been measured.
 
-Full-suite, review and deployment provenance is recorded in `VERIFICATION.md` when complete. Prior QA is retained below as history; current behavior supersedes its passive360° camera and mandatory snap descriptions.
+The final twelve-script production suite and twelve unit tests pass. One fresh final review found a modal-interrupted orbit defect, fixed through an actual Guide RED→GREEN regression; no new minors. Deployment provenance is recorded in `VERIFICATION.md`. Prior QA is retained below as history; current behavior supersedes its passive360° camera and mandatory snap descriptions.
 
 ---
 
