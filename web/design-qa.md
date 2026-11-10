@@ -1,3 +1,13 @@
+# v9 — contained answer rows and dimensional celebration
+
+Evidence: `.tmp/qa/v9/`. The actual short-window captures `question-600.png` and `revealed-600.png` show question/audio, choices and feedback/action in separate rows, inside one card with a gap before previous/next. Four viewport contracts cover1440×900,1024×768,1366×640 and1366×600, including the expanded error player. Audio remains beside the question after reveal. An inherited57.8px discovery-count line height was a root cause of lost space; it now has explicit compact typography.
+
+Fireworks are real3D buffered particles inside the same theatre canvas, not flat SVG rays. The inspected `fireworks-frame.png` demonstrates spherical expansion, glowing cores, depth and short ballistic trails. Subsequent visual refinement softens initial cluster brightness. Actual WebGL tests verify Guide suspension and a static reduced-motion hall; the particle unit contract checks depth spread, finite active lifetime and idempotent disposal. The reference and MIT notice are in public credits; no package, image texture or second renderer was added.
+
+The passive hall range is about34°. Its projected front opening follows right/down pointer movement, and mesh drag/arrow mapping uses that same convention. Existing damping and modal interruption guards remain. The latest complete suite, review and release provenance follow in `VERIFICATION.md`.
+
+---
+
 # v8 — clear questions, softer motion and a full orchestra
 
 The approved black/cyan/rose/amber palette is unchanged. Current ignored production evidence is under `.tmp/qa/v8/`.

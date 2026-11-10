@@ -3,7 +3,13 @@ import { Piano } from "lucide-react";
 import type { TheatreController } from "../rendering/theatre";
 
 /** The theatre is authored geometry; no picture or pre-rendered scene is used. */
-export function TheatreStage({ motion = true }: { motion?: boolean }) {
+export function TheatreStage({
+  motion = true,
+  celebrate = false,
+}: {
+  motion?: boolean;
+  celebrate?: boolean;
+}) {
   const host = useRef<HTMLDivElement>(null);
   const controller = useRef<TheatreController | null>(null);
   const latestMotion = useRef(motion);
@@ -28,6 +34,7 @@ export function TheatreStage({ motion = true }: { motion?: boolean }) {
             () => {
               if (!disposed) setStatus("fallback");
             },
+            { celebrate },
           );
         } catch {
           if (!disposed) setStatus("fallback");
@@ -41,13 +48,13 @@ export function TheatreStage({ motion = true }: { motion?: boolean }) {
       controller.current?.dispose();
       controller.current = null;
     };
-  }, []);
+  }, [celebrate]);
 
   useEffect(() => controller.current?.setMotion(motion), [motion]);
 
   return (
     <div
-      className="theatre-stage"
+      className={`theatre-stage ${celebrate ? "program-fireworks" : ""}`}
       data-render-status={status}
       role="group"
       aria-label="A large concert hall with orchestra stage, curved seating and balconies"

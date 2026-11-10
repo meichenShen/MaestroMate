@@ -8,3 +8,5 @@
 @import "./upgrade.css";
 
 @import "./refinement.css";
+
+@import "../features/detective/detective.css";

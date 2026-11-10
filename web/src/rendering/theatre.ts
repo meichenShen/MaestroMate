@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { buildHall } from "./hall-architecture";
 import { buildOrchestra } from "./orchestra";
-import { pointerHallView } from "./hall-view";
+import { createFireworks } from "./fireworks";
+import { pointerHallView, hallCameraPose } from "./hall-view";
 
 export interface TheatreController {
   setMotion: (motion: boolean) => void;
@@ -14,6 +15,7 @@ export function createTheatre(
   initialMotion: boolean,
   onReady: () => void,
   onFailure: () => void,
+  options: { celebrate?: boolean } = {},
 ): TheatreController {
   let renderer: THREE.WebGLRenderer;
   try {
@@ -401,6 +403,8 @@ export function createTheatre(
   rimLight.position.set(-2, 12, -18);
   scene.add(rimLight);
 
+  const fireworks =
+    options.celebrate && !reduced.matches ? createFireworks(scene) : null;
   const active = () => !disposed && !contextLost && visible && !document.hidden;
   const inputEnabled = () => active() && motion;
   const unsettled = () =>
@@ -432,6 +436,15 @@ export function createTheatre(
     if (!active()) return;
     const dt = Math.max(1 / 120, Math.min(0.25, (now - lastTime) / 1000));
     lastTime = now;
+    fireworks?.advance(ready ? dt : 0, motion && !reduced.matches);
+    if (options.celebrate) {
+      host.dataset.fireworks = reduced.matches
+        ? "disabled"
+        : fireworks?.active
+          ? "running"
+          : "finished";
+      host.dataset.celebrationTime = (fireworks?.elapsed || 0).toFixed(3);
+    }
     const ease = motion && !reduced.matches ? 1 - Math.exp(-dt * 5.5) : 1;
     yaw += (targetYaw - yaw) * ease;
     pitch += (targetPitch - pitch) * ease;
@@ -441,14 +454,8 @@ export function createTheatre(
     }
     // The scene stays still, so its shadow atlas survives every camera orbit.
     // This uses the same azimuth/elevation construction as Three's OrbitControls.
-    const azimuth = 0.34 + yaw;
-    const elevation = 0.66 + pitch;
-    const horizontal = 60 * Math.cos(elevation);
-    camera.position.set(
-      center.x + Math.sin(azimuth) * horizontal,
-      center.y + Math.sin(elevation) * 60,
-      center.z + Math.cos(azimuth) * horizontal,
-    );
+    const pose = hallCameraPose(yaw, pitch);
+    camera.position.set(pose.x, pose.y, pose.z);
     camera.lookAt(center);
     describe();
     try {
@@ -467,7 +474,7 @@ export function createTheatre(
     raf = 0;
     if (!active()) return;
     draw(now);
-    if (motion && !reduced.matches && unsettled())
+    if (motion && !reduced.matches && (unsettled() || fireworks?.active))
       raf = requestAnimationFrame(loop);
   };
   const schedule = () => {
@@ -499,10 +506,10 @@ export function createTheatre(
     const rect = host.getBoundingClientRect();
     if (drag && event.pointerId === drag.id) {
       targetYaw =
-        drag.yaw +
+        drag.yaw -
         ((event.clientX - drag.x) / Math.max(1, rect.width)) * Math.PI * 1.6;
       targetPitch = THREE.MathUtils.clamp(
-        drag.pitch -
+        drag.pitch +
           ((event.clientY - drag.y) / Math.max(1, rect.height)) * 0.48,
         -0.24,
         0.24,
@@ -585,16 +592,16 @@ export function createTheatre(
       return;
     switch (event.key) {
       case "ArrowLeft":
-        targetYaw -= Math.PI / 12;
-        break;
-      case "ArrowRight":
         targetYaw += Math.PI / 12;
         break;
+      case "ArrowRight":
+        targetYaw -= Math.PI / 12;
+        break;
       case "ArrowUp":
-        targetPitch = Math.min(0.24, targetPitch + 0.06);
+        targetPitch = Math.max(-0.24, targetPitch - 0.06);
         break;
       case "ArrowDown":
-        targetPitch = Math.max(-0.24, targetPitch - 0.06);
+        targetPitch = Math.min(0.24, targetPitch + 0.06);
         break;
       case "Home":
       case "0":
@@ -620,20 +627,25 @@ export function createTheatre(
   const resizeObserver = new ResizeObserver(resize);
   const intersection = new IntersectionObserver((entries) => {
     visible = entries.some((entry) => entry.isIntersecting);
-    if (active()) schedule();
-    else {
+    if (active()) {
+      lastTime = performance.now();
+      schedule();
+    } else {
       cancelDrag();
       stop();
     }
   });
   const visibility = () => {
-    if (active()) schedule();
-    else {
+    if (active()) {
+      lastTime = performance.now();
+      schedule();
+    } else {
       cancelDrag();
       stop();
     }
   };
   const preference = () => {
+    if (reduced.matches) fireworks?.finish();
     stop();
     yaw = targetYaw;
     pitch = targetPitch;
@@ -659,6 +671,7 @@ export function createTheatre(
     setMotion(next) {
       if (motion === next) return;
       motion = next;
+      lastTime = performance.now();
       cancelDrag();
       targetYaw = yaw;
       targetPitch = pitch;
@@ -687,6 +700,7 @@ export function createTheatre(
       root.traverse((object) => {
         if (object instanceof THREE.InstancedMesh) object.dispose();
       });
+      fireworks?.dispose();
       geometries.forEach((value) => value.dispose());
       materials.forEach((value) => value.dispose());
       key.shadow.dispose();

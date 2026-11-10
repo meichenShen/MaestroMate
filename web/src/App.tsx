@@ -142,6 +142,7 @@ function Site() {
         <GameRoom />
       ) : route.kind === "summary" ? (
         <ProgramComplete
+          motion={!guide && !entrance}
           onRestart={() => {
             setProgress(initialProgress);
             chat.reset();

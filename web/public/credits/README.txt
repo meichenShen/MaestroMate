@@ -29,8 +29,8 @@ Design references
 Federico Vallabrega's Smooothy (MIT), revision a235a4867e21a0428b62d2340fcf8c71c6e94fdf:
 https://github.com/vallafederico/smooothy
 Studied measured SVG paths, character-based text arrivals, eased scrolling
-and minimal3D presentation. Letter arrivals and finite fireworks are original
-CSS/SVG implementations, with accessible and reduced-motion fallbacks.
+and minimal3D presentation. Letter arrivals use original CSS. Program fireworks use the existing Three.js
+renderer, with finite3D bursts, buffered trails and reduced-motion fallback.
 No reference-site models or branded lettering are redistributed.
 License: /credits/smooothy-MIT.txt
 Vivus (MIT) path technique: https://github.com/maxwellito/vivus
@@ -59,3 +59,11 @@ Aquarium — Camille Saint-Saëns, recording produced by Kevin MacLeod.
 CC BY4.0. Full attribution and checksums: /audio/ATTRIBUTION.md
 https://incompetech.com/music/royalty-free/index.html?Search=Search&isrc=USUAN1900026
 https://creativecommons.org/licenses/by/4.0/
+
+Program3D fireworks reference
+Max van Leeuwen, Three.js-Particles (MIT, 2024):
+https://github.com/max-van-leeuwen/Three.js-Particles
+Studied GPU particle age, depth-sized sprites and buffered attributes.
+MaestroMate uses original spherical choreography, analytical ballistic trails
+and procedural soft sparks, with no borrowed sparkle texture or extra package.
+Reference license: /credits/particle-reference-MIT.txt

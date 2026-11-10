@@ -4,6 +4,7 @@ import { useAudio } from "../../audio/AudioProvider";
 import { Encore } from "../../components/Encore";
 import { ClipButton } from "../../components/ClipButton";
 import { CaseGlyph } from "./CaseGlyph";
+import { Play } from "lucide-react";
 import { CaseNavigator } from "./CaseNavigator";
 export interface DetectiveProgress {
   index: number;
@@ -77,38 +78,32 @@ export function Detective({
         aria-labelledby="active-case-title"
       >
         <div className={`case-scene enter-${direction.current}`} key={q.id}>
-          <header className="active-case-heading">
-            <h2 id="active-case-title" aria-describedby={`case-${q.id}-prompt`}>
-              {q.title}
-            </h2>
-          </header>
-          <p className="case-prompt" id={`case-${q.id}-prompt`}>
-            {q.prompt}
-          </p>
-          <div className="case-centre">
-            {revealed ? (
-              <div
-                className={`answer-reveal ${correct ? "is-success" : ""}`}
-                role="status"
+          <div className="case-question-row">
+            <header className="case-question-copy">
+              <h2
+                id="active-case-title"
+                aria-describedby={`case-${q.id}-prompt`}
               >
-                {correct ? <CatchMark /> : <CaseGlyph kind={active} />}
-                <div>
-                  <strong>
-                    {correct ? "You found it." : "Try a different angle."}
-                  </strong>
-                  <p>{q.explanation}</p>
-                </div>
-              </div>
-            ) : (
-              <>
-                <CaseGlyph kind={active} />
-                <div className="case-listen">
-                  {q.clips.map((clip) => (
-                    <ClipButton key={clip.label} clip={clip} />
-                  ))}
-                </div>
-              </>
-            )}
+                {q.title}
+              </h2>
+              <p className="case-prompt" id={`case-${q.id}-prompt`}>
+                {q.prompt}
+              </p>
+            </header>
+            <div className="case-question-audio">
+              {revealed ? (
+                <button
+                  className="case-replay"
+                  onClick={() => audio.playClip(q.clips[q.replayClipIndex])}
+                >
+                  <Play size={14} fill="currentColor" /> Hear it again ↺
+                </button>
+              ) : (
+                q.clips.map((clip) => (
+                  <ClipButton key={clip.label} clip={clip} />
+                ))
+              )}
+            </div>
           </div>
           <fieldset
             className="answer-tiles"
@@ -142,12 +137,18 @@ export function Detective({
           <div className="case-actions">
             {revealed ? (
               <>
-                <button
-                  className="case-replay"
-                  onClick={() => audio.playClip(q.clips[q.replayClipIndex])}
+                <div
+                  className={`answer-reveal ${correct ? "is-success" : ""}`}
+                  role="status"
                 >
-                  Hear it again ↺
-                </button>
+                  {correct ? <CatchMark /> : <CaseGlyph kind={active} />}
+                  <div>
+                    <strong>
+                      {correct ? "You found it." : "Try a different angle."}
+                    </strong>
+                    <p>{q.explanation}</p>
+                  </div>
+                </div>
                 <button
                   className="case-check"
                   aria-label="Try again"

@@ -1,39 +1,15 @@
 import { TheatreStage } from "../../components/TheatreStage";
 
-function Fireworks() {
-  return (
-    <svg
-      className="program-fireworks"
-      viewBox="0 0 1000 650"
-      aria-hidden="true"
-      fill="none"
-    >
-      {[
-        [610, 150],
-        [850, 270],
-        [480, 350],
-      ].map(([x, y], burst) => (
-        <g
-          key={burst}
-          className={`firework-burst burst-${burst}`}
-          transform={`translate(${x} ${y})`}
-        >
-          {Array.from({ length: 12 }, (_, ray) => (
-            <g key={ray} transform={`rotate(${ray * 30})`}>
-              <path d="M0 -15V-75" />
-              <circle cx="0" cy="-90" r="3" />
-            </g>
-          ))}
-        </g>
-      ))}
-    </svg>
-  );
-}
-export function ProgramComplete({ onRestart }: { onRestart: () => void }) {
+export function ProgramComplete({
+  onRestart,
+  motion = true,
+}: {
+  onRestart: () => void;
+  motion?: boolean;
+}) {
   return (
     <main id="main" tabIndex={-1} className="program-summary page-room">
-      <TheatreStage />
-      <Fireworks />
+      <TheatreStage celebrate motion={motion} />
       <div className="completion-copy">
         <p className="eyebrow">Your Aquarium Program · Complete</p>
         <h1>Lovely wandering.</h1>

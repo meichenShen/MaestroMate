@@ -1,0 +1,253 @@
+/* The whole answer card owns three non-overlapping rows, at every desktop height. */
+.detective-workspace .case-scene {
+  display: grid;
+  grid-template-rows: auto minmax(48px, 1fr) auto;
+  gap: 16px;
+}
+.case-question-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 28px;
+  align-items: center;
+}
+.case-question-copy h2 {
+  font-size: 32px;
+}
+.case-question-copy .case-prompt {
+  max-width: 70ch;
+  font-size: 17px;
+  line-height: 1.5;
+  margin: 8px 0 0;
+}
+.case-question-audio {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 345px;
+}
+.case-question-audio .clip-button,
+.case-question-audio .case-replay {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 24px;
+  background: #ffffff0c;
+  color: var(--fg);
+  padding: 11px 15px;
+  min-height: 42px;
+  font-size: 14px;
+  margin: 0;
+}
+.case-question-audio small {
+  display: none;
+}
+.detective-workspace .answer-tiles {
+  align-self: center;
+  margin: 0;
+}
+.detective-workspace .case-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  min-height: 46px;
+}
+.detective-workspace .answer-reveal {
+  justify-content: flex-start;
+  gap: 14px;
+  max-width: none;
+}
+.detective-workspace .answer-reveal > div {
+  max-width: none;
+}
+.detective-workspace .answer-reveal strong {
+  font-size: 21px;
+  line-height: 1.4;
+}
+.detective-workspace .answer-reveal p {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-top: 3px;
+}
+.detective-workspace .catch-mark,
+.detective-workspace .answer-reveal .case-glyph {
+  width: 42px;
+  height: 42px;
+  margin: 0;
+  flex-shrink: 0;
+}
+.detective-workspace .case-check {
+  min-width: 150px;
+}
+@media (min-width: 951px) and (max-height: 800px) {
+  .detective-workspace .case-scene {
+    gap: 10px;
+  }
+  .case-question-copy h2 {
+    font-size: 25px;
+  }
+  .case-question-copy .case-prompt {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-top: 5px;
+  }
+  .case-question-audio {
+    max-width: 300px;
+    gap: 6px;
+  }
+  .case-question-audio .clip-button,
+  .case-question-audio .case-replay {
+    font-size: 13px;
+    padding: 9px 12px;
+    min-height: 36px;
+  }
+  .detective-workspace .answer-reveal strong {
+    font-size: 16px;
+    display: inline;
+    margin-right: 8px;
+  }
+  .detective-workspace .answer-reveal p {
+    display: inline;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .detective-workspace .catch-mark,
+  .detective-workspace .answer-reveal .case-glyph {
+    width: 30px;
+    height: 30px;
+  }
+  .detective-workspace .case-actions {
+    min-height: 38px;
+    gap: 16px;
+  }
+  .detective-workspace .case-check {
+    min-width: 140px;
+  }
+}
+@media (min-width: 951px) and (max-height: 720px) {
+  html:has(.detective-workspace) {
+    --header-height: 70px;
+  }
+  .work-room[data-room="detective"] {
+    padding-top: 10px;
+    padding-bottom: 6px;
+  }
+  .work-room[data-room="detective"] > .journey-progress {
+    min-height: 34px;
+    margin-bottom: 6px;
+  }
+  .work-room[data-room="detective"] .journey-progress .journey-shortcut {
+    min-height: 34px;
+    padding: 8px 17px;
+  }
+  .work-room[data-room="detective"] > .room-back {
+    min-height: 20px;
+    margin-bottom: 6px;
+  }
+  .work-room[data-room="detective"] > .context-panel {
+    height: 24px;
+    margin-top: 4px;
+  }
+  .work-room[data-room="detective"] .notes-open {
+    min-height: 24px;
+    padding: 2px 0;
+  }
+  .detective-workspace {
+    gap: 6px;
+  }
+  .detective-workspace .game-heading h1 {
+    font-size: 29px;
+    margin: 0;
+  }
+  .detective-workspace .game-heading .eyebrow {
+    display: none;
+  }
+  .detective-workspace .case-preview > button {
+    min-height: 40px;
+    padding: 7px 12px;
+  }
+  .detective-workspace .case-preview h2 {
+    font-size: 16px;
+  }
+  .detective-workspace .case-preview .case-glyph {
+    height: 24px;
+    width: 29px;
+  }
+  .detective-workspace .active-case {
+    padding: 12px 18px;
+  }
+  .detective-workspace .case-scene {
+    gap: 8px;
+  }
+  .detective-workspace .case-question-copy h2 {
+    font-size: 22px;
+  }
+  .detective-workspace .case-navigation {
+    min-height: 34px;
+  }
+  .detective-workspace .case-navigation > button {
+    min-height: 34px;
+    padding: 7px 16px;
+  }
+}
+@media (max-width: 950px) {
+  .detective-workspace .case-scene {
+    min-height: 360px;
+    grid-template-rows: auto 1fr auto;
+    gap: 22px;
+  }
+  .case-question-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .case-question-audio {
+    justify-content: flex-start;
+    max-width: none;
+  }
+  .case-question-copy h2 {
+    font-size: 27px;
+  }
+  .case-question-copy .case-prompt {
+    font-size: 16px;
+  }
+  .detective-workspace .case-actions {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .detective-workspace .case-check {
+    justify-self: end;
+  }
+  .detective-workspace .answer-reveal strong {
+    font-size: 20px;
+  }
+}
+.detective-workspace .game-heading h1 {
+  margin-bottom: 0;
+}
+@media (min-width: 951px) and (max-height: 800px) {
+  .case-question-audio {
+    max-width: 360px;
+  }
+}
+@media (min-width: 951px) and (max-height: 720px) {
+  .detective-workspace .active-case {
+    padding: 10px 18px;
+  }
+  .detective-workspace .case-scene {
+    grid-template-rows: auto minmax(44px, 1fr) auto;
+  }
+}
+@media (min-width: 951px) and (max-height: 720px) {
+  .detective-workspace .discovery-count {
+    padding: 0;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  .detective-workspace .discovery-count strong {
+    font-size: 26px;
+    line-height: 1;
+  }
+}

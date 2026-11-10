@@ -79,73 +79,6 @@
   flex-basis: 100%;
   margin-top: 12px;
 }
-.program-fireworks {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-}
-.firework-burst {
-  stroke: var(--listen);
-  stroke-width: 2;
-}
-.firework-burst path {
-  stroke-dasharray: 60;
-  stroke-dashoffset: 60;
-  animation: firework-ray 1.6s 0.35s ease-out both;
-}
-.firework-burst circle {
-  fill: currentColor;
-  stroke: none;
-  opacity: 0;
-  animation: firework-spark 1.6s 0.35s ease-out both;
-}
-.burst-1 {
-  stroke: var(--chat);
-  color: var(--chat);
-}
-.burst-2 {
-  stroke: var(--play);
-  color: var(--play);
-}
-.burst-1 path,
-.burst-1 circle {
-  animation-delay: 0.85s;
-}
-.burst-2 path,
-.burst-2 circle {
-  animation-delay: 1.25s;
-}
-@keyframes firework-ray {
-  0% {
-    stroke-dashoffset: 60;
-    opacity: 0;
-  }
-  25% {
-    stroke-dashoffset: 20;
-    opacity: 0.9;
-  }
-  65% {
-    stroke-dashoffset: -40;
-    opacity: 0.65;
-  }
-  100% {
-    stroke-dashoffset: -60;
-    opacity: 0;
-  }
-}
-@keyframes firework-spark {
-  0%,
-  30%,
-  100% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
 @media (min-width: 951px) and (max-height: 800px) {
   .case-prompt {
     font-size: 14px;
@@ -183,11 +116,6 @@
   }
   .case-preview h2 {
     flex-basis: auto;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .program-fireworks {
-    display: none;
   }
 }
 /* Preview space is outside each drawing and its stable label/arrow target. */

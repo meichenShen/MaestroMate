@@ -153,6 +153,7 @@ test("concert-hall hover is gentle, while a deliberate mesh drag gives a wide or
     await p.waitForTimeout(800);
     const z = Number(await host.getAttribute("data-yaw"));
     assert.ok(Math.abs(z - a) < 30, `Passive yaw stays gentle: ${a}→${z}`);
+    assert.ok(z < a, "The camera reverses so the opening follows the pointer");
     await p.mouse.move(r.x + r.width * 0.98, r.y + r.height * 0.02);
     await p.mouse.down();
     assert.notEqual(

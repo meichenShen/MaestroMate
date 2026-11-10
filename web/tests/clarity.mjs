@@ -60,8 +60,8 @@ test("questions are visible without hover and fit each fixed answer stage", asyn
             const prompt = document
                 .querySelector(".case-prompt")
                 .getBoundingClientRect(),
-              centre = document
-                .querySelector(".case-centre")
+              actions = document
+                .querySelector(".case-actions")
                 .getBoundingClientRect(),
               options = document
                 .querySelector(".answer-tiles")
@@ -77,8 +77,10 @@ test("questions are visible without hover and fit each fixed answer stage", asyn
                 .getBoundingClientRect();
             return (
               document.documentElement.scrollHeight <= innerHeight + 1 &&
-              prompt.bottom <= centre.top + 1 &&
-              reveal.bottom <= options.top + 1 &&
+              prompt.bottom <= options.top + 1 &&
+              options.bottom <= actions.top + 1 &&
+              reveal.top >= actions.top - 1 &&
+              reveal.bottom <= actions.bottom + 1 &&
               nav.bottom <= player.top
             );
           }),

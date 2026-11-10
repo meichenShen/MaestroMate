@@ -29,3 +29,6 @@
 - Hall passive hover is gentle; wide damped drag starts only on a mesh hit. Keep orchestra resources registered through the existing factories and reuse instanced geometry.
 - Homepage settling is proximity-only; never restore mandatory page correction. Letter arrivals and Program fireworks are finite, accessible and reduced-motion-safe. Explicit Restart Program resets answers/chat and cancels pending replies without remounting audio.
 - Preview cards must avoid every icon, with readable contrast; keep the original stationary entry targets.
+
+- Answer layout is owned by `web/src/features/detective/detective.css`: question/audio, choices and feedback/action are separate rows. Keep every control inside its card and separated from previous/next at short desktop heights, including600px with the expanded error player.
+- The theatre opening follows pointer direction; passive span is about34°. Preserve mesh-hit drag, damping and durable interruption behavior. Program fireworks use the existing renderer/camera; no second canvas, infinite animation, external runtime asset or decoration under reduced motion.
