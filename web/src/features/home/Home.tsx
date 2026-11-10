@@ -2,6 +2,7 @@ import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { DrawnIcon } from "../../components/DrawnIcon";
 import { RoomPortal } from "../../components/RoomPortal";
 import { TheatreStage } from "../../components/TheatreStage";
+import { LetterHeading } from "../../components/LetterHeading";
 const scenes = [
   { id: "home", name: "Welcome" },
   { id: "explore", name: "The rooms" },
@@ -28,11 +29,7 @@ export function Home({ motion }: { motion: boolean }) {
         <TheatreStage motion={motion} />
         <div className="welcome-copy" data-enter="left">
           <p className="eyebrow">A little music. A little curiosity.</p>
-          <h1>
-            Make yourself
-            <br />
-            at home.
-          </h1>
+          <LetterHeading as="h1" text={"Make yourself\nat home."} />
           <p>
             Listen for a while. Ask a question.
             <br />
@@ -49,7 +46,7 @@ export function Home({ motion }: { motion: boolean }) {
       <section id="explore" className="snap-scene rooms-scene">
         <div className="scene-title" data-enter="top">
           <p className="eyebrow">Three rooms. Yours to wander.</p>
-          <h2>Follow those curious ears.</h2>
+          <LetterHeading text="Follow those curious ears." />
         </div>
         <div className="portal-field">
           <RoomPortal
@@ -89,11 +86,7 @@ export function Home({ motion }: { motion: boolean }) {
         </a>
         <div className="program-teaser" data-enter="right">
           <p className="eyebrow">Fancy the whole little adventure?</p>
-          <h2>
-            One piece.
-            <br />
-            Three ways in.
-          </h2>
+          <LetterHeading text={"One piece.\nThree ways in."} />
           <p>
             A Program brings the rooms together.
             <br />
@@ -110,11 +103,7 @@ export function Home({ motion }: { motion: boolean }) {
       <section id="about" className="snap-scene about-scene">
         <div data-enter="bottom">
           <p className="eyebrow">No music lessons needed.</p>
-          <h2>
-            Just bring
-            <br />
-            your curiosity.
-          </h2>
+          <LetterHeading text={"Just bring\nyour curiosity."} />
           <p>
             We made MaestroMate for the moments when a piece catches your ear,
             <br className="desktop-break" /> and you want to stay a little

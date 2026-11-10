@@ -1,3 +1,18 @@
+# v8 — clear questions, softer motion and a full orchestra
+
+The approved black/cyan/rose/amber palette is unchanged. Current ignored production evidence is under `.tmp/qa/v8/`.
+
+- `hall.png`: wider stage with25 string,8 woodwind,7 brass,2 percussion and1 conductor stations, an original detailed small grand piano, chairs, scores and stepped section placement. Shared geometry is instanced by family/material. Audience architecture and486 seats remain. Actual camera tests distinguish gentle hover from a wide deliberate mesh drag and verify durable release.
+- `question.png`, `reveal-1024.png`: full prompt stays below the title before and after reveal, with no info-button prerequisite. Case overviews form an extensible native horizontal rail; current content remains three questions. Answer/reveal/previous/next stay in one desktop frame. Short-laptop checks include the expanded audio-error player.
+- `preview-hover.png`, `preview-hover-1024.png`: hovered descriptions sit below the icon/title in reserved space rather than over the drawing. Bounds checks cover all icons, not just the matching icon. Visual QA found a higher-specificity inherited grey colour; the contrast regression failed before selector correction and passes afterward.
+- `ending.png`: three clear completion choices, Home, Restart Program and Choose another Program, alongside the orchestra hall. Finite SVG fireworks decorate arrival; reduced motion suppresses them. The inspected static capture uses reduced motion, so it intentionally does not show a fireworks frame. Explicit restart resets answers/history and cancels pending replies without replacing audio.
+- Home headings use readable accessible labels with original deterministic per-letter offset/rotation/stagger. Reduced-motion captures remain static. Home settling uses an18%-of-viewport proximity threshold after280ms, allowing deliberate stops away from a scene edge.
+  -390px captures keep readable vertical fallbacks and no horizontal page overflow. Desktop remains the priority. Physical-phone GPU/touch and spoken screen-reader output have not been measured.
+
+Full-suite, review and deployment provenance is recorded in `VERIFICATION.md` when complete. Prior QA is retained below as history; current behavior supersedes its passive360° camera and mandatory snap descriptions.
+
+---
+
 # v7 — brighter rooms and bounded activity workspaces
 
 The user's latest LOL palettes supersede v6: cyan `#45D9FD`, rose `#EE2560`, amber `#FFDA8E`, lavender `#A593E0`, sky `#80D4F6`, cream and black. Desktop retains Outfit/Onest and independent rooms with an optional Program.
@@ -10,7 +25,7 @@ Evidence is ignored under `.tmp/qa/v7/`:
 - `aquarium-final.png`, `aquarium-travel-8s.png`: authored sand, rocks, branching coral, bubbles and procedural water caustics surround seven physical-material fish. They travel across width/depth using absolute audio time, not just tail motion in place. The scene uses deep blue and luminous pastel/rose fish, no green material. Poster is captured from this renderer, not generated art.
 - `game-final.png`, `game-feedback.png`, `game-next.png`: three coloured case overviews remain together; the active answer stage, reveal and previous/next controls fit above the player. Feedback replaces the central illustration, with a finite drawn check animation for a correct answer. Short answer tiles stay visible; information is revealed on hover/focus or by the info button.
 - `chat-reply.png`: rose outgoing message, independent artist/topic rail, real ordered replies and compact prompt tiles; topic switching retains history. A fixed desktop thread reserves space for controls. First-person replies remain explicitly imagined and individually sourced.
--390px activity captures have readable vertical fallbacks. The complete real-audio regression exposed a320px completion-row overflow only after all three clues were revealed; the completion text now wraps between retained previous/next targets instead of forcing the page wider.
+  -390px activity captures have readable vertical fallbacks. The complete real-audio regression exposed a320px completion-row overflow only after all three clues were revealed; the completion text now wraps between retained previous/next targets instead of forcing the page wider.
 
 ## Verification boundary
 

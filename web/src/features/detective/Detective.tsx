@@ -3,7 +3,8 @@ import { detectiveQuestions } from "../../content/aquarium";
 import { useAudio } from "../../audio/AudioProvider";
 import { Encore } from "../../components/Encore";
 import { ClipButton } from "../../components/ClipButton";
-import { Hint } from "../../components/Hint";
+import { CaseGlyph } from "./CaseGlyph";
+import { CaseNavigator } from "./CaseNavigator";
 export interface DetectiveProgress {
   index: number;
   answers: Record<string, number | undefined>;
@@ -14,36 +15,6 @@ export const initialProgress: DetectiveProgress = {
   answers: {},
   revealed: {},
 };
-function CaseGlyph({ kind }: { kind: number }) {
-  return (
-    <svg
-      className="case-glyph"
-      viewBox="0 0 100 70"
-      fill="none"
-      aria-hidden="true"
-    >
-      <g stroke="currentColor" strokeWidth="4" strokeLinecap="round">
-        {kind === 0 ? (
-          <>
-            <path d="M6 22c12-24 24 24 36 0s24 24 36 0" />
-            <path d="M6 49h76" />
-          </>
-        ) : kind === 1 ? (
-          <>
-            {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-              <path key={i} d={`M${9 + i * 11} ${12 + i * 3}v${46 - i * 6}`} />
-            ))}
-          </>
-        ) : (
-          <>
-            <path d="M9 21q12-25 24 0t24 0t24 0" />
-            <path d="M9 50q12-25 24 0t24 0t24 0" />
-          </>
-        )}
-      </g>
-    </svg>
-  );
-}
 function CatchMark() {
   return (
     <svg
@@ -66,7 +37,8 @@ export function Detective({
 }) {
   const audio = useAudio(),
     direction = useRef("next"),
-    active = progress.index ?? 0,
+    total = detectiveQuestions.length,
+    active = Math.max(0, Math.min(total - 1, progress.index ?? 0)),
     q = detectiveQuestions[active],
     selected = progress.answers[q.id],
     revealed = !!progress.revealed[q.id],
@@ -77,7 +49,7 @@ export function Detective({
   const move = (index: number) => {
     direction.current = index < active ? "back" : "next";
     audio.pause();
-    onChange({ ...progress, index: Math.max(0, Math.min(2, index)) });
+    onChange({ ...progress, index: Math.max(0, Math.min(total - 1, index)) });
   };
   return (
     <section
@@ -86,61 +58,33 @@ export function Detective({
     >
       <header className="game-heading">
         <div>
-          <p className="eyebrow">Three moments. Follow your ears.</p>
+          <p className="eyebrow">{total} moments. Follow your ears.</p>
           <h1 id="detective-title">Follow the clues.</h1>
         </div>
         <p className="discovery-count">
-          <strong>{discovered}</strong> / 3 discovered
+          <strong>{discovered}</strong> / {total} discovered
         </p>
       </header>
-      <div className="case-overview">
-        {detectiveQuestions.map((item, i) => (
-          <article
-            key={item.id}
-            aria-labelledby={`overview-${item.id}`}
-            className={`case-preview case-${i + 1}`}
-          >
-            <button
-              aria-label={`Open case ${i + 1}`}
-              aria-pressed={active === i}
-              aria-controls="current-sound-case"
-              onClick={() => move(i)}
-            >
-              <span className="case-label">0{i + 1}</span>
-              <CaseGlyph kind={i} />
-              <h2 id={`overview-${item.id}`}>{item.title}</h2>
-              <span
-                className="case-done"
-                aria-label={
-                  progress.revealed[item.id]
-                    ? "Discovered"
-                    : "Not yet discovered"
-                }
-              >
-                {progress.revealed[item.id] ? "✓" : "↗"}
-              </span>
-            </button>
-          </article>
-        ))}
-      </div>
+      <CaseNavigator
+        items={detectiveQuestions}
+        active={active}
+        revealed={progress.revealed}
+        onSelect={move}
+      />
       <div
-        className={`active-case case-${active + 1}`}
+        className={`active-case case-${(active % 3) + 1}`}
         id="current-sound-case"
         aria-labelledby="active-case-title"
       >
         <div className={`case-scene enter-${direction.current}`} key={q.id}>
           <header className="active-case-heading">
-            <h2
-              id="active-case-title"
-              tabIndex={0}
-              aria-describedby={`case-${q.id}-hint`}
-            >
+            <h2 id="active-case-title" aria-describedby={`case-${q.id}-prompt`}>
               {q.title}
             </h2>
-            <Hint id={`case-${q.id}-hint`} label={`About case ${active + 1}`}>
-              {q.prompt}
-            </Hint>
           </header>
+          <p className="case-prompt" id={`case-${q.id}-prompt`}>
+            {q.prompt}
+          </p>
           <div className="case-centre">
             {revealed ? (
               <div
@@ -168,6 +112,7 @@ export function Detective({
           </div>
           <fieldset
             className="answer-tiles"
+            aria-describedby={`case-${q.id}-prompt`}
             style={{
               gridTemplateColumns: `repeat(${q.options.length},minmax(0,1fr))`,
             }}
@@ -248,19 +193,21 @@ export function Detective({
         >
           ← Previous
         </button>
-        {discovered === 3 ? (
+        {discovered === total ? (
           <div className="game-completion">
             <Encore />
             <span>You noticed something new.</span>
           </div>
         ) : (
           <span className="case-position" aria-live="polite">
-            0{active + 1} / 03<span className="sr-only"> · {q.title}</span>
+            {String(active + 1).padStart(2, "0")} /{" "}
+            {String(total).padStart(2, "0")}
+            <span className="sr-only"> · {q.title}</span>
           </span>
         )}
         <button
           aria-label="Next case"
-          disabled={active === 2}
+          disabled={active === total - 1}
           onClick={() => move(active + 1)}
         >
           Next →

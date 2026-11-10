@@ -15,6 +15,20 @@ try {
   await p.locator('.theatre-stage[data-render-status="ready"]').waitFor();
   await p.evaluate(() => document.fonts.ready);
   await p.mouse.move(600, 500);
+  await p.evaluate(() =>
+    document.body.dispatchEvent(
+      new WheelEvent("wheel", { deltaY: 450, bubbles: true, cancelable: true }),
+    ),
+  );
+  await p.waitForTimeout(2200);
+  const freeStop = await p.evaluate(() => scrollY);
+  assert.ok(
+    freeStop > 410 && freeStop < 490,
+    `A mid-page stop is not forcibly corrected: ${freeStop}`,
+  );
+  await p.getByRole("link", { name: "MaestroMate home", exact: true }).click();
+  await p.waitForFunction(() => scrollY < 2);
+
   // Send this burst inside the page. With software WebGL, awaiting two
   // Playwright wheel round trips can space them >180ms apart: two legitimate
   // gestures may then advance two scenes rather than one.

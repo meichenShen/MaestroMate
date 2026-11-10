@@ -2,7 +2,9 @@ MaestroMate — design, code and media credits
 
 Original authored 3D concert hall
 MaestroMate's roof-open auditorium has486 instanced seats,13 curved rows,
-two balconies, a stage and original piano/cello/horn geometry. No imported
+two balconies and a wider stage with43 abstract orchestra stations plus an
+original grand piano. Strings, woodwinds, brass, percussion and conductor
+geometry are authored locally and instanced for bounded draw calls. No imported
 hall, generated illustration or photographic textures are used.
 Orbit interaction reference: installed Three.js OrbitControls (MIT).
 https://threejs.org/docs/#OrbitControls
@@ -20,13 +22,15 @@ The fallback is a captured frame of this renderer, not generated artwork.
 
 Rendering and interaction code
 Three.js (MIT): https://github.com/mrdoob/three.js
-Lenis and Snap (MIT): https://github.com/darkroomengineering/lenis
+Lenis (MIT); proximity settling is MaestroMate code: https://github.com/darkroomengineering/lenis
 Lucide icon geometry (ISC): https://github.com/lucide-icons/lucide
 
 Design references
 Federico Vallabrega's Smooothy (MIT), revision a235a4867e21a0428b62d2340fcf8c71c6e94fdf:
 https://github.com/vallafederico/smooothy
-Studied measured SVG paths, eased scrolling and minimal3D presentation.
+Studied measured SVG paths, character-based text arrivals, eased scrolling
+and minimal3D presentation. Letter arrivals and finite fireworks are original
+CSS/SVG implementations, with accessible and reduced-motion fallbacks.
 No reference-site models or branded lettering are redistributed.
 License: /credits/smooothy-MIT.txt
 Vivus (MIT) path technique: https://github.com/maxwellito/vivus

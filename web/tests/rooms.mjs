@@ -126,24 +126,18 @@ try {
   assert.ok(
     await page.evaluate(() => location.hash === "#program/aquarium/listen"),
   );
-  await page
-    .getByRole("link", { name: /Next: Chat/ })
-    .click();
+  await page.getByRole("link", { name: /Next: Chat/ }).click();
   await page
     .getByRole("heading", { name: "Camille Saint-Saëns", exact: true })
     .waitFor();
   assert.ok(
     await page.evaluate(() => location.hash === "#program/aquarium/chat"),
   );
-  await page
-    .getByRole("link", { name: /Next: Play/ })
-    .click();
+  await page.getByRole("link", { name: /Next: Play/ }).click();
   await page
     .getByRole("heading", { name: "Follow the clues.", exact: true })
     .waitFor();
-  await page
-    .getByRole("link", { name: /Finish your visit/ })
-    .click();
+  await page.getByRole("link", { name: /Finish your visit/ }).click();
   await page
     .getByRole("heading", { name: "Lovely wandering.", exact: true })
     .waitFor();
@@ -153,7 +147,11 @@ try {
   await page.locator(".snap-scene").first().waitFor();
   await page.waitForTimeout(300);
   await page.mouse.move(800, 500);
-  await page.mouse.wheel(0, 600);
+  const sceneStep = await page
+    .locator(".snap-scene")
+    .first()
+    .evaluate((e) => e.getBoundingClientRect().height);
+  await page.mouse.wheel(0, sceneStep - 60);
   await page.waitForFunction(
     () => {
       const e = document.getElementById("explore");

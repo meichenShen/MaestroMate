@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { buildHall } from "./hall-architecture";
+import { buildOrchestra } from "./orchestra";
 import { pointerHallView } from "./hall-view";
 
 export interface TheatreController {
@@ -44,7 +45,9 @@ export function createTheatre(
   let yaw = 0,
     pitch = 0,
     targetYaw = 0,
-    targetPitch = 0;
+    targetPitch = 0,
+    baseYaw = 0,
+    basePitch = 0;
   let measuredWidth = 0,
     measuredHeight = 0;
   let drag: {
@@ -124,11 +127,11 @@ export function createTheatre(
   const { seatCount } = buildHall(root, { geometry, material });
   host.setAttribute(
     "aria-label",
-    `Interactive model of a ${seatCount}-seat concert hall with a grand piano, cello, horn and two balcony levels`,
+    `Interactive model of a ${seatCount}-seat concert hall with strings, woodwinds, brass, percussion, a conductor and two balcony levels`,
   );
   const ensemble = new THREE.Group();
-  ensemble.position.set(0, 0.78, -6.9);
-  ensemble.scale.setScalar(1.2);
+  ensemble.position.set(-5.8, 1.22, -4.35);
+  ensemble.scale.setScalar(0.55);
   root.add(ensemble);
   function roundedPlan(w: number, d: number, radius: number) {
     const x = -w / 2,
@@ -372,180 +375,7 @@ export function createTheatre(
     }),
   );
 
-  // Original chamber ensemble, keeping the piano as the visual centre.
-  const tube = (
-    points: number[][],
-    radius: number,
-    surface: THREE.Material,
-    parent: THREE.Object3D,
-  ) =>
-    mesh(
-      new THREE.TubeGeometry(
-        new THREE.CatmullRomCurve3(
-          points.map(
-            (p) => new THREE.Vector3(...(p as [number, number, number])),
-          ),
-        ),
-        28,
-        radius,
-        6,
-        false,
-      ),
-      surface,
-      parent,
-    );
-  const cello = new THREE.Group();
-  cello.position.set(1.75, 0.76, -0.58);
-  cello.rotation.set(0, -0.2, -0.08);
-  ensemble.add(cello);
-  const celloFinish = material("#EE2560", 0.62);
-  const outline = new THREE.Shape();
-  outline.moveTo(0, 0);
-  outline.bezierCurveTo(-0.44, 0, -0.53, 0.4, -0.29, 0.62);
-  outline.bezierCurveTo(-0.12, 0.76, -0.25, 0.84, -0.29, 0.99);
-  outline.bezierCurveTo(-0.37, 1.3, -0.18, 1.43, 0, 1.43);
-  outline.bezierCurveTo(0.18, 1.43, 0.37, 1.3, 0.29, 0.99);
-  outline.bezierCurveTo(0.25, 0.84, 0.12, 0.76, 0.29, 0.62);
-  outline.bezierCurveTo(0.53, 0.4, 0.44, 0, 0, 0);
-  mesh(
-    new THREE.ExtrudeGeometry(outline, {
-      depth: 0.16,
-      bevelEnabled: true,
-      bevelSize: 0.035,
-      bevelThickness: 0.04,
-      bevelSegments: 3,
-      curveSegments: 28,
-    }),
-    celloFinish,
-    cello,
-  );
-  const neck = box(0.085, 0.85, 0.085, graphite, cello);
-  neck.position.set(0, 1.72, 0.12);
-  const scroll = mesh(
-    new THREE.TorusGeometry(0.065, 0.022, 7, 20),
-    celloFinish,
-    cello,
-  );
-  scroll.position.set(0, 2.16, 0.13);
-  const bridge = box(0.18, 0.1, 0.04, warmWhite, cello);
-  bridge.position.set(0, 0.65, 0.22);
-  const tailpiece = box(0.095, 0.28, 0.045, graphite, cello);
-  tailpiece.position.set(0, 0.28, 0.21);
-  tailpiece.rotation.z = 0.02;
-  for (let i = 0; i < 4; i++)
-    tube(
-      [
-        [(i - 1.5) * 0.017, 0.15, 0.25],
-        [(i - 1.5) * 0.017, 0.65, 0.25],
-        [(i - 1.5) * 0.017, 2.12, 0.19],
-      ],
-      0.0035,
-      metal,
-      cello,
-    );
-  for (const side of [-1, 1]) {
-    tube(
-      [
-        [side * 0.19, 0.52, 0.23],
-        [side * 0.15, 0.67, 0.23],
-        [side * 0.2, 0.8, 0.23],
-        [side * 0.16, 0.92, 0.23],
-      ],
-      0.012,
-      graphite,
-      cello,
-    );
-    for (let i = 0; i < 2; i++) {
-      const peg = box(0.12, 0.035, 0.035, graphite, cello);
-      peg.position.set(side * 0.06, 2.01 + i * 0.1, 0.12);
-    }
-  }
-  tube(
-    [
-      [0.5, 0.12, 0.2],
-      [0.48, 0.95, 0.18],
-      [0.46, 1.95, 0.17],
-    ],
-    0.012,
-    soundboard,
-    cello,
-  );
-  tube(
-    [
-      [0, -0.14, 0.08],
-      [0, 0, 0.08],
-    ],
-    0.015,
-    metal,
-    cello,
-  );
-  const stand = new THREE.Group();
-  stand.position.set(-2.2, 0.63, -0.2);
-  stand.rotation.y = 0.25;
-  ensemble.add(stand);
-  tube(
-    [
-      [0, 0, 0],
-      [0, 1.45, 0],
-    ],
-    0.023,
-    graphite,
-    stand,
-  );
-  for (let i = 0; i < 3; i++) {
-    const angle = (i * Math.PI * 2) / 3;
-    tube(
-      [
-        [0, 0.2, 0],
-        [Math.cos(angle) * 0.28, 0, Math.sin(angle) * 0.28],
-      ],
-      0.02,
-      graphite,
-      stand,
-    );
-  }
-  const standDesk = box(0.64, 0.46, 0.035, graphite, stand);
-  standDesk.position.set(0, 1.55, 0.06);
-  standDesk.rotation.x = -0.15;
-  const score = box(0.49, 0.34, 0.012, warmWhite, stand);
-  score.position.set(0, 1.57, 0.09);
-  score.rotation.x = -0.15;
-  const brass = material("#FFDA8E", 0.48, 0.38),
-    horn = new THREE.Group();
-  horn.position.set(2.05, 1.27, 0.25);
-  horn.rotation.y = -0.35;
-  ensemble.add(horn);
-  mesh(new THREE.TorusGeometry(0.24, 0.031, 9, 44), brass, horn);
-  tube(
-    [
-      [-0.22, 0, 0],
-      [-0.3, 0.24, 0],
-      [-0.12, 0.34, 0],
-      [-0.08, 0.26, 0],
-    ],
-    0.025,
-    brass,
-    horn,
-  );
-  const bell = mesh(
-    new THREE.LatheGeometry(
-      [
-        new THREE.Vector2(0.028, 0),
-        new THREE.Vector2(0.035, 0.12),
-        new THREE.Vector2(0.07, 0.22),
-        new THREE.Vector2(0.18, 0.3),
-      ],
-      28,
-    ),
-    brass,
-    horn,
-  );
-  bell.rotation.z = -Math.PI / 2;
-  bell.position.set(0.15, -0.04, 0);
-  for (let i = 0; i < 3; i++) {
-    const valve = box(0.025, 0.13, 0.04, brass, horn);
-    valve.position.set((i - 1) * 0.07, 0.1, 0.04);
-  }
+  buildOrchestra(root, { geometry, material });
 
   scene.add(new THREE.HemisphereLight("#F5EEE8", "#24212C", 1.3));
   const key = new THREE.DirectionalLight("#FFF3E4", 2.5);
@@ -583,7 +413,7 @@ export function createTheatre(
     const degrees = (yaw * 180) / Math.PI;
     host.dataset.yaw = degrees.toFixed(1);
     host.dataset.pitch = ((pitch * 180) / Math.PI).toFixed(1);
-    const description = `View ${Math.round(degrees)} degrees. Move the mouse across the hall for a full turn, or drag to orbit. Arrow keys turn and tilt. Home or 0 resets the view.`;
+    const description = `View ${Math.round(degrees)} degrees. Hover for a gentle view. Press on the hall and drag to orbit. Arrow keys turn and tilt. Home or 0 resets the view.`;
     if (description !== lastDescription) {
       host.setAttribute("aria-description", description);
       lastDescription = description;
@@ -602,7 +432,7 @@ export function createTheatre(
     if (!active()) return;
     const dt = Math.max(1 / 120, Math.min(0.25, (now - lastTime) / 1000));
     lastTime = now;
-    const ease = motion && !reduced.matches ? 1 - Math.exp(-dt * 36) : 1;
+    const ease = motion && !reduced.matches ? 1 - Math.exp(-dt * 5.5) : 1;
     yaw += (targetYaw - yaw) * ease;
     pitch += (targetPitch - pitch) * ease;
     if (!unsettled()) {
@@ -664,12 +494,13 @@ export function createTheatre(
     schedule();
   };
   const pointerMove = (event: PointerEvent) => {
+    if (drag && !(event.buttons & 1)) cancelDrag();
     if (!inputEnabled()) return;
     const rect = host.getBoundingClientRect();
     if (drag && event.pointerId === drag.id) {
       targetYaw =
         drag.yaw +
-        ((event.clientX - drag.x) / Math.max(1, rect.width)) * Math.PI * 2;
+        ((event.clientX - drag.x) / Math.max(1, rect.width)) * Math.PI * 1.6;
       targetPitch = THREE.MathUtils.clamp(
         drag.pitch -
           ((event.clientY - drag.y) / Math.max(1, rect.height)) * 0.48,
@@ -687,21 +518,32 @@ export function createTheatre(
         (event.clientX - rect.left) / Math.max(1, rect.width) - 0.5,
         (event.clientY - rect.top) / Math.max(1, rect.height) - 0.5,
       );
-      targetYaw = view.yaw;
-      targetPitch = view.pitch;
+      targetYaw = baseYaw + view.yaw;
+      targetPitch = THREE.MathUtils.clamp(basePitch + view.pitch, -0.24, 0.24);
     }
     schedule();
   };
+  const hitTest = new THREE.Raycaster();
   const pointerDown = (event: PointerEvent) => {
     // One-finger touch always keeps native vertical page scrolling.
     if (!inputEnabled() || event.button !== 0 || event.pointerType === "touch")
       return;
+    const rect = host.getBoundingClientRect();
+    hitTest.setFromCamera(
+      new THREE.Vector2(
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        1 - ((event.clientY - rect.top) / rect.height) * 2,
+      ),
+      camera,
+    );
+    if (!hitTest.intersectObject(root, true).length) return;
+    event.preventDefault();
     drag = {
       id: event.pointerId,
       x: event.clientX,
       y: event.clientY,
-      yaw: targetYaw,
-      pitch: targetPitch,
+      yaw,
+      pitch,
     };
     host.setPointerCapture(event.pointerId);
     host.focus({ preventScroll: true });
@@ -709,10 +551,28 @@ export function createTheatre(
   };
   const pointerUp = (event: PointerEvent) => {
     if (!drag || drag.id !== event.pointerId) return;
+    baseYaw = targetYaw;
+    basePitch = targetPitch;
     drag = null;
     if (host.hasPointerCapture(event.pointerId))
       host.releasePointerCapture(event.pointerId);
     host.style.cursor = "grab";
+  };
+  const cancelDrag = () => {
+    if (!drag) return;
+    const id = drag.id;
+    drag = null;
+    targetYaw = baseYaw = yaw;
+    targetPitch = basePitch = pitch;
+    if (host.hasPointerCapture(id)) host.releasePointerCapture(id);
+    host.style.cursor = motion ? "grab" : "default";
+  };
+  const pointerLeave = () => {
+    if (!drag && inputEnabled()) {
+      targetYaw = baseYaw;
+      targetPitch = basePitch;
+      schedule();
+    }
   };
   const keyDown = (event: KeyboardEvent) => {
     if (
@@ -744,6 +604,8 @@ export function createTheatre(
       default:
         return;
     }
+    baseYaw = targetYaw;
+    basePitch = targetPitch;
     event.preventDefault();
     schedule();
   };
@@ -759,11 +621,17 @@ export function createTheatre(
   const intersection = new IntersectionObserver((entries) => {
     visible = entries.some((entry) => entry.isIntersecting);
     if (active()) schedule();
-    else stop();
+    else {
+      cancelDrag();
+      stop();
+    }
   });
   const visibility = () => {
     if (active()) schedule();
-    else stop();
+    else {
+      cancelDrag();
+      stop();
+    }
   };
   const preference = () => {
     stop();
@@ -777,6 +645,7 @@ export function createTheatre(
   reduced.addEventListener("change", preference);
   host.addEventListener("pointermove", pointerMove, { passive: true });
   host.addEventListener("pointerdown", pointerDown);
+  host.addEventListener("pointerleave", pointerLeave);
   host.addEventListener("pointerup", pointerUp);
   host.addEventListener("pointercancel", pointerUp);
   host.addEventListener("lostpointercapture", pointerUp);
@@ -811,6 +680,7 @@ export function createTheatre(
       reduced.removeEventListener("change", preference);
       host.removeEventListener("pointermove", pointerMove);
       host.removeEventListener("pointerdown", pointerDown);
+      host.removeEventListener("pointerleave", pointerLeave);
       host.removeEventListener("pointerup", pointerUp);
       host.removeEventListener("pointercancel", pointerUp);
       host.removeEventListener("lostpointercapture", pointerUp);

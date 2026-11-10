@@ -1,25 +1,27 @@
 import { useCallback, useEffect, useRef } from "react";
 import Lenis from "lenis";
-import Snap from "lenis/snap";
+import { nearSceneStop } from "../navigation/scene-settle";
 export function useSmoothPage(home = false) {
   const instance = useRef<Lenis | null>(null);
   useEffect(() => {
     const media = matchMedia("(prefers-reduced-motion: reduce)");
     let lenis: Lenis | undefined,
-      snap: Snap | undefined,
+      settleTimer: ReturnType<typeof setTimeout> | undefined,
+      removeInput: (() => void) | undefined,
       resize: ResizeObserver | undefined,
       mutations: MutationObserver | undefined,
       observer: IntersectionObserver | undefined,
-      stops: (() => void)[] = [];
+      stops: number[] = [];
+    let settlingAllowed = true;
     let disposed = false;
     const clear = () => {
-      snap?.stop();
-      snap?.destroy();
+      clearTimeout(settleTimer);
+      removeInput?.();
       lenis?.destroy();
       resize?.disconnect();
       mutations?.disconnect();
       observer?.disconnect();
-      snap = undefined;
+      removeInput = undefined;
       lenis = undefined;
       instance.current = null;
       stops = [];
@@ -44,38 +46,59 @@ export function useSmoothPage(home = false) {
       }
       const scenes = [...document.querySelectorAll<HTMLElement>(".snap-scene")];
       if (home && lenis && scenes.length) {
-        snap = new Snap(lenis, {
-          type: "mandatory",
-          debounce: 180,
-          duration: 1.12,
-          easing: (t) => 1 - Math.pow(1 - t, 5),
-        });
+        const current = lenis;
         const points = () => {
-          stops.forEach((remove) => remove());
           const header =
             document.querySelector("header")?.getBoundingClientRect().height ||
             0;
           stops = scenes.map((scene) =>
-            snap!.add(
-              Math.max(
-                0,
-                Math.round(
-                  scene.getBoundingClientRect().top + window.scrollY - header,
-                ),
+            Math.max(
+              0,
+              Math.round(
+                scene.getBoundingClientRect().top + window.scrollY - header,
               ),
             ),
           );
         };
         points();
         resize = new ResizeObserver(points);
-        scenes.forEach((s) => resize!.observe(s));
+        scenes.forEach((scene) => resize!.observe(scene));
         document.fonts.ready.then(() => {
-          if (!disposed && snap) points();
+          if (!disposed) points();
+        });
+        removeInput = current.on("virtual-scroll", ({ event, deltaY }) => {
+          if (event.type === "touchmove" || !deltaY) return;
+          clearTimeout(settleTimer);
+          settleTimer = setTimeout(() => {
+            if (
+              disposed ||
+              !settlingAllowed ||
+              document.querySelector("dialog[open]")
+            )
+              return;
+            // Use the user's intended stopping point, not a velocity-biased guess.
+            const target = Math.max(
+              0,
+              Math.min(current.limit, current.targetScroll),
+            );
+            const stop = nearSceneStop(target, stops, innerHeight);
+            if (stop !== null && Math.abs(stop - target) > 1)
+              current.scrollTo(stop, {
+                duration: 0.95,
+                easing: (t) => 1 - Math.pow(1 - t, 3),
+                lock: false,
+                userData: { initiator: "scene-settle" },
+              });
+          }, 280);
         });
       }
       const modal = () => {
-        if (document.querySelector("dialog[open]")) snap?.stop();
-        else snap?.start();
+        settlingAllowed = !document.querySelector("dialog[open]");
+        if (!settlingAllowed) {
+          clearTimeout(settleTimer);
+          if (lenis?.userData?.initiator === "scene-settle")
+            lenis.scrollTo(lenis.scroll, { immediate: true, force: true });
+        }
       };
       modal();
       mutations = new MutationObserver(modal);

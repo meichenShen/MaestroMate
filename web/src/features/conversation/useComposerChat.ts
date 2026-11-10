@@ -36,5 +36,12 @@ export function useComposerChat() {
     },
     [],
   );
-  return { turns, pending, ask };
+  const reset = useCallback(() => {
+    clearTimeout(timer.current);
+    busy.current = false;
+    nextId.current = 1;
+    setTurns([]);
+    setPending(false);
+  }, []);
+  return { turns, pending, ask, reset };
 }

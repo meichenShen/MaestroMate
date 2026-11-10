@@ -49,11 +49,14 @@ test("three case overviews retain independent answers in the same stage", async 
   }
 });
 test("activity information really reveals on pointer hover and keyboard focus", async () => {
-  const p = await page("#play/aquarium");
+  const p = await page("#chat");
   try {
-    const h = p.getByRole("button", { name: "About case 1", exact: true });
+    const h = p.getByRole("button", {
+      name: "About this conversation",
+      exact: true,
+    });
     assert.equal(await h.count(), 1);
-    const tip = p.locator("#case-layers-hint");
+    const tip = p.locator("#conversation-note");
     assert.equal(
       await tip.evaluate((e) => getComputedStyle(e).visibility),
       "hidden",
@@ -61,7 +64,7 @@ test("activity information really reveals on pointer hover and keyboard focus", 
     await h.hover();
     await p.waitForFunction(
       () =>
-        getComputedStyle(document.querySelector("#case-layers-hint"))
+        getComputedStyle(document.querySelector("#conversation-note"))
           .visibility === "visible",
     );
     assert.equal(
@@ -72,7 +75,7 @@ test("activity information really reveals on pointer hover and keyboard focus", 
     await h.focus();
     await p.waitForFunction(
       () =>
-        getComputedStyle(document.querySelector("#case-layers-hint"))
+        getComputedStyle(document.querySelector("#conversation-note"))
           .visibility === "visible",
     );
     assert.equal(
@@ -136,32 +139,84 @@ test("room drawings use distinct bright reference colours without green", async 
     await p.close();
   }
 });
-test("concert-hall pointer control spans a wide actual camera angle", async () => {
+test("concert-hall hover is gentle, while a deliberate mesh drag gives a wide orbit", async () => {
   const p = await page("#home", "no-preference");
   try {
     await p.locator('.theatre-stage[data-render-status="ready"]').waitFor();
     const host = p.locator(".theatre-stage-canvas"),
       r = await host.boundingBox();
-    await p.mouse.move(r.x + r.width * 0.12, r.y + r.height * 0.4);
-    await p.waitForFunction(
-      () =>
-        Math.abs(
-          Number(document.querySelector(".theatre-stage-canvas").dataset.yaw) +
-            136.8,
-        ) < 3,
-    );
+    await p.mouse.move(r.x + r.width * 0.2, r.y + r.height * 0.45);
+    await p.waitForTimeout(800);
     const a = Number(await host.getAttribute("data-yaw"));
-    assert.ok(Number.isFinite(a));
-    await p.mouse.move(r.x + r.width * 0.88, r.y + r.height * 0.4);
+    await p.mouse.move(r.x + r.width * 0.9, r.y + r.height * 0.45);
+    await p.waitForTimeout(800);
+    const z = Number(await host.getAttribute("data-yaw"));
+    assert.ok(Math.abs(z - a) < 30, `Passive yaw stays gentle: ${a}→${z}`);
+    await p.mouse.move(r.x + r.width * 0.98, r.y + r.height * 0.02);
+    await p.mouse.down();
+    assert.notEqual(
+      await host.evaluate((e) => e.style.cursor),
+      "grabbing",
+      "Blank canvas never starts an orbit",
+    );
+    await p.mouse.up();
+    let origin;
+    for (const [x, y] of [
+      [0.6, 0.6],
+      [0.65, 0.7],
+      [0.5, 0.65],
+      [0.7, 0.55],
+    ]) {
+      const point = { x: r.x + r.width * x, y: r.y + r.height * y };
+      await p.mouse.move(point.x, point.y);
+      await p.mouse.down();
+      if ((await host.evaluate((e) => e.style.cursor)) === "grabbing") {
+        origin = point;
+        break;
+      }
+      await p.mouse.up();
+    }
+    assert.ok(origin, "A press on actual hall geometry starts drag");
+    await p.evaluate(() => {
+      Object.defineProperty(document, "hidden", {
+        configurable: true,
+        value: true,
+      });
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+    assert.notEqual(
+      await host.evaluate((e) => e.style.cursor),
+      "grabbing",
+      "Hiding the tab cancels an interrupted drag",
+    );
+    await p.mouse.up();
+    await p.evaluate(() => {
+      Object.defineProperty(document, "hidden", {
+        configurable: true,
+        value: false,
+      });
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+    await p.mouse.move(origin.x, origin.y);
+    await p.mouse.down();
+    assert.equal(await host.evaluate((e) => e.style.cursor), "grabbing");
+    const before = Number(await host.getAttribute("data-yaw"));
+    await p.mouse.move(origin.x + r.width * 0.4, origin.y, { steps: 3 });
     await p.waitForFunction(
-      () =>
+      (value) =>
         Math.abs(
           Number(document.querySelector(".theatre-stage-canvas").dataset.yaw) -
-            136.8,
-        ) < 3,
+            value,
+        ) > 90,
+      before,
     );
-    const z = Number(await host.getAttribute("data-yaw"));
-    assert.ok(Math.abs(z - a) > 200, `Actual camera yaw ${a}→${z}`);
+    await p.mouse.up();
+    await p.mouse.move(origin.x + r.width * 0.4 - 1, origin.y);
+    await p.waitForTimeout(600);
+    assert.ok(
+      Math.abs(Number(await host.getAttribute("data-yaw")) - before) > 70,
+      "Releasing preserves the chosen orbit",
+    );
   } finally {
     await p.close();
   }
@@ -170,14 +225,25 @@ test("revealed cases replay their explained reference passage", async () => {
   const p = await page("#play/aquarium");
   try {
     const stage = p.locator("#current-sound-case");
-    for (const [index, start] of [[1, 130], [0, 3], [2, 3]]) {
-      await p.getByRole("button", { name: `Open case ${index + 1}`, exact: true }).click();
+    for (const [index, start] of [
+      [1, 130],
+      [0, 3],
+      [2, 3],
+    ]) {
+      await p
+        .getByRole("button", { name: `Open case ${index + 1}`, exact: true })
+        .click();
       await stage.getByRole("radio").nth(1).check();
-      await stage.getByRole("button", { name: "Check answer", exact: true }).click();
+      await stage
+        .getByRole("button", { name: "Check answer", exact: true })
+        .click();
       await stage.getByRole("button", { name: /Hear it again/ }).click();
       await p.waitForFunction(() => !document.querySelector("audio").paused);
       const time = await p.locator("audio").evaluate((a) => a.currentTime);
-      assert.ok(time >= start && time < start + 2, `Case ${index + 1} replays ${start}s, got ${time}`);
+      assert.ok(
+        time >= start && time < start + 2,
+        `Case ${index + 1} replays ${start}s, got ${time}`,
+      );
       await p.getByRole("button", { name: "Pause music", exact: true }).click();
     }
   } finally {

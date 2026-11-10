@@ -287,9 +287,9 @@ export function buildHall(
   }
 
   // A generous stage with curved edge, orchestra risers and a sculpted shell.
-  slab(roundRect(12.2, 6.4, 2.0), 0.56, ink, 0.74, -6.8);
-  slab(roundRect(12.35, 6.5, 2.0), 0.1, gold, 1.3, -6.8);
-  slab(roundRect(12.25, 6.4, 2.0), 0.12, ivory, 1.4, -6.8);
+  slab(roundRect(15.6, 8.2, 2.0), 0.56, ink, 0.74, -6.8);
+  slab(roundRect(15.75, 8.3, 2.0), 0.1, gold, 1.3, -6.8);
+  slab(roundRect(15.65, 8.2, 2.0), 0.12, ivory, 1.4, -6.8);
   for (let i = 0; i < 3; i++) {
     slab(
       roundRect(5.2 + i * 0.65, 0.7, 0.22),
@@ -301,11 +301,11 @@ export function buildHall(
   }
   for (let i = 0; i < 3; i++) {
     slab(
-      roundRect(9.3 - i * 0.8, 0.88, 0.3),
+      roundRect(13.3 - i * 0.6, 1.2, 0.3),
       0.18,
       i % 2 ? violet : ivory,
       1.53 + i * 0.2,
-      -7.4 - i * 0.75,
+      -7.5 - i * 1.0,
     );
   }
   const shellVertices: number[] = [],
@@ -314,12 +314,12 @@ export function buildHall(
     const a = -1.2 + (i * 2.4) / 60,
       top = 9.05 - Math.abs(Math.sin(a)) * 1.4;
     for (const [r, y] of [
-      [6.65, 1.5],
-      [6.65, top],
-      [7.0, 1.5],
-      [7.0, top],
+      [8.0, 1.5],
+      [8.0, top],
+      [8.35, 1.5],
+      [8.35, top],
     ]) {
-      shellVertices.push(Math.sin(a) * r, y, -5.5 - Math.cos(a) * r);
+      shellVertices.push(Math.sin(a) * r, y, -4.4 - Math.cos(a) * r);
     }
     if (i < 60) {
       const k = i * 4;
@@ -357,11 +357,7 @@ export function buildHall(
     const a = -1.14 + (i * 2.28) / 18,
       h = 5.9 - Math.abs(Math.sin(a)) * 0.9;
     const fin = box(0.18, h, 0.38, i % 6 === 0 ? gold : i < 8 ? coral : blue);
-    fin.position.set(
-      Math.sin(a) * 6.42,
-      1.6 + h / 2,
-      -5.5 - Math.cos(a) * 6.42,
-    );
+    fin.position.set(Math.sin(a) * 7.8, 1.6 + h / 2, -4.4 - Math.cos(a) * 7.8);
     fin.rotation.y = -a;
   }
   // Floating acoustic reflectors explicitly leave the roof open.

@@ -1,36 +1,22 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { pointerHallView } from "../src/rendering/hall-view.ts";
-
-const near = (actual, expected) =>
+const degrees = (r) => (r * 180) / Math.PI;
+test("passive pointer travel remains a gentle local view", () => {
+  const a = pointerHallView(-0.5, 0),
+    b = pointerHallView(0.5, 0);
+  assert.ok(degrees(b.yaw - a.yaw) <= 30, "Hover never gives a full turn");
   assert.ok(
-    Math.abs(actual - expected) < 1e-10,
-    `${actual} should equal ${expected}`,
+    degrees(b.yaw - a.yaw) >= 10,
+    "The gentle response remains visible",
   );
-
-test("moving across the hall gives one complete revolution", () => {
-  near(pointerHallView(-0.5, 0).yaw, -Math.PI);
-  near(pointerHallView(0, 0).yaw, 0);
-  near(pointerHallView(0.5, 0).yaw, Math.PI);
 });
-
-test("a quarter-width move turns the hall by 90 degrees", () => {
-  near(pointerHallView(0.25, 0).yaw, Math.PI / 2);
-  near(pointerHallView(-0.25, 0).yaw, -Math.PI / 2);
+test("gentle hover is centered and has a small pitch envelope", () => {
+  assert.deepEqual(pointerHallView(0, 0), { yaw: 0, pitch: 0 });
+  assert.ok(Math.abs(pointerHallView(0, -0.5).pitch) < 0.1);
 });
-
-test("pitch stays within a comfortable overhead view", () => {
-  const top = pointerHallView(0, -0.5).pitch;
-  const bottom = pointerHallView(0, 0.5).pitch;
-  assert.ok(top > 0 && top < Math.PI / 3);
-  assert.ok(bottom < 0 && bottom > -Math.PI / 3);
-  near(top, -bottom);
-});
-
 test("out-of-range and nonfinite pointer coordinates stay finite", () => {
-  near(pointerHallView(-20, 20).yaw, -Math.PI);
-  near(pointerHallView(20, -20).yaw, Math.PI);
-  for (const value of [NaN, Infinity, -Infinity]) {
-    assert.deepEqual(pointerHallView(value, value), { yaw: 0, pitch: 0 });
-  }
+  assert.deepEqual(pointerHallView(20, -20), pointerHallView(0.5, -0.5));
+  for (const v of [NaN, Infinity, -Infinity])
+    assert.deepEqual(pointerHallView(v, v), { yaw: 0, pitch: 0 });
 });

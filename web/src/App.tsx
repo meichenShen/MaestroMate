@@ -6,7 +6,7 @@ import { ContextPanel } from "./components/ContextPanel";
 import { Player } from "./components/Player";
 import { Guide } from "./components/Guide";
 import { EntryChoice, type EntryRoute } from "./components/EntryChoice";
-import { TheatreStage } from "./components/TheatreStage";
+import { ProgramComplete } from "./features/program/ProgramComplete";
 import { JourneyProgress } from "./components/JourneyProgress";
 import { Home } from "./features/home/Home";
 import { Programme } from "./features/home/Programme";
@@ -141,24 +141,13 @@ function Site() {
       ) : route.kind === "games" ? (
         <GameRoom />
       ) : route.kind === "summary" ? (
-        <main id="main" tabIndex={-1} className="program-summary page-room">
-          <TheatreStage />
-          <div className="completion-copy">
-            <p className="eyebrow">Your Aquarium Program</p>
-            <h1>Lovely wandering.</h1>
-            <p>
-              A little time with one lovely piece.
-              <br />
-              There's always another sound to come back for.
-            </p>
-            <a className="solid-button" href="#home">
-              Make yourself at home ↗
-            </a>
-            <a href="#listen" className="completion-secondary">
-              Listen a little more ↗
-            </a>
-          </div>
-        </main>
+        <ProgramComplete
+          onRestart={() => {
+            setProgress(initialProgress);
+            chat.reset();
+            startProgram();
+          }}
+        />
       ) : (
         <main
           id="main"

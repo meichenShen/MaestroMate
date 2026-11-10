@@ -1,4 +1,4 @@
-/** Pointer coordinates are centered in the viewport: −0.5…0.5 is one full turn. */
+/** Pointer coordinates are centered in the viewport: −0.5…0.5 gives gentle parallax; wide rotation requires a drag. */
 export function pointerHallView(
   x: number,
   y: number,
@@ -6,7 +6,7 @@ export function pointerHallView(
   const finiteClamp = (value: number) =>
     Number.isFinite(value) ? Math.max(-0.5, Math.min(0.5, value)) : 0;
   return {
-    yaw: finiteClamp(x) * Math.PI * 2,
-    pitch: -finiteClamp(y) * 0.48 || 0,
+    yaw: finiteClamp(x) * 0.44,
+    pitch: -finiteClamp(y) * 0.12 || 0,
   };
 }

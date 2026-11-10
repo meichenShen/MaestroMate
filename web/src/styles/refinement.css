@@ -1,0 +1,330 @@
+/* v8: essential questions stay visible; overflow is local to the case rail. */
+.case-rail {
+  position: relative;
+  flex-shrink: 0;
+  min-width: 0;
+}
+.case-overview {
+  display: flex;
+  position: relative;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #a593e044 transparent;
+  padding: 2px 0 6px;
+  gap: 14px;
+}
+.case-preview {
+  flex: 0 0 calc((100% - 28px) / 3);
+  min-width: 220px;
+}
+.case-preview > button {
+  height: 100%;
+}
+.rail-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 38px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  background: #fffff3;
+  color: #14141b;
+  z-index: 2;
+  box-shadow: 0 3px 20px #0006;
+}
+.rail-back {
+  left: -15px;
+}
+.rail-forward {
+  right: -15px;
+}
+.rail-arrow:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+.case-prompt {
+  font-size: 18px;
+  line-height: 1.55;
+  max-width: 75ch;
+  color: var(--fg);
+  margin: 8px 0 4px;
+  flex-shrink: 0;
+}
+.case-centre {
+  min-height: 65px;
+}
+.completion-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.completion-actions .solid-button,
+.completion-restart {
+  font-size: 17px;
+  min-height: 50px;
+  border-radius: 30px;
+  padding: 13px 23px;
+}
+.completion-restart {
+  background: #292735;
+  color: var(--fg);
+}
+.completion-another {
+  font-size: 16px;
+  color: var(--muted);
+  flex-basis: 100%;
+  margin-top: 12px;
+}
+.program-fireworks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+.firework-burst {
+  stroke: var(--listen);
+  stroke-width: 2;
+}
+.firework-burst path {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: firework-ray 1.6s 0.35s ease-out both;
+}
+.firework-burst circle {
+  fill: currentColor;
+  stroke: none;
+  opacity: 0;
+  animation: firework-spark 1.6s 0.35s ease-out both;
+}
+.burst-1 {
+  stroke: var(--chat);
+  color: var(--chat);
+}
+.burst-2 {
+  stroke: var(--play);
+  color: var(--play);
+}
+.burst-1 path,
+.burst-1 circle {
+  animation-delay: 0.85s;
+}
+.burst-2 path,
+.burst-2 circle {
+  animation-delay: 1.25s;
+}
+@keyframes firework-ray {
+  0% {
+    stroke-dashoffset: 60;
+    opacity: 0;
+  }
+  25% {
+    stroke-dashoffset: 20;
+    opacity: 0.9;
+  }
+  65% {
+    stroke-dashoffset: -40;
+    opacity: 0.65;
+  }
+  100% {
+    stroke-dashoffset: -60;
+    opacity: 0;
+  }
+}
+@keyframes firework-spark {
+  0%,
+  30%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+@media (min-width: 951px) and (max-height: 800px) {
+  .case-prompt {
+    font-size: 14px;
+    line-height: 1.45;
+    margin: 6px 0 2px;
+  }
+  .case-centre {
+    min-height: 54px;
+  }
+  .active-case .case-listen {
+    gap: 5px;
+  }
+  .case-centre > .case-glyph {
+    width: 72px;
+    height: 45px;
+  }
+  .answer-reveal p {
+    line-height: 1.45;
+  }
+}
+@media (max-width: 950px) {
+  .case-prompt {
+    font-size: 16px;
+  }
+  .case-preview {
+    min-width: 220px;
+  }
+  .case-preview .case-glyph {
+    display: block;
+    width: 36px;
+    height: 30px;
+  }
+  .case-preview > button {
+    flex-wrap: nowrap;
+  }
+  .case-preview h2 {
+    flex-basis: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .program-fireworks {
+    display: none;
+  }
+}
+/* Preview space is outside each drawing and its stable label/arrow target. */
+.rooms-scene .portal-field {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+  margin-top: 160px;
+  margin-bottom: 95px;
+}
+.portal-node {
+  min-height: 0;
+}
+.portal-node > span.portal-hint {
+  position: absolute;
+  top: calc(100% + 16px);
+  bottom: auto;
+  left: 50%;
+  width: 275px;
+  max-width: min(275px, 80vw);
+  padding: 14px 18px;
+  background: #fffff3;
+  color: #24212e;
+  border-radius: 20px;
+  transform: translate(-50%, 5px);
+  font-size: 15px;
+  line-height: 1.55;
+  margin: 0;
+  pointer-events: none;
+}
+.portal-node:hover > span.portal-hint,
+.portal-node:focus-visible > span.portal-hint {
+  transform: translate(-50%, 0);
+}
+.arrival-line {
+  display: block;
+}
+.arrival-word {
+  display: inline-block;
+  white-space: nowrap;
+  margin-right: 0.23em;
+}
+.arrival-word:last-child {
+  margin-right: 0;
+}
+.arrival-letter {
+  display: inline-block;
+  opacity: 1;
+}
+.scene-visible .arrival-letter {
+  animation: letter-arrive 0.85s var(--letter-delay)
+    cubic-bezier(0.16, 0.8, 0.22, 1.02) both;
+}
+@keyframes letter-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--letter-x), var(--letter-y), 0)
+      rotate(var(--letter-angle));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 1100px) and (min-width: 721px) {
+  .portal-node > span.portal-hint {
+    width: 225px;
+    font-size: 14px;
+    padding: 12px 15px;
+  }
+}
+@media (max-width: 720px), (hover: none) {
+  .portal-node > span.portal-hint {
+    position: static;
+    transform: none;
+    visibility: visible;
+    opacity: 1;
+    width: auto;
+    max-width: 220px;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+  .portal-node:hover > span.portal-hint,
+  .portal-node:focus-visible > span.portal-hint {
+    transform: none;
+  }
+}
+@media (max-width: 720px) {
+  .rooms-scene .portal-field {
+    margin-top: 140px;
+    margin-bottom: 12px;
+    min-height: 650px;
+  }
+  .rooms-scene {
+    height: auto;
+    min-height: 980px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arrival-letter {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (min-width: 951px) and (max-height: 800px) {
+  .work-room > .journey-progress {
+    margin-bottom: 8px;
+  }
+  .detective-workspace {
+    gap: 8px;
+  }
+  .case-overview {
+    padding-bottom: 2px;
+  }
+  .active-case {
+    padding: 12px 20px;
+  }
+  .active-case-heading h2 {
+    font-size: 24px;
+  }
+  .case-centre {
+    min-height: 80px;
+  }
+  .case-actions {
+    min-height: 38px;
+  }
+  .detective-workspace .answer-tiles {
+    margin-bottom: 8px;
+  }
+  .answer-reveal strong {
+    font-size: 22px;
+  }
+  .answer-reveal p {
+    margin-top: 5px;
+  }
+}

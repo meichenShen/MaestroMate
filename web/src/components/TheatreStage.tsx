@@ -59,7 +59,7 @@ export function TheatreStage({ motion = true }: { motion?: boolean }) {
       />
       {status === "ready" && (
         <p className="hall-instructions">
-          Move to rotate · Drag to orbit · Arrow keys to explore
+          Hover gently · Press the hall & drag to explore
         </p>
       )}
       {status !== "ready" && (

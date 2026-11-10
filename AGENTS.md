@@ -24,3 +24,8 @@
 
 - Latest palette comes from the user's LOL screenshots: #45D9FD cyan, #EE2560 rose, #FFDA8E amber, with #A593E0 lavender and #80D4F6 sky as supporting colours. Earlier interim purple/coral tokens are superseded. No green UI or default model material.
 - Desktop activity pages must fit one viewport above the measured player: core actions never require document scrolling. Keep three case overviews, animate the active fixed answer stage, and retain previous/next plus feedback in place. Source notes open in a separate dialog. Chat history may scroll internally.
+
+- Question prompts are essential and always visible. Case navigation is a local horizontal rail with data-derived counts; it never replaces the fixed answer stage with a long page.
+- Hall passive hover is gentle; wide damped drag starts only on a mesh hit. Keep orchestra resources registered through the existing factories and reuse instanced geometry.
+- Homepage settling is proximity-only; never restore mandatory page correction. Letter arrivals and Program fireworks are finite, accessible and reduced-motion-safe. Explicit Restart Program resets answers/chat and cancels pending replies without remounting audio.
+- Preview cards must avoid every icon, with readable contrast; keep the original stationary entry targets.
