@@ -109,9 +109,10 @@ try {
     .getByRole("heading", { name: "Follow the clues.", exact: true })
     .waitFor();
   assert.equal(await page.locator("[data-journey-progress]").count(), 0);
-  await page.getByRole("radio").nth(1).check();
+  await page.locator("#current-sound-case").getByRole("radio").nth(1).check();
   await page
-    .getByRole("button", { name: "Reveal the clue", exact: true })
+    .locator("#current-sound-case")
+    .getByRole("button", { name: "Check answer", exact: true })
     .click();
   await page.getByRole("status").filter({ hasText: "You found it" }).waitFor();
   await page
@@ -126,7 +127,7 @@ try {
     await page.evaluate(() => location.hash === "#program/aquarium/listen"),
   );
   await page
-    .getByRole("button", { name: "Continue to chat", exact: true })
+    .getByRole("link", { name: /Next: Chat/ })
     .click();
   await page
     .getByRole("heading", { name: "Camille Saint-Saëns", exact: true })
@@ -135,13 +136,13 @@ try {
     await page.evaluate(() => location.hash === "#program/aquarium/chat"),
   );
   await page
-    .getByRole("button", { name: "Continue to play", exact: true })
+    .getByRole("link", { name: /Next: Play/ })
     .click();
   await page
     .getByRole("heading", { name: "Follow the clues.", exact: true })
     .waitFor();
   await page
-    .getByRole("button", { name: "Finish this visit", exact: true })
+    .getByRole("link", { name: /Finish your visit/ })
     .click();
   await page
     .getByRole("heading", { name: "Lovely wandering.", exact: true })

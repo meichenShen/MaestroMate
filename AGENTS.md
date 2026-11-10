@@ -21,3 +21,6 @@
 - Use light periwinkle/peach/yellow/blue accents and neutral violet/ink surfaces. Do not restore green UI panels.
 - Hover may reveal descriptions, but names and stable accessible entry targets remain visible; keyboard focus reveals the same information and touch keeps it readable.
 - Composer replies are labelled fictional first-person adaptations with institutional biographical sources, never fabricated historical quotations. Nested conversation scrolling must release the page at thread boundaries.
+
+- Latest palette comes from the user's LOL screenshots: #45D9FD cyan, #EE2560 rose, #FFDA8E amber, with #A593E0 lavender and #80D4F6 sky as supporting colours. Earlier interim purple/coral tokens are superseded. No green UI or default model material.
+- Desktop activity pages must fit one viewport above the measured player: core actions never require document scrolling. Keep three case overviews, animate the active fixed answer stage, and retain previous/next plus feedback in place. Source notes open in a separate dialog. Chat history may scroll internally.

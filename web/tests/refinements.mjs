@@ -79,7 +79,7 @@ test("scene motion is explicitly on by default and can be switched off", async (
     await p.close();
   }
 });
-test("wheel at the end of chat history continues scrolling the page", async () => {
+test("chat history can scroll while desktop controls stay in the viewport", async () => {
   const p = await visit("#chat");
   try {
     await messages(p);
@@ -96,8 +96,8 @@ test("wheel at the end of chat history continues scrolling the page", async () =
     await p.mouse.wheel(0, 350);
     await p.waitForTimeout(250);
     assert.ok(
-      (await p.evaluate(() => scrollY)) > before + 20,
-      "Thread edge must release page scrolling",
+      Math.abs((await p.evaluate(() => scrollY)) - before) < 2,
+      "The desktop workspace does not scroll away",
     );
   } finally {
     await p.close();

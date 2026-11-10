@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from "react";
 import {
   Play,
   Pause,
@@ -13,8 +14,26 @@ import { formatTime } from "../audio/timeline";
 import { work } from "../content/aquarium";
 export function Player() {
   const audio = useAudio();
+  const footer = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const resize = () => {
+      if (footer.current) {
+        document.documentElement.style.setProperty(
+          "--player-height",
+          `${Math.ceil(footer.current.getBoundingClientRect().height)}px`,
+        );
+      }
+    };
+    resize();
+    const observer = new ResizeObserver(resize);
+    if (footer.current) observer.observe(footer.current);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--player-height");
+    };
+  }, []);
   return (
-    <footer className="player" aria-label="Music player">
+    <footer ref={footer} className="player" aria-label="Music player">
       {audio.error && (
         <div className="audio-error" role="alert">
           <span>{audio.error}</span>

@@ -21,7 +21,7 @@ export function GameRoom() {
         <DrawnIcon kind="play" />
         <span>
           <strong>Sound Detective</strong>
-          <small>Two sound clues. No rush. Just your ears.</small>
+          <small>Three sound clues. No rush. Just your ears.</small>
           <span className="game-cta">
             Let's play <ArrowUpRight size={23} />
           </span>

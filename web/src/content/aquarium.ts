@@ -148,34 +148,54 @@ export const questions = [
     clip: undefined,
   },
 ];
+export const questionPresentation: Record<
+  string,
+  { topic: string; label: string }
+> = {
+  aquarium: { topic: "music", label: "Why Aquarium?" },
+  layers: { topic: "music", label: "A closer listen" },
+  composer: { topic: "life", label: "Early years" },
+  paris: { topic: "life", label: "Paris life" },
+  carnival: { topic: "play", label: "A little mischief" },
+  scene: { topic: "play", label: "Whose ocean?" },
+};
 export const detectiveQuestions = [
   {
     id: "layers",
-    title: "Two ways of moving.",
+    title: "Hear the layers",
     prompt:
       "Beyond the quick, flowing notes, what else can you hear in this opening?",
     clips: [{ start: 3, end: 18, label: "Play the clue" }],
-    options: [
-      "Only one fast-moving line",
-      "A longer, more spacious melody",
-      "Only a steady drum beat",
-    ],
+    options: ["Only quick notes", "A longer melody", "Only a drum"],
     correct: 1,
     explanation:
-      "You found it. A more spacious melody sits alongside the rippling piano pattern. Replay the passage and follow only that longer line.",
+      "A spacious melody floats above the rippling piano. Try following just that line.",
   },
   {
     id: "ending",
-    title: "How does it say goodbye?",
+    title: "The last ripple",
     prompt:
-      "Compare the opening (A) and the ending (B). Which finishes with the quiet after the final sound?",
+      "Compare the opening (A) and the ending (B). Which leaves quiet after the last sound?",
     clips: [
       { start: 3, end: 14, label: "Passage A · opening" },
       { start: 130, end: work.duration, label: "Passage B · ending" },
     ],
-    options: ["Passage A", "Passage B", "Neither passage"],
+    options: ["Passage A", "Passage B"],
     correct: 1,
-    explanation:
-      "You found it. B comes from the end of the work. Hear how the last sound settles, then compare it with the music still moving in A.",
+    explanation: "B is the ending. Stay for the quiet after its last note.",
+  },
+  {
+    id: "match",
+    title: "Find its echo",
+    prompt:
+      "Listen to A, then B and C. Which repeats the exact same moment as A?",
+    clips: [
+      { start: 3, end: 11, label: "Listen A" },
+      { start: 70, end: 78, label: "Listen B" },
+      { start: 3, end: 11, label: "Listen C" },
+    ],
+    options: ["Clip B", "Clip C"],
+    correct: 1,
+    explanation: "C repeats A's recording window. B begins later in the piece.",
   },
 ];

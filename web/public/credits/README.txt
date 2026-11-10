@@ -1,49 +1,49 @@
 MaestroMate — design, code and media credits
 
-Original authored 3D stage
-MaestroMate's theatre is original texture-free Three.js geometry: a grand piano,
-acoustic shells, coloured stage, cello, horn, score stand and curved steps. No generated scene,
-photograph, imported theatre model or pre-rendered illustration is used.
+Original authored 3D concert hall
+MaestroMate's roof-open auditorium has486 instanced seats,13 curved rows,
+two balconies, a stage and original piano/cello/horn geometry. No imported
+hall, generated illustration or photographic textures are used.
+Orbit interaction reference: installed Three.js OrbitControls (MIT).
+https://threejs.org/docs/#OrbitControls
 
-Real-time 3D fish
+Real-time 3D fish and water
 BarramundiFish by Microsoft / Public (2017), Khronos glTF Sample Assets, CC0 1.0.
-The original mesh is preserved; photo textures are removed and replaced with
-matte coloured runtime materials. Source, fixed revision and checksums:
-/models/ATTRIBUTION.md
+Original geometry preserved; photo textures removed. Physical materials with
+transmission and deterministic travel paths, authored reef geometry and
+procedural water-light shaders are MaestroMate code built with Three.js.
+Fixed source, license, transformations and checksum: /models/ATTRIBUTION.md
 https://github.com/KhronosGroup/glTF-Sample-Assets
-The aquarium poster is captured from MaestroMate's actual live 3D scene.
+https://threejs.org/docs/#MeshPhysicalMaterial
+https://threejs.org/examples/webgl_shaders_ocean.html
+The fallback is a captured frame of this renderer, not generated artwork.
 
 Rendering and interaction code
 Three.js (MIT): https://github.com/mrdoob/three.js
-Lenis, including its Snap extension (MIT): https://github.com/darkroomengineering/lenis
+Lenis and Snap (MIT): https://github.com/darkroomengineering/lenis
 Lucide icon geometry (ISC): https://github.com/lucide-icons/lucide
 
-Design and animation references
+Design references
 Federico Vallabrega's Smooothy (MIT), revision a235a4867e21a0428b62d2340fcf8c71c6e94fdf:
 https://github.com/vallafederico/smooothy
-Studied minimal 3D composition, eased interaction and its Draw module's measured,
-staggered SVG paths. Our icon drawing uses native Web Animations and Lucide;
-no food models or branded lettering are distributed. License: /credits/smooothy-MIT.txt
-Vivus (MIT): https://github.com/maxwellito/vivus
-Reviewed for SVG path-drawing technique; the library is not bundled.
-Palette reference: LOL Colors, https://www.webdesignrankings.com/resources/lolcolors/
-Adapted light periwinkle #B9B5FF, peach #FFAE9D, yellow #F6D881 and blue #9DCCFF.
-Codrops MagneticButtons (MIT), interaction reference:
+Studied measured SVG paths, eased scrolling and minimal3D presentation.
+No reference-site models or branded lettering are redistributed.
+License: /credits/smooothy-MIT.txt
+Vivus (MIT) path technique: https://github.com/maxwellito/vivus
+Codrops hover/tooltip references (not bundled):
 https://github.com/codrops/MagneticButtons
-Only artwork responds to pointer position; our link targets stay still. No code,
-GSAP dependency or images from that demonstration are bundled.
-Original seabed geometry, transparent water-light layers and audio-time motion
-use Three.js; fog reference: https://threejs.org/docs/#FogExp2
+https://tympanus.net/Development/TooltipAnimations/
+User-selected LOL Colors: https://www.webdesignrankings.com/resources/lolcolors/
+#45D9FD / #F4F4F4 / #EE2560 / #08182B;
+#FFFFF5 / #FFDA8E / #80D4F6 / #5C196B;
+auxiliary lavender #A593E0. Main website background remains black.
 
 Composer dialogue
-Fictional first-person adaptations, never historical quotations or live AI.
+Fictional first-person adaptations, not historical quotations or live AI.
 Biographical facts are paraphrased from Paris Opera and the BnF exhibition:
 https://www.operadeparis.fr/en/artists/camille-saint-saens
 https://www.bnf.fr/sites/default/files/2021-06/DP_Saint_Saens.pdf
 Listening invitations and visual interpretation are MaestroMate writing.
-
-Water-light research: https://github.com/ScottieFox/caustic-volume (MIT).
-Technical reference only; its tank simulation is not bundled or run here.
 
 Typography
 Outfit — The Outfit Project Authors, SIL Open Font License: /credits/Outfit-OFL.txt

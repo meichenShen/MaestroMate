@@ -17,7 +17,7 @@ for index,view in enumerate(data['bufferViews']):
 for accessor in data['accessors']:
  if 'bufferView'in accessor:accessor['bufferView']=remap[accessor['bufferView']]
 data['bufferViews']=views;data['buffers'][0]['byteLength']=len(output)
-data['materials']=[{'name':'MaestroMate designed matte surface','pbrMetallicRoughness':{'baseColorFactor':[.4,.83,.71,1],'metallicFactor':.08,'roughnessFactor':.44}}]
+data['materials']=[{'name':'MaestroMate designed matte surface','pbrMetallicRoughness':{'baseColorFactor':[.2706,.851,.992,1],'metallicFactor':.08,'roughnessFactor':.44}}]
 for key in ['images','textures','samplers','extensionsUsed','extensionsRequired']:data.pop(key,None)
 meta=json.dumps(data,separators=(',',':')).encode();meta+=b' '*(-len(meta)%4)
 result=struct.pack('<III',0x46546c67,2,12+8+len(meta)+8+len(output))+struct.pack('<II',len(meta),0x4e4f534a)+meta+struct.pack('<II',len(output),0x004e4942)+output

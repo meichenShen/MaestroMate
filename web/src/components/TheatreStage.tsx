@@ -49,14 +49,19 @@ export function TheatreStage({ motion = true }: { motion?: boolean }) {
     <div
       className="theatre-stage"
       data-render-status={status}
-      role="img"
-      aria-label="A sculptural concert stage with a grand piano, cello, horn and curved ivory steps"
+      role="group"
+      aria-label="A large concert hall with orchestra stage, curved seating and balconies"
     >
       <div
         ref={host}
         className="theatre-stage-canvas"
         style={{ position: "absolute", inset: 0 }}
       />
+      {status === "ready" && (
+        <p className="hall-instructions">
+          Move to rotate · Drag to orbit · Arrow keys to explore
+        </p>
+      )}
       {status !== "ready" && (
         <div
           className="theatre-stage-fallback"

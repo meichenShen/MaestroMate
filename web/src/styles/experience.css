@@ -17,7 +17,7 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: #071318;
+  background: #11111b;
 }
 .listening-scene > .aquarium-art {
   position: absolute;

@@ -1,14 +1,39 @@
+import { useRef } from "react";
 import { useAudio } from "../audio/AudioProvider";
 import { work, type ActivityId } from "../content/aquarium";
 export function ContextPanel({ activity }: { activity: ActivityId }) {
   const { chapter } = useAudio();
+  const dialog = useRef<HTMLDialogElement>(null),
+    opener = useRef<HTMLButtonElement>(null);
   return (
     <aside
       className="context-panel"
       aria-label="Listening notes and recording credits"
     >
-      <details className="context-details">
-        <summary>Listening notes & recording credits</summary>
+      <button
+        className="notes-open"
+        ref={opener}
+        aria-label="Open listening notes"
+        onClick={() => dialog.current?.showModal()}
+      >
+        Listening notes & credits ↗
+      </button>
+      <dialog
+        ref={dialog}
+        className="notes-dialog"
+        aria-labelledby="notes-title"
+        data-lenis-prevent
+        onClose={() => opener.current?.focus({ preventScroll: true })}
+      >
+        <header>
+          <h2 id="notes-title">Listening notes & recording credits</h2>
+          <button
+            aria-label="Close listening notes"
+            onClick={() => dialog.current?.close()}
+          >
+            Close ×
+          </button>
+        </header>
         <div className="context-grid">
           <section>
             <p className="eyebrow">A little nudge</p>
@@ -38,7 +63,7 @@ export function ContextPanel({ activity }: { activity: ActivityId }) {
             </a>
           </section>
         </div>
-      </details>
+      </dialog>
     </aside>
   );
 }

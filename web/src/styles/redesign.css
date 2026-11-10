@@ -4,3 +4,5 @@
 @import "../features/home/home.css";
 @import "./experience.css";
 @import "../features/conversation/conversation.css";
+
+@import "./upgrade.css";

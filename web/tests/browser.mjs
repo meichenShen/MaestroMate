@@ -102,37 +102,48 @@ try {
   await p
     .getByRole("button", { name: "Play Sound Detective", exact: true })
     .click();
+  const stage = p.locator("#current-sound-case");
+  assert.equal(await p.getByRole("article").count(), 3);
   assert.equal(
-    await p
-      .getByRole("button", { name: "Reveal the clue", exact: true })
+    await stage
+      .getByRole("button", { name: "Check answer", exact: true })
       .isDisabled(),
     true,
   );
-  await p.getByRole("radio").nth(0).check();
-  await p.getByRole("button", { name: "Reveal the clue", exact: true }).click();
-  await p.getByText("Try a different angle.", { exact: true }).waitFor();
-  await p.getByRole("button", { name: "Try again", exact: true }).click();
-  await p.getByRole("radio").nth(1).check();
-  await p.getByRole("button", { name: "Reveal the clue", exact: true }).click();
-  await p.getByRole("status").filter({ hasText: "You found it." }).waitFor();
-  await p.getByRole("button", { name: /Next clue/ }).click();
-  await p.getByRole("button", { name: /Passage B · ending/ }).click();
+  await stage.getByRole("radio").nth(0).check();
+  await stage
+    .getByRole("button", { name: "Check answer", exact: true })
+    .click();
+  await stage.getByText("Try a different angle.", { exact: true }).waitFor();
+  await stage.getByRole("button", { name: "Try again", exact: true }).click();
+  await stage.getByRole("radio").nth(1).check();
+  await stage
+    .getByRole("button", { name: "Check answer", exact: true })
+    .click();
+  await p.getByRole("button", { name: "Next case", exact: true }).click();
+  await stage.getByRole("button", { name: /Passage B · ending/ }).click();
   await wait(() => !document.querySelector("audio").paused);
   assert.ok((await state()).time >= 130 && (await state()).time < 133);
   await p.getByRole("button", { name: "Pause music", exact: true }).click();
-  await p.getByRole("radio").nth(1).check();
-  await p.getByRole("button", { name: "Reveal the clue", exact: true }).click();
+  for (let i = 1; i < 3; i++) {
+    await p
+      .getByRole("button", { name: `Open case ${i + 1}`, exact: true })
+      .click();
+    await stage.getByRole("radio").nth(1).check();
+    await stage
+      .getByRole("button", { name: "Check answer", exact: true })
+      .click();
+  }
+  await p.locator(".game-completion").waitFor();
   await nav("Chat").click();
   await nav("Play").click();
   await p
     .getByRole("button", { name: "Play Sound Detective", exact: true })
     .click();
-  await p
-    .getByRole("heading", { name: "How does it say goodbye?", exact: true })
-    .waitFor();
-  assert.equal(await p.getByRole("radio").nth(1).isChecked(), true);
+  await p.getByRole("button", { name: "Previous case", exact: true }).click();
+  assert.equal(await stage.getByRole("radio").nth(1).isChecked(), true);
   checks.push(
-    "Two game clues, wrong answer, retry, correct feedback and retained progress",
+    "Three independent cases in a fixed stage, retry, ending replay and retained progress",
   );
   await p
     .getByRole("combobox", { name: "Playback speed", exact: true })
