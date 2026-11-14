@@ -1,7 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ArrowUpRight, ArrowDown, Plus, Minus } from "lucide-react";
 import { DrawnIcon } from "../../components/DrawnIcon";
 import { AquariumView } from "../../components/AquariumView";
+import { useSpringPointer } from "../../hooks/useSpringPointer";
+function ProgrammeArtwork({ children }: { children: ReactNode }) {
+  const spring = useSpringPointer<HTMLDivElement>();
+  return (
+    <div className="work-preview" {...spring}>
+      <div className="programme-preview-art" data-elastic-art>
+        {children}
+      </div>
+    </div>
+  );
+}
 export function Programme({
   open,
   onOpen,
@@ -14,6 +25,7 @@ export function Programme({
   onEnter: () => void;
 }) {
   const [closing, setClosing] = useState(false);
+  const coverSpring = useSpringPointer<HTMLButtonElement>();
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
   const close = () => {
@@ -53,8 +65,11 @@ export function Programme({
           className="programme-cover"
           aria-label="Open Program"
           onClick={onOpen}
+          {...coverSpring}
         >
-          <img src="/images/aquarium-poster.webp" alt="" />
+          <span className="programme-cover-art" data-elastic-art>
+            <img src="/images/aquarium-poster.webp" alt="" />
+          </span>
           <span className="cover-heading">
             A closer kind
             <br />
@@ -67,9 +82,9 @@ export function Programme({
       ) : (
         <div className={`programme-list ${closing ? "is-closing" : ""}`}>
           <article className="work-entry" data-work="aquarium">
-            <div className="work-preview">
+            <ProgrammeArtwork>
               <AquariumView preview />
-            </div>
+            </ProgrammeArtwork>
             <div className="work-information">
               <div>
                 <h3>Aquarium</h3>
@@ -88,9 +103,9 @@ export function Programme({
             </div>
           </article>
           <article className="work-entry" data-work="swan">
-            <div className="work-preview">
+            <ProgrammeArtwork>
               <DrawnIcon kind="swan" />
-            </div>
+            </ProgrammeArtwork>
             <div className="work-information">
               <div>
                 <h3>The Swan</h3>

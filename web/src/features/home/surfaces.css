@@ -1,0 +1,94 @@
+/* Only art moves. Entry hit areas, headings, hints and arrows stay in place. */
+.portal-node .portal-art {
+  transform: perspective(900px)
+    translate3d(
+      calc(var(--spring-x, 0) * 12px),
+      calc(var(--spring-y, 0) * 8px),
+      0
+    )
+    rotateX(calc(var(--spring-y, 0) * -6deg))
+    rotateY(calc(var(--spring-x, 0) * 12deg))
+    scale(var(--spring-stretch, 1), var(--spring-squash, 1));
+  transition: none;
+  transform-origin: 50% 56%;
+}
+.programme-cover {
+  perspective: 1400px;
+  overflow: visible;
+  background: #181622;
+  box-shadow:
+    3px 3px 0 #282332,
+    6px 6px 0 #1b1923,
+    0 25px 65px #0005;
+}
+.programme-cover-art {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  z-index: -1;
+  transform-origin: left center;
+  transform: perspective(1400px) rotateY(calc(var(--spring-x, 0) * -5deg))
+    rotateX(calc(var(--spring-y, 0) * 3deg));
+}
+.programme-cover-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.48;
+}
+.programme-cover .cover-heading,
+.programme-cover .cover-action {
+  position: relative;
+}
+.programme-list {
+  perspective: 1500px;
+}
+.programme-list .work-entry {
+  animation: programme-page-arrive 0.8s cubic-bezier(0.16, 0.72, 0.24, 1) both;
+  transform-origin: center top;
+}
+.programme-list .work-entry + .work-entry {
+  animation-delay: 0.1s;
+}
+.work-preview {
+  perspective: 1000px;
+  isolation: isolate;
+  box-shadow: 0 15px 35px #0002;
+}
+.programme-preview-art {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+  transform: perspective(1100px) rotateX(calc(var(--spring-y, 0) * -5deg))
+    rotateY(calc(var(--spring-x, 0) * 8deg)) translateZ(12px) scale(1.025);
+}
+.programme-preview-art > .aquarium-art {
+  width: 100%;
+  height: 100%;
+}
+.programme-preview-art > .drawn-icon {
+  filter: drop-shadow(0 14px 12px #0005);
+}
+@keyframes programme-page-arrive {
+  from {
+    opacity: 0;
+    transform: rotateX(-12deg) translate3d(0, 20px, -35px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .portal-node .portal-art,
+  .programme-cover-art,
+  .programme-preview-art {
+    transform: none;
+  }
+  .programme-list .work-entry {
+    animation: none;
+  }
+}
