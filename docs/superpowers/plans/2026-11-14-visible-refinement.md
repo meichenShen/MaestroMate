@@ -16,7 +16,7 @@ Portal motion currently has mild tilt/stretch. Add an original local radial SVG 
 - [x] Implement pond/notes; desktop/touch screenshots inspected; remaining lifecycle/short/fallback checks included in final suite.
 - [x] Implement visible booklet and local elastic field; cover-first and actual pixel deformation tests pass. Existing tests updated for deliberately changed entry.
 - [x] Inspect screenshots; unit/build/targeted tests; one fresh bounded review, fix Important RED→GREEN, final full browser suite.
-- [ ] Push/update draft PR2 and publish same public Site; record exact provenance and network limits, stop owned preview.
+- [x] Push/update draft PR2 and publish same public Site; exact provenance and network limits recorded; owned preview stopped at handoff.
 
 No new listening-background replacement, AI, data collection, audio source or database schema change. Acoustic/sequence lifecycle remains covered by the existing real Web Audio tests. Source and private feedback stay separate. Pre-existing full source checkout is retained per user storage/path preference. User has already authorised the revisions and public publishing; no new approval menu.
 
@@ -27,3 +27,4 @@ No new listening-background replacement, AI, data collection, audio source or da
 - Latest TypeScript/asset integrity/build passed (`web/.tmp/refine/build-checked.log`). Desktop/touch pond, clean cover and isolated before/after portal screenshots inspected under `.tmp/refine/screenshots/`.
 - Fresh final review: no Critical/Minor; one Important opened-page overflow from duplicate parent/child perspective. Added desktop/phone opened-page containment regression; RED at1440 (document1472). Removed parent perspective in the single fix pass. The earlier full suite was interrupted for this correction, not counted as final QA.
 - Final: fixed opened-page overflow — viewport regression RED→GREEN at all five widths; final28/28 unit tests,3/3 targeted browser tests and19/19 full browser script groups pass (exit0), with runtime source/build frozen during the final full run. Asset integrity/TypeScript/build passed; no new runtime package, audio/schema change or deferred review minor.
+- Public v12 native deployment succeeded2026-11-14T14:03:03Z. GitHub runtime125656c852fef9f270e52fc69fc6423378d9ac50; Sites source54d79083908d4cc42855ca97e8bf630a5ca4709b. Version/deployment identities are in web/VERIFICATION.md. Same public audience, D1 tables retained, draft PR2 updated without merging. Direct production HTTP remains blocked by CONNECT403; Codex browser/PR handoff RPCs returned connection closed. Direct public links supplied instead. Final follow-up commit is documentation only.
