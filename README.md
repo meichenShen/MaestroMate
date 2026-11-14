@@ -2,6 +2,10 @@
 
 X Program 古典音乐探索网站项目。拟围绕同一作品，连接音乐家对话、音乐小剧场和音乐侦探。
 
+网站原型现以圣桑《水族馆》为起点开发。代码与运行、修改指南见 [web/README.md](web/README.md)，布局和存放约定见 [AGENTS.md](AGENTS.md)。三个活动使用同一个播放器；代码、作品内容和布局样式分开组织。
+
+[打开《水族馆》公开 Demo](https://maestromate-aquarium.chirpyapple14.chatgpt.site)。当前提供独立的 Listen、Chat、Play 三个板块，以及依次体验它们的 Program：真实录音试听、三维水族馆、预设作曲家对话和三道音乐侦探题。开发记录与验证见 [web/VERIFICATION.md](web/VERIFICATION.md)；最新开发代码保存在 `feat/aquarium-demo` 分支，主分支保留研究内容。
+
 当前为第一阶段研究初稿，版本日期为 **2026-10-28**。本版已获准上传，研究判断仍需后续用户与原型验证。
 
 先阅读[第一阶段研究总结](Research%20Analysis/phase-1-research-overview.md)，再按需要查看五项并列研究：

@@ -1,0 +1,798 @@
+.brand-header {
+  height: var(--header-height);
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--bg);
+}
+.brand {
+  font: 400 28px/1 var(--display);
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.brand-header > nav {
+  display: flex;
+  align-items: center;
+  gap: 27px;
+  font-size: 16px;
+}
+.room-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.room-links a {
+  padding: 10px 0;
+}
+.room-links a[aria-current] {
+  color: var(--accent);
+}
+.brand-header .program-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: #1a1825;
+  border-radius: 30px;
+  color: #d5d2e3;
+}
+.program-link[aria-current] {
+  background: #2b273d !important;
+  color: var(--accent) !important;
+}
+.brand-header button {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+}
+.entry-reopen {
+  color: var(--muted);
+}
+.guide-link {
+  color: var(--muted);
+}
+.page-room {
+  max-width: 1500px;
+  margin: auto;
+  padding: 50px var(--gutter) 100px;
+}
+.page-intro {
+  margin-bottom: 45px;
+}
+.page-intro h1 {
+  font-size: clamp(48px, 5.2vw, 78px);
+  margin: 20px 0 24px;
+}
+.page-intro > p:not(.eyebrow) {
+  font-size: 19px;
+  color: #bfbdc7;
+  line-height: 1.85;
+}
+.listening-shelves {
+  display: grid;
+  gap: 35px;
+}
+.listening-art {
+  height: 250px;
+  overflow: hidden;
+  border-radius: 24px;
+}
+.swan-outline {
+  display: grid;
+  place-items: center;
+  background: #141319;
+  color: var(--lilac);
+}
+.swan-outline .drawn-icon {
+  height: 160px;
+  width: 160px;
+}
+.work-information {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 20px 0;
+}
+.work-information h2,
+.work-information h3 {
+  font-size: 33px;
+}
+.work-information p {
+  color: var(--muted);
+  font-size: 16px;
+  margin-top: 8px;
+}
+.coming-work .work-information > button {
+  font-size: 16px;
+}
+.game-lounge .page-intro {
+  max-width: 900px;
+}
+.game-door {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+  text-align: left;
+  padding: 25px 0;
+  max-width: 1000px;
+}
+.game-door > .drawn-icon {
+  width: 270px;
+  height: 270px;
+  color: var(--lilac);
+}
+.game-door strong {
+  display: block;
+  font: 350 47px/1.1 var(--display);
+  color: var(--fg);
+}
+.game-door small {
+  display: block;
+  font-size: 18px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-top: 18px;
+}
+.game-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 30px;
+  font-size: 20px;
+  margin-top: 28px;
+  color: var(--lilac);
+}
+.work-room {
+  max-width: 1500px;
+  margin: auto;
+  padding: 32px var(--gutter) calc(var(--player-height) + 70px);
+}
+.room-back {
+  font-size: 16px;
+  margin-bottom: 38px;
+  color: var(--muted);
+}
+.room-layout {
+  display: block;
+}
+.activity-panel {
+  min-width: 0;
+}
+.context-panel {
+  margin-top: 38px;
+}
+.context-details {
+  background: #13121a;
+  padding: 17px 24px;
+  border-radius: 22px;
+}
+.context-panel summary {
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1.8;
+}
+.context-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  padding: 25px 0 10px;
+  max-width: 1050px;
+}
+.context-panel h3 {
+  font-size: 27px;
+  margin-top: 12px;
+}
+.context-panel p {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--muted);
+  margin-top: 15px;
+}
+.context-panel details a {
+  display: inline-block;
+  margin: 16px 20px 0 0;
+  text-decoration: underline;
+}
+.journey-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+.journey-progress > p {
+  font-size: 16px;
+  color: var(--muted);
+}
+.journey-progress > div {
+  display: flex;
+  gap: 22px;
+}
+.journey-progress button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 16px;
+}
+.journey-progress button > span {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #191721;
+  font-size: 14px;
+}
+.journey-progress button[aria-current] {
+  color: var(--accent);
+}
+.journey-progress button[aria-current] > span {
+  background: var(--accent);
+  color: #14121c;
+}
+.journey-next {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 48px;
+  padding-top: 10px;
+}
+.journey-next > p {
+  font-size: 18px;
+  color: var(--muted);
+}
+.journey-next > a {
+  flex-basis: 100%;
+  font-size: 14px;
+  color: var(--muted);
+  text-align: right;
+}
+.program-summary {
+  padding-top: 100px;
+}
+.program-summary h1 {
+  font-size: clamp(60px, 8vw, 110px);
+  margin: 24px 0;
+}
+.program-summary > p:not(.eyebrow) {
+  font-size: 21px;
+  color: var(--muted);
+  margin: 25px 0 35px;
+  line-height: 1.9;
+}
+.program-summary > a:not(.solid-button) {
+  display: block;
+  font-size: 18px;
+  color: var(--muted);
+  margin-top: 25px;
+}
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 35;
+  background: #111016;
+  border-radius: 24px 24px 0 0;
+  padding: 20px var(--gutter);
+}
+.player-inner {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  max-width: 1560px;
+  margin: auto;
+}
+.now-playing {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 0 0 240px;
+}
+.now-playing strong {
+  display: block;
+  font: 400 20px var(--display);
+}
+.now-playing small {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 5px;
+  max-width: 240px;
+  line-height: 1.4;
+}
+.record-icon {
+  display: block;
+}
+.is-spinning {
+  animation: spin 14s linear infinite;
+}
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+.icon-button {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+}
+.replay-button span {
+  position: absolute;
+  font-size: 9px;
+}
+.play-button {
+  background: var(--accent);
+  color: #14121c;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+}
+.play-button:hover:not(:disabled) {
+  color: #14121c;
+  background: #b1abca;
+}
+.seek-control {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 80px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.seek-control input {
+  width: 100%;
+  min-width: 30px;
+}
+.player input[type="range"] {
+  accent-color: var(--accent);
+  height: 3px;
+  cursor: pointer;
+}
+.player-extras {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.player select {
+  background: #111016;
+  color: var(--fg);
+  border: 0;
+  font-size: 15px;
+  min-height: 38px;
+}
+.volume-control {
+  width: 60px;
+}
+.audio-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-bottom: 15px;
+  font-size: 15px;
+}
+.audio-error button {
+  text-decoration: underline;
+}
+@media (min-width: 1700px) {
+  :root {
+    --gutter: max(72px, calc((100vw - 1560px) / 2));
+  }
+}
+@media (max-width: 1100px) {
+  .brand-header > nav {
+    gap: 22px;
+  }
+  .room-links {
+    gap: 25px;
+  }
+  .now-playing {
+    flex-basis: 185px;
+  }
+  .record-icon {
+    display: none;
+  }
+  .player-inner {
+    gap: 15px;
+  }
+  .volume-control {
+    display: none;
+  }
+  .game-door {
+    gap: 40px;
+  }
+  .game-door strong {
+    font-size: 40px;
+  }
+}
+@media (max-width: 720px) {
+  :root {
+    --header-height: 112px;
+    --player-height: 160px;
+  }
+  .brand-header {
+    height: 112px;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 17px;
+    padding-top: 12px;
+    padding-bottom: 14px;
+  }
+  .brand {
+    font-size: 26px;
+  }
+  .brand-header > nav {
+    width: 100%;
+    gap: 14px;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+  .room-links {
+    gap: 24px;
+  }
+  .brand-header .program-link {
+    padding: 7px 14px;
+    gap: 7px;
+  }
+  .brand-header .program-link svg {
+    width: 13px;
+    height: 13px;
+  }
+  .brand-header button {
+    min-height: 28px;
+  }
+  .entry-reopen {
+    display: none !important;
+  }
+  .page-room {
+    padding-top: 32px;
+    padding-bottom: 70px;
+  }
+  .page-intro {
+    margin-bottom: 30px;
+  }
+  .page-intro h1 {
+    font-size: 47px;
+    margin: 17px 0 20px;
+  }
+  .page-intro > p:not(.eyebrow) {
+    font-size: 18px;
+  }
+  .listening-shelves {
+    gap: 30px;
+  }
+  .listening-art {
+    height: 245px;
+    border-radius: 22px;
+  }
+  .work-information {
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 22px;
+  }
+  .work-information h2,
+  .work-information h3 {
+    font-size: 31px;
+  }
+  .work-information p {
+    font-size: 15px;
+  }
+  .work-information .solid-button {
+    font-size: 16px;
+    padding: 13px 22px;
+    min-height: 48px;
+  }
+  .game-door {
+    flex-direction: column;
+    align-items: start;
+    gap: 30px;
+    padding-top: 10px;
+  }
+  .game-door > .drawn-icon {
+    width: 210px;
+    height: 210px;
+    align-self: center;
+  }
+  .game-door strong {
+    font-size: 40px;
+  }
+  .game-door small {
+    font-size: 18px;
+  }
+  .game-cta {
+    margin-top: 23px;
+  }
+  .room-back {
+    margin-bottom: 27px;
+    font-size: 15px;
+  }
+  .context-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .context-details {
+    padding: 16px 20px;
+  }
+  .context-panel summary {
+    font-size: 15px;
+  }
+  .context-panel p {
+    font-size: 16px;
+  }
+  .journey-progress {
+    display: block;
+    margin-bottom: 32px;
+  }
+  .journey-progress > p {
+    font-size: 14px;
+    margin-bottom: 17px;
+  }
+  .journey-progress > div {
+    justify-content: space-between;
+    gap: 15px;
+  }
+  .journey-progress button {
+    font-size: 15px;
+    gap: 9px;
+  }
+  .journey-progress button > span {
+    width: 29px;
+    height: 29px;
+  }
+  .journey-next {
+    display: block;
+    margin-top: 35px;
+  }
+  .journey-next > p {
+    font-size: 17px;
+    margin-bottom: 22px;
+  }
+  .journey-next > a {
+    display: block;
+    text-align: left;
+    margin-top: 23px;
+  }
+  .program-summary {
+    padding-top: 70px;
+  }
+  .program-summary h1 {
+    font-size: 62px;
+  }
+  .program-summary > p:not(.eyebrow) {
+    font-size: 18px;
+  }
+  .player {
+    padding: 14px var(--gutter) max(16px, env(safe-area-inset-bottom));
+  }
+  .player-inner {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .now-playing {
+    flex: 1;
+    min-width: 130px;
+  }
+  .now-playing strong {
+    font-size: 19px;
+  }
+  .now-playing small {
+    font-size: 12px;
+    max-width: 160px;
+  }
+  .transport {
+    gap: 7px;
+  }
+  .seek-control {
+    flex-basis: 100%;
+    order: 3;
+    font-size: 13px;
+  }
+  .player-extras {
+    gap: 7px;
+  }
+  .player-extras .icon-button {
+    display: none;
+  }
+  .play-button {
+    width: 41px;
+    height: 41px;
+  }
+  .player input[type="range"] {
+    min-height: 22px;
+  }
+  .player select {
+    font-size: 14px;
+  }
+  .audio-error {
+    font-size: 14px;
+    align-items: start;
+  }
+  .audio-error button {
+    flex-shrink: 0;
+  }
+}
+@media (max-width: 370px) {
+  .brand-header > nav {
+    gap: 10px;
+    font-size: 13px;
+  }
+  .room-links {
+    gap: 18px;
+  }
+  .brand-header .program-link {
+    padding: 7px 10px;
+  }
+  .now-playing small {
+    font-size: 11px;
+    max-width: 125px;
+  }
+  .player-extras select {
+    font-size: 13px;
+  }
+  .page-intro h1 {
+    font-size: 42px;
+  }
+}
+
+.brand-header .program-link {
+  background: #292638;
+  color: #e1deff;
+}
+.program-link[aria-current] {
+  background: #39334c !important;
+  color: var(--accent) !important;
+}
+.player,
+.player select {
+  background: #1a1822;
+}
+.play-button {
+  background: var(--accent);
+  color: #171425;
+}
+.play-button:hover:not(:disabled) {
+  background: #d2ceff;
+  color: #171425;
+}
+.solid-button,
+.pill-button {
+  color: #191522;
+}
+.context-details {
+  background: var(--surface);
+}
+.journey-next {
+  background: var(--surface);
+  padding: 25px 28px;
+  border-radius: 24px;
+  margin-top: 28px;
+  gap: 18px;
+}
+.journey-next .solid-button {
+  min-height: 54px;
+  font-size: 19px;
+  padding: 14px 27px;
+}
+.journey-next > p {
+  font-size: 18px;
+}
+.program-summary {
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100svh - var(--header-height));
+  display: flex;
+  align-items: center;
+  padding-top: 60px;
+  padding-bottom: 80px;
+}
+.completion-copy {
+  max-width: 570px;
+  position: relative;
+  z-index: 1;
+  animation: completion-in 0.8s ease both;
+}
+.completion-copy > p:not(.eyebrow) {
+  font-size: 21px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin: 22px 0 32px;
+  max-width: 420px;
+}
+.completion-secondary {
+  display: block;
+  margin-top: 24px;
+  font-size: 17px;
+  color: var(--muted);
+}
+@keyframes completion-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 950px) {
+  .now-playing {
+    flex-basis: 185px;
+  }
+  .player-inner {
+    gap: 15px;
+  }
+  .transport {
+    gap: 6px;
+  }
+}
+@media (max-width: 720px) {
+  .journey-next {
+    padding: 22px;
+    align-items: stretch;
+  }
+  .journey-next .solid-button {
+    justify-content: center;
+    width: 100%;
+  }
+  .program-summary {
+    min-height: 1000px;
+    align-items: start;
+  }
+  .completion-copy {
+    padding-top: 15px;
+  }
+  .program-summary .theatre-stage {
+    top: 370px;
+  }
+  .player-inner .transport {
+    gap: 4px;
+  }
+  .transport .icon-button {
+    width: 34px;
+  }
+  .now-playing {
+    flex-basis: auto;
+  }
+}
+
+.journey-shortcut {
+  font-size: 16px;
+  min-height: 44px;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+.game-door > .drawn-icon,
+.game-cta {
+  color: var(--play);
+}
+@media (max-width: 720px) {
+  .journey-shortcut {
+    margin-top: 20px;
+  }
+  .now-playing {
+    min-width: 105px;
+  }
+  .player-inner {
+    gap: 10px;
+  }
+  .player-extras {
+    margin-left: auto;
+  }
+  .player-extras select {
+    max-width: 55px;
+  }
+}

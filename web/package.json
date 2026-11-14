@@ -1,0 +1,33 @@
+{
+  "name": "maestromate-aquarium",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "node scripts/check-assets.mjs && tsc --noEmit && node scripts/prepare-build.mjs && vite build && node scripts/build-worker.mjs",
+    "preview": "node scripts/preview-worker.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/answer-layout.mjs && node tests/celebration.mjs && node tests/clarity.mjs && node tests/workspace.mjs && node tests/upgrade.mjs && node tests/refinements.mjs && node tests/rooms.mjs && node tests/entry.mjs && node tests/browser.mjs && node tests/keyboard.mjs && node tests/focus.mjs && node tests/snap.mjs && node tests/motion.mjs && node tests/context-loss.mjs && node tests/feedback-browser.mjs && node tests/pool-browser.mjs && node tests/surfaces-browser.mjs && node tests/pool-layout-review.mjs && node tests/refinement-browser.mjs",
+    "test:feedback": "node --test tests/feedback-api.test.mjs && node tests/feedback-browser.mjs"
+  },
+  "dependencies": {
+    "lenis": "^1.3.27",
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/three": "^0.187.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "drizzle-kit": "0.31.10",
+    "drizzle-orm": "0.45.2",
+    "esbuild": "0.28.2",
+    "playwright": "^1.56.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.2.0"
+  }
+}
