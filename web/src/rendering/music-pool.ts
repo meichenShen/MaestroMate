@@ -9,7 +9,7 @@ export interface PoolScene {
   splash(clientX: number, clientY: number): void;
   dispose(): void;
 }
-const locations = [-2.4, -1.2, 0, 1.2, 2.4].map(
+const locations = [-3, -1.5, 0, 1.5, 3].map(
   (x, i) => new THREE.Vector3(x, 0.16, 1.1 - i * 0.55),
 );
 
@@ -177,7 +177,9 @@ export function createMusicPool(
     camera.top = h / 2;
     camera.bottom = -h / 2;
     camera.updateProjectionMatrix();
-    root.scale.x = Math.max(0.65, aspect / 1.75);
+    // Fill the available width. Note centres stay at10/30/50/70/90%,
+    // keeping distinct DOM hit areas on phones as well as desktop.
+    root.scale.x = aspect * 1.04;
     root.updateMatrixWorld(true);
     renderer.setSize(Math.max(1, rect.width), Math.max(1, rect.height));
     positions(

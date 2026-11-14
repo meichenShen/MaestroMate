@@ -43,12 +43,16 @@
 }
 .programme-list {
   perspective: 1500px;
+  animation: programme-paper-reveal 0.18s ease-out both;
 }
-.programme-list .work-entry {
+.programme-list.is-closing {
+  animation: programme-paper-fade 0.28s ease-in both;
+}
+.programme-list .work-entry .work-preview {
   animation: programme-page-arrive 0.8s cubic-bezier(0.16, 0.72, 0.24, 1) both;
   transform-origin: center top;
 }
-.programme-list .work-entry + .work-entry {
+.programme-list .work-entry + .work-entry .work-preview {
   animation-delay: 0.1s;
 }
 .work-preview {
@@ -82,13 +86,28 @@
     transform: none;
   }
 }
+@keyframes programme-paper-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes programme-paper-fade {
+  to {
+    opacity: 0;
+  }
+}
 @media (hover: none), (prefers-reduced-motion: reduce) {
   .portal-node .portal-art,
   .programme-cover-art,
   .programme-preview-art {
     transform: none;
   }
-  .programme-list .work-entry {
+  .programme-list,
+  .programme-list.is-closing,
+  .programme-list .work-entry .work-preview {
     animation: none;
   }
 }

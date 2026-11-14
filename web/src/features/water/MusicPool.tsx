@@ -41,7 +41,7 @@ export function MusicPool({
       () => !matchMedia("(prefers-reduced-motion: reduce)").matches,
     );
   const [positions, setPositions] = useState<PadPosition[]>(() =>
-    poolNotes.map((_, i) => ({ x: 16 + i * 17, y: 63 - i * 6 })),
+    poolNotes.map((_, i) => ({ x: 10 + i * 20, y: 57.4 - i * 4.47 })),
   );
   const view = useRef<PoolViewHandle>(null),
     audio = useRef<PoolAudio | null>(null),

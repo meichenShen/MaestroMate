@@ -330,7 +330,7 @@
     top: 8%;
   }
   .pool-pad {
-    width: 57px;
+    width: clamp(48px, 14.6vw, 57px);
     min-height: 90px;
   }
   .pool-pad-light {
