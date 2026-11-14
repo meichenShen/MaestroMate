@@ -44,6 +44,7 @@ try {
   await p
     .getByRole("button", { name: "Start with a work", exact: true })
     .click();
+  await p.getByRole("button", { name: "Open Program", exact: true }).click();
   await p
     .getByRole("button", { name: "Start Aquarium Program", exact: true })
     .waitFor();

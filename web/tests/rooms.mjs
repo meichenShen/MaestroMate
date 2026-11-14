@@ -119,6 +119,7 @@ try {
     .getByRole("navigation", { name: "Main navigation" })
     .getByRole("link", { name: "Program", exact: true })
     .click();
+  await page.getByRole("button", { name: "Open Program", exact: true }).click();
   await page
     .getByRole("button", { name: "Start Aquarium Program", exact: true })
     .click();

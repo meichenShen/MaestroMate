@@ -7,6 +7,8 @@ export function useSpringPointer<T extends HTMLElement>() {
   const target = useRef({ x: 0, y: 0 }),
     x = useRef({ value: 0, velocity: 0 }),
     y = useRef({ value: 0, velocity: 0 });
+  const inside = useRef(false),
+    presence = useRef({ value: 0, velocity: 0 });
   const reduced = useRef(false),
     mounted = useRef(false);
   const paint = () => {
@@ -16,12 +18,33 @@ export function useSpringPointer<T extends HTMLElement>() {
     el.style.setProperty("--spring-y", y.current.value.toFixed(5));
     el.style.setProperty(
       "--spring-stretch",
-      String(1 + Math.abs(x.current.value) * 0.055),
+      String(1 + Math.abs(x.current.value) * 0.1),
     );
     el.style.setProperty(
       "--spring-squash",
-      String(1 - Math.abs(x.current.value) * 0.03),
+      String(1 - Math.abs(x.current.value) * 0.06),
     );
+    const amount = Math.max(0, Math.min(1, presence.current.value));
+    el.style.setProperty("--spring-presence", String(amount));
+    const field = el.querySelector("[data-elastic-field]"),
+      displacement = el.querySelector("[data-elastic-displacement]");
+    const art = el.querySelector<HTMLElement>(".portal-art");
+    if (field && displacement && art) {
+      const w = art.clientWidth,
+        h = art.clientHeight,
+        size = Math.max(w, h) * 0.9;
+      field.setAttribute(
+        "x",
+        String(w * (0.5 + x.current.value * 0.32) - size / 2),
+      );
+      field.setAttribute(
+        "y",
+        String(h * (0.5 + y.current.value * 0.32) - size / 2),
+      );
+      field.setAttribute("width", String(size));
+      field.setAttribute("height", String(size));
+      displacement.setAttribute("scale", String(amount * 95));
+    }
   };
   const reset = () => {
     cancelAnimationFrame(frame.current);
@@ -30,6 +53,8 @@ export function useSpringPointer<T extends HTMLElement>() {
     target.current = { x: 0, y: 0 };
     x.current = { value: 0, velocity: 0 };
     y.current = { value: 0, velocity: 0 };
+    inside.current = false;
+    presence.current = { value: 0, velocity: 0 };
     paint();
     if (ref.current)
       ref.current.dataset.springState = reduced.current ? "disabled" : "idle";
@@ -41,16 +66,20 @@ export function useSpringPointer<T extends HTMLElement>() {
     last.current = now;
     x.current = springStep(x.current, target.current.x, dt);
     y.current = springStep(y.current, target.current.y, dt);
+    presence.current = springStep(presence.current, inside.current ? 1 : 0, dt);
     paint();
     const settled = [
       x.current.value - target.current.x,
       y.current.value - target.current.y,
       x.current.velocity,
       y.current.velocity,
+      presence.current.value - (inside.current ? 1 : 0),
+      presence.current.velocity,
     ].every((n) => Math.abs(n) < 0.0005);
     if (settled) {
       x.current = { value: target.current.x, velocity: 0 };
       y.current = { value: target.current.y, velocity: 0 };
+      presence.current = { value: inside.current ? 1 : 0, velocity: 0 };
       paint();
       last.current = 0;
       if (ref.current)
@@ -94,6 +123,7 @@ export function useSpringPointer<T extends HTMLElement>() {
     onPointerMove(event: PointerEvent<T>) {
       if (event.pointerType !== "mouse" || reduced.current) return;
       const rect = event.currentTarget.getBoundingClientRect();
+      inside.current = true;
       target.current = {
         x: Math.max(
           -1,
@@ -109,6 +139,7 @@ export function useSpringPointer<T extends HTMLElement>() {
     onPointerLeave() {
       if (reduced.current) return;
       target.current = { x: 0, y: 0 };
+      inside.current = false;
       start();
     },
   };

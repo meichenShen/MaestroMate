@@ -1,6 +1,8 @@
 import { ArrowUpRight } from "lucide-react";
 import { DrawnIcon, type DrawnKind } from "./DrawnIcon";
 import { useSpringPointer } from "../hooks/useSpringPointer";
+import { ElasticField } from "./ElasticField";
+import type { CSSProperties } from "react";
 export function RoomPortal({
   kind,
   title,
@@ -17,6 +19,7 @@ export function RoomPortal({
   direction: string;
 }) {
   const spring = useSpringPointer<HTMLAnchorElement>();
+  const fieldId = "portal-bulge-" + kind;
   return (
     <a
       className={`portal-node ${kind}-node`}
@@ -24,9 +27,11 @@ export function RoomPortal({
       aria-label={label}
       aria-describedby={`${kind}-hint`}
       data-enter={direction}
+      style={{ "--portal-filter": "url(#" + fieldId + ")" } as CSSProperties}
       {...spring}
     >
       <span className="portal-art">
+        <ElasticField id={fieldId} />
         <DrawnIcon kind={kind} />
       </span>
       <strong>

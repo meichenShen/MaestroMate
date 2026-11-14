@@ -92,7 +92,6 @@ test("Program titles and entry buttons are stationary throughout opening", async
       HTMLCanvasElement.prototype.getContext = () => null;
     });
     await p.goto(base + "/#program");
-    await p.getByRole("button", { name: "Close Program", exact: true }).click();
     await p
       .getByRole("button", { name: "Open Program", exact: true })
       .waitFor();

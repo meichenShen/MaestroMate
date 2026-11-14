@@ -56,6 +56,7 @@ test("portal art stretches and eases while the link and title remain stationary"
 test("Program art has spatial depth, vertical two-work browsing and unchanged working entries", async () => {
   const p = await visit("#program");
   try {
+    await p.getByRole("button", { name: "Open Program", exact: true }).click();
     const previews = p.locator(".work-preview");
     await previews.first().waitFor();
     await p.waitForTimeout(900);

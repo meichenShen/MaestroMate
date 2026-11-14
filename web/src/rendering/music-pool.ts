@@ -1,23 +1,25 @@
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { poolNotes } from "../features/water/model";
+import {
+  getPoolLayout,
+  poolCamera,
+  poolNotePositions,
+} from "../features/water/layout";
 
-export type PadPosition = { x: number; y: number };
 export interface PoolScene {
   update(motion: boolean, active: boolean): void;
   pulse(note: number): void;
   splash(clientX: number, clientY: number): void;
   dispose(): void;
 }
-const locations = [-3, -1.5, 0, 1.5, 3].map(
-  (x, i) => new THREE.Vector3(x, 0.16, 1.1 - i * 0.55),
+const locations = poolNotePositions.map(
+  (p) => new THREE.Vector3(p.x, p.y, p.z),
 );
 
 // Original finite analytic waves, shaded using actual displaced geometry.
 // No experimental HTML-in-Canvas, external texture, model or sound dependency.
 export function createMusicPool(
   host: HTMLElement,
-  positions: (p: PadPosition[]) => void,
   failure: () => void,
 ): PoolScene {
   const renderer = new THREE.WebGLRenderer({
@@ -36,7 +38,7 @@ export function createMusicPool(
     root = new THREE.Group();
   scene.add(root);
   const camera = new THREE.OrthographicCamera(-7, 7, 3.8, -3.8, 0.1, 40);
-  camera.position.set(0, 6.4, 7.8);
+  camera.position.set(0, poolCamera.y, poolCamera.z);
   camera.lookAt(0, 0, 0);
   scene.add(new THREE.HemisphereLight("#f7f0ff", "#181324", 3));
   const key = new THREE.DirectionalLight("#fff4df", 5);
@@ -57,20 +59,20 @@ export function createMusicPool(
     return mesh;
   };
   const body = add(
-    new THREE.CylinderGeometry(3.5, 3.4, 0.35, 96),
+    new THREE.CylinderGeometry(3.5, 3.4, 0.18, 96),
     new THREE.MeshStandardMaterial({
       color: "#272439",
       metalness: 0.55,
       roughness: 0.24,
     }),
   );
-  body.position.y = -0.23;
+  body.position.y = -0.15;
   const rim = add(
     new THREE.TorusGeometry(3.51, 0.033, 8, 128),
     new THREE.MeshStandardMaterial({
-      color: "#a593e0",
-      metalness: 0.65,
-      roughness: 0.22,
+      color: "#554963",
+      metalness: 0.3,
+      roughness: 0.4,
     }),
   );
   rim.rotation.x = -Math.PI / 2;
@@ -107,32 +109,6 @@ export function createMusicPool(
     waterMaterial,
   );
   surface.position.y = 0.01;
-  const stones = locations.map((position, i) => {
-    const stone = add(
-      new THREE.IcosahedronGeometry(0.17, 2),
-      new THREE.MeshStandardMaterial({
-        color: poolNotes[i].color,
-        emissive: poolNotes[i].color,
-        emissiveIntensity: 0.6,
-        metalness: 0.35,
-        roughness: 0.15,
-      }),
-    );
-    stone.position.copy(position);
-    stone.scale.set(1.25, 0.55, 1.25);
-    const ring = add(
-      new THREE.TorusGeometry(0.33, 0.013, 6, 64),
-      new THREE.MeshBasicMaterial({
-        color: poolNotes[i].color,
-        transparent: true,
-        opacity: 0.5,
-      }),
-    );
-    ring.rotation.x = -Math.PI / 2;
-    ring.position.copy(position);
-    ring.position.y = 0.03;
-    return stone;
-  });
   let motion = true,
     enabled = true,
     visible = true,
@@ -171,23 +147,16 @@ export function createMusicPool(
   const resize = () => {
     const rect = host.getBoundingClientRect(),
       aspect = Math.max(1, rect.width) / Math.max(1, rect.height);
-    const h = 7.8;
+    const layout = getPoolLayout(rect.width, rect.height);
+    const h = poolCamera.viewHeight;
     camera.left = (-h * aspect) / 2;
     camera.right = (h * aspect) / 2;
     camera.top = h / 2;
     camera.bottom = -h / 2;
     camera.updateProjectionMatrix();
-    // Fill the available width. Note centres stay at10/30/50/70/90%,
-    // keeping distinct DOM hit areas on phones as well as desktop.
-    root.scale.x = aspect * 1.04;
+    root.scale.x = layout.scaleX;
     root.updateMatrixWorld(true);
     renderer.setSize(Math.max(1, rect.width), Math.max(1, rect.height));
-    positions(
-      locations.map((p) => {
-        const v = root.localToWorld(p.clone()).project(camera);
-        return { x: (v.x + 1) * 50, y: (1 - v.y) * 50 };
-      }),
-    );
     schedule();
   };
   const resizeObserver = new ResizeObserver(resize);
@@ -226,7 +195,6 @@ export function createMusicPool(
       const p = locations[note];
       if (!p) return;
       ripple(p.x, p.z);
-      stones[note].rotation.y += 0.4;
     },
     splash(x, y) {
       const rect = host.getBoundingClientRect();

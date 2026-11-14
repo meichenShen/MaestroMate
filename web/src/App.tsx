@@ -27,7 +27,7 @@ function Site() {
   const previousHash = useRef(location.hash);
   const scrollTo = useSmoothPage(route.kind === "home");
   const chat = useComposerChat();
-  const [bookOpen, setBookOpen] = useState(true),
+  const [bookOpen, setBookOpen] = useState(false),
     [progress, setProgress] = useState(initialProgress),
     [motion, setMotion] = useState(true),
     [visited, setVisited] = useState<ActivityId[]>([]);
@@ -83,7 +83,7 @@ function Site() {
       sessionStorage.setItem("maestromate-entry-v2", "seen");
     } catch {}
     if (choice === "work") {
-      setBookOpen(true);
+      setBookOpen(false);
       navigate("#program");
     } else if (choice === "experience") navigate("#explore");
   };

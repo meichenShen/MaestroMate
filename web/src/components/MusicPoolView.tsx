@@ -5,19 +5,20 @@ import {
   useRef,
   useState,
 } from "react";
-import type { PadPosition, PoolScene } from "../rendering/music-pool";
+import type { PoolScene } from "../rendering/music-pool";
+import type { PoolLayout } from "../features/water/layout";
 export interface PoolViewHandle {
   pulse(note: number): void;
   splash(x: number, y: number): void;
 }
 export const MusicPoolView = forwardRef<
   PoolViewHandle,
-  { motion: boolean; active: boolean; onPositions: (p: PadPosition[]) => void }
->(function MusicPoolView({ motion, active, onPositions }, ref) {
+  { motion: boolean; active: boolean; layout: PoolLayout }
+>(function MusicPoolView({ motion, active, layout }, ref) {
   const host = useRef<HTMLDivElement>(null),
     scene = useRef<PoolScene | null>(null);
-  const latest = useRef({ motion, active, onPositions });
-  latest.current = { motion, active, onPositions };
+  const latest = useRef({ motion, active });
+  latest.current = { motion, active };
   const [status, setStatus] = useState("loading");
   useImperativeHandle(
     ref,
@@ -33,13 +34,9 @@ export const MusicPoolView = forwardRef<
       .then(({ createMusicPool }) => {
         if (disposed) return;
         try {
-          scene.current = createMusicPool(
-            host.current!,
-            (p) => latest.current.onPositions(p),
-            () => {
-              if (!disposed) setStatus("fallback");
-            },
-          );
+          scene.current = createMusicPool(host.current!, () => {
+            if (!disposed) setStatus("fallback");
+          });
           scene.current.update(latest.current.motion, latest.current.active);
           setStatus("ready");
         } catch {
@@ -61,7 +58,7 @@ export const MusicPoolView = forwardRef<
       {status !== "ready" && (
         <svg
           className="pool-fallback"
-          viewBox="0 0 1000 500"
+          viewBox="0 0 1000 1000"
           preserveAspectRatio="none"
         >
           <defs>
@@ -72,27 +69,27 @@ export const MusicPoolView = forwardRef<
           </defs>
           <ellipse
             cx="500"
-            cy="280"
-            rx="450"
-            ry="170"
+            cy="500"
+            rx={layout.surface.width * 5}
+            ry={layout.surface.height * 5}
             fill="url(#pool-floor)"
             stroke="#a593e0"
             strokeOpacity=".3"
           />
           <ellipse
             cx="500"
-            cy="265"
-            rx="330"
-            ry="110"
+            cy="500"
+            rx={layout.surface.width * 3.5}
+            ry={layout.surface.height * 3.5}
             fill="none"
             stroke="#45d9fd"
             strokeOpacity=".18"
           />
           <ellipse
             cx="500"
-            cy="265"
-            rx="180"
-            ry="60"
+            cy="500"
+            rx={layout.surface.width * 1.8}
+            ry={layout.surface.height * 1.8}
             fill="none"
             stroke="#a593e0"
             strokeOpacity=".22"

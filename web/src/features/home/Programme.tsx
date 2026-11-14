@@ -7,8 +7,12 @@ function ProgrammeArtwork({ children }: { children: ReactNode }) {
   const spring = useSpringPointer<HTMLDivElement>();
   return (
     <div className="work-preview" {...spring}>
-      <div className="programme-preview-art" data-elastic-art>
-        {children}
+      <span className="programme-page-back" aria-hidden="true" />
+      <span className="programme-page-edge" aria-hidden="true" />
+      <div className="programme-window">
+        <div className="programme-preview-art" data-elastic-art>
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -44,7 +48,7 @@ export function Programme({
       <div className="programme-heading">
         <div>
           <p className="eyebrow">Your next little adventure</p>
-          <h2>Pick a piece.</h2>
+          <h2>{open ? "Pick a piece." : "Your Program."}</h2>
           <p>Listen, chat, then play — all in one Program.</p>
         </div>
         <div className="programme-tools">
@@ -67,8 +71,11 @@ export function Programme({
           onClick={onOpen}
           {...coverSpring}
         >
+          <span className="cover-paper cover-paper-back" aria-hidden="true" />
+          <span className="cover-paper cover-paper-front" aria-hidden="true" />
           <span className="programme-cover-art" data-elastic-art>
-            <img src="/images/aquarium-poster.webp" alt="" />
+            <img src="/images/program-cover.png" alt="" />
+            <span className="cover-fold" />
           </span>
           <span className="cover-heading">
             A closer kind

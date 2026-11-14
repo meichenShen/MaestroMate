@@ -2,24 +2,43 @@
 .portal-node .portal-art {
   transform: perspective(900px)
     translate3d(
-      calc(var(--spring-x, 0) * 12px),
-      calc(var(--spring-y, 0) * 8px),
+      calc(var(--spring-x, 0) * 20px),
+      calc(var(--spring-y, 0) * 12px),
       0
     )
-    rotateX(calc(var(--spring-y, 0) * -6deg))
-    rotateY(calc(var(--spring-x, 0) * 12deg))
+    rotateX(calc(var(--spring-y, 0) * -10deg))
+    rotateY(calc(var(--spring-x, 0) * 18deg))
     scale(var(--spring-stretch, 1), var(--spring-squash, 1));
   transition: none;
   transform-origin: 50% 56%;
 }
+.elastic-definitions {
+  position: absolute;
+  pointer-events: none;
+}
+.portal-node .drawn-icon {
+  filter: var(--portal-filter, none);
+}
 .programme-cover {
-  perspective: 1400px;
+  perspective: none;
   overflow: visible;
-  background: #181622;
-  box-shadow:
-    3px 3px 0 #282332,
-    6px 6px 0 #1b1923,
-    0 25px 65px #0005;
+  background: transparent;
+  min-height: 340px;
+  max-width: 1040px;
+  width: calc(100% - 24px);
+  margin: 22px auto 30px;
+}
+.cover-paper {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -2;
+  background: #302b40;
+  transform: perspective(1400px) rotateY(-7deg) translate3d(10px, 8px, -8px);
+}
+.cover-paper-back {
+  background: #211e2e;
+  transform: perspective(1400px) rotateY(-6deg) translate3d(19px, 15px, -16px);
 }
 .programme-cover-art {
   position: absolute;
@@ -27,15 +46,25 @@
   border-radius: inherit;
   overflow: hidden;
   z-index: -1;
-  transform-origin: left center;
-  transform: perspective(1400px) rotateY(calc(var(--spring-x, 0) * -5deg))
-    rotateX(calc(var(--spring-y, 0) * 3deg));
+  background: #191724;
+  transform-origin: center center;
+  transform: perspective(1400px)
+    rotateY(calc(-8deg + var(--spring-x, 0) * -10deg))
+    rotateX(calc(3deg + var(--spring-y, 0) * 5deg));
+  box-shadow: 0 25px 60px #0007;
+  animation: programme-jacket 0.9s cubic-bezier(0.16, 0.72, 0.24, 1);
+}
+.cover-fold {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 36px;
+  background: linear-gradient(90deg, #08081077, #ffffff08 70%, transparent);
 }
 .programme-cover-art img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.48;
+  opacity: 0.55;
 }
 .programme-cover .cover-heading,
 .programme-cover .cover-action {
@@ -56,9 +85,30 @@
   animation-delay: 0.1s;
 }
 .work-preview {
-  perspective: 1000px;
+  perspective: none;
   isolation: isolate;
   box-shadow: 0 15px 35px #0002;
+  overflow: visible;
+}
+.programme-window {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.programme-page-back,
+.programme-page-edge {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #252133;
+  transform: perspective(1000px) rotateY(-3deg) translate(9px, 7px);
+  z-index: -1;
+}
+.programme-page-back {
+  background: #1b1925;
+  transform: perspective(1000px) rotateY(-5deg) translate(17px, 13px);
+  z-index: -2;
 }
 .programme-preview-art {
   width: 100%;
@@ -66,8 +116,9 @@
   display: grid;
   place-items: center;
   transform-style: preserve-3d;
-  transform: perspective(1100px) rotateX(calc(var(--spring-y, 0) * -5deg))
-    rotateY(calc(var(--spring-x, 0) * 8deg)) translateZ(12px) scale(1.025);
+  transform: perspective(1100px) rotateX(calc(var(--spring-y, 0) * -9deg))
+    rotateY(calc(-4deg + var(--spring-x, 0) * 18deg))
+    translateZ(calc(16px + var(--spring-presence, 0) * 12px)) scale(1.025);
 }
 .programme-preview-art > .aquarium-art {
   width: 100%;
@@ -79,11 +130,20 @@
 @keyframes programme-page-arrive {
   from {
     opacity: 0;
-    transform: rotateX(-12deg) translate3d(0, 20px, -35px);
+    transform: rotateX(-22deg) rotateY(-12deg) translate3d(0, 20px, -35px);
   }
   to {
     opacity: 1;
     transform: none;
+  }
+}
+@keyframes programme-jacket {
+  from {
+    opacity: 0;
+    transform: perspective(1400px) rotateY(-28deg) rotateX(8deg);
+  }
+  to {
+    opacity: 1;
   }
 }
 @keyframes programme-paper-reveal {
@@ -101,9 +161,15 @@
 }
 @media (hover: none), (prefers-reduced-motion: reduce) {
   .portal-node .portal-art,
-  .programme-cover-art,
   .programme-preview-art {
     transform: none;
+  }
+  .portal-node .drawn-icon {
+    filter: none;
+  }
+  .programme-cover-art {
+    animation: none;
+    transform: perspective(1400px) rotateY(-8deg) rotateX(3deg);
   }
   .programme-list,
   .programme-list.is-closing,

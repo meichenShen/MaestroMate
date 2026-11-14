@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -20,7 +21,7 @@ import {
 } from "../../components/MusicPoolView";
 import { PoolAudio } from "./audio";
 import { emptyMelody, poolNotes, putNote, type Melody } from "./model";
-import type { PadPosition } from "../../rendering/music-pool";
+import { getPoolLayout } from "./layout";
 import "./music-pool.css";
 export function MusicPool({
   melody,
@@ -40,9 +41,8 @@ export function MusicPool({
     [motion, setMotion] = useState(
       () => !matchMedia("(prefers-reduced-motion: reduce)").matches,
     );
-  const [positions, setPositions] = useState<PadPosition[]>(() =>
-    poolNotes.map((_, i) => ({ x: 10 + i * 20, y: 57.4 - i * 4.47 })),
-  );
+  const [layout, setLayout] = useState(() => getPoolLayout(900, 360));
+  const stage = useRef<HTMLElement>(null);
   const view = useRef<PoolViewHandle>(null),
     audio = useRef<PoolAudio | null>(null),
     playingRef = useRef(false),
@@ -50,6 +50,21 @@ export function MusicPool({
   const release = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const state = useRef({ melody, selected, enabled, muted });
   state.current = { melody, selected, enabled, muted };
+  useLayoutEffect(() => {
+    const element = stage.current!;
+    const resize = () => {
+      const r = element.getBoundingClientRect();
+      setLayout((previous) =>
+        previous.width === r.width && previous.height === r.height
+          ? previous
+          : getPoolLayout(r.width, r.height),
+      );
+    };
+    resize();
+    const observer = new ResizeObserver(resize);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
   const stop = useCallback(() => {
     audio.current?.stop();
     playingRef.current = false;
@@ -212,6 +227,7 @@ export function MusicPool({
         </div>
       </header>
       <section
+        ref={stage}
         className="pool-stage"
         aria-label="Five-note water instrument"
         onPointerDown={(event) => {
@@ -223,18 +239,29 @@ export function MusicPool({
           ref={view}
           motion={motion}
           active={enabled}
-          onPositions={setPositions}
+          layout={layout}
         />
-        <span className="pool-register pool-low">Lower notes</span>
-        <span className="pool-register pool-high">Higher notes</span>
+        <span
+          className="pool-register pool-low"
+          style={{ left: layout.surface.left + "%" }}
+        >
+          Lower notes
+        </span>
+        <span
+          className="pool-register pool-high"
+          style={{ right: layout.surface.left + "%" }}
+        >
+          Higher notes
+        </span>
         {poolNotes.map((note, i) => (
           <button
             key={note.name}
             className={"pool-pad" + (sounding === i ? " is-sounding" : "")}
             style={
               {
-                left: positions[i].x + "%",
-                top: positions[i].y + "%",
+                left: layout.notes[i].x + "%",
+                top: layout.notes[i].y + "%",
+                width: layout.padSize,
                 "--note-color": note.color,
               } as CSSProperties
             }
@@ -244,7 +271,6 @@ export function MusicPool({
           >
             <span className="pool-pad-light" />
             <strong>{note.name}</strong>
-            <kbd>{note.key}</kbd>
           </button>
         ))}
         <p className="pool-key-hint">Try your keyboard: A S D F G</p>

@@ -30,8 +30,8 @@ With the production preview running: `QA_BASE_URL=http://127.0.0.1:4173 npm run 
 | Four homepage scenes, scattered entrances and contact links         | `src/features/home/Home.tsx`, `home.css`                                                                          |
 | Anonymous feedback form, API and database schema                    | `src/features/feedback/`, `worker/feedback.ts`, `db/schema.ts`, `drizzle/`                                          |
 | Music Pool notes, eight-step melody and local synthesized audio     | `src/features/water/{MusicPool.tsx,model.ts,audio.ts,music-pool.css}`                                                |
-| Original procedural water and stable note positions                 | `src/rendering/music-pool.ts`, `src/components/MusicPoolView.tsx`                                                   |
-| Elastic artwork and thin spatial Program previews                   | `src/hooks/useSpringPointer.ts`, `src/animation/spring.ts`, `src/features/home/surfaces.css`                        |
+| Pond shape, camera and shared HTML/fallback target positions         | `src/features/water/layout.ts`, `src/rendering/music-pool.ts`, `src/components/MusicPoolView.tsx`                  |
+| Elastic artwork and thin spatial Program previews                   | `src/components/ElasticField.tsx`, `src/hooks/useSpringPointer.ts`, `src/features/home/surfaces.css`               |
 | Large concert hall, camera orbit and instanced architecture         | `src/rendering/theatre.ts`, `hall-architecture.ts`, `hall-view.ts`, `orchestra.ts`, `components/TheatreStage.tsx` |
 | Large icon geometry, stable hover entrances and path drawing        | `src/components/DrawnIcon.tsx`, `RoomPortal.tsx`                                                                  |
 | Independent listening collection                                    | `src/features/library/ListeningLibrary.tsx`                                                                       |
@@ -84,6 +84,10 @@ Play offers Sound Detective and Music Pool as separate activities. Pool is a cre
 Melody state stays above route switches, within this visit; refreshing resets it. There is no recording, upload, export or permanent save. The existing MP3 element remains mounted and pauses on pool entry. A gesture-created Web Audio graph supplies original tones at a modest level with a compressor; Guide, page hiding, cancellation and leaving stop pending/active sound. Contexts close on unmount. The water is an original lazy Three.js renderer with analytic waves, not a fluid simulation. All controls remain normal HTML with keyboard/touch support; a static drawing remains usable if WebGL fails. The newer HTML-in-Canvas API is not required.
 
 Only drawings/previews tilt or stretch. Titles and entry controls remain stationary through Program opening; reduced motion disables decorative transforms and continuous water frames. Aquarium-specific open-source candidates and license/asset cautions are in [the rendering research note](../docs/research/aquarium-rendering-references.md); this iteration keeps the existing listening aquarium.
+
+The pond now uses a more top-down camera and capped width, independently of the note hit areas. Each note is one coloured point and letter; the keyboard mapping stays in the shared guide. `layout.ts` projects both the real renderer and its drawing fallback. Adjust basin proportions there, rather than stretching the entire scene to spread targets.
+
+Program starts with a cover; opening it reveals two vertically arranged works. The thin leaves and artwork move while titles/buttons stay fixed. `public/images/program-cover.png` is captured from the actual Aquarium renderer, without player controls; regenerate with `node scripts/capture-program-cover.mjs` against a running preview. It uses the existing credited fish models. Portal art has a local radial SVG displacement filter driven by the same damped pointer spring. Its original technical field is generated with `node scripts/generate-elastic-field.mjs`; touch/reduced motion bypasses decorative filtering. Neither effect depends on HTML-in-Canvas or copied showcase artwork.
 
 ## Design and animation
 
