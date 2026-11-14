@@ -12,6 +12,7 @@ test("three independent rooms never become a guided Program by accident", () => 
     journey: false,
   });
   assert.deepEqual(parseRoute("#play"), { kind: "games" });
+  assert.deepEqual(parseRoute("#play/pool"), { kind: "pool" });
   assert.deepEqual(parseRoute("#listen/aquarium"), {
     kind: "activity",
     activity: "theater",

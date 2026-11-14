@@ -1,0 +1,70 @@
+.play-activities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 5vw, 90px);
+  align-items: start;
+}
+.play-activities .game-door {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  max-width: none;
+  width: 100%;
+  padding: 12px 0 25px;
+}
+.play-activities .game-door > .drawn-icon,
+.play-activities .game-door > .pool-glyph {
+  width: min(100%, 320px);
+  height: 220px;
+  align-self: center;
+  color: var(--play);
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.play-activities .pool-door > .pool-glyph {
+  color: var(--listen);
+}
+.play-activities .game-door:hover > :first-child {
+  transform: translateY(-8px) rotate(-3deg);
+}
+.play-activities .game-door strong {
+  font-size: clamp(32px, 3.3vw, 48px);
+}
+.play-activities .game-door small {
+  font-size: 17px;
+  max-width: 360px;
+  margin-top: 12px;
+  line-height: 1.6;
+}
+.play-activities .game-cta {
+  color: var(--play);
+  font-size: 18px;
+  margin-top: 20px;
+}
+.play-activities .pool-door .game-cta {
+  color: var(--listen);
+}
+@media (max-width: 650px) {
+  .play-activities {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .play-activities .game-door {
+    gap: 8px;
+  }
+  .play-activities .game-door > .drawn-icon,
+  .play-activities .game-door > .pool-glyph {
+    height: 170px;
+  }
+  .play-activities .game-door strong {
+    font-size: 37px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .play-activities .game-door > :first-child {
+    transition: none;
+  }
+  .play-activities .game-door:hover > :first-child {
+    transform: none;
+  }
+}

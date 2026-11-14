@@ -5,6 +5,7 @@ export type Route =
   | { kind: "library"; intent: "listen" | "program" }
   | { kind: "activity"; activity: ActivityId; journey: boolean }
   | { kind: "games" }
+  | { kind: "pool" }
   | { kind: "summary" };
 const names: Record<string, ActivityId> = {
   listen: "theater",
@@ -28,6 +29,7 @@ export function parseRoute(hash: string): Route {
   if (path === "chat")
     return { kind: "activity", activity: "conversation", journey: false };
   if (path === "play") return { kind: "games" };
+  if (path === "play/pool") return { kind: "pool" };
   if (path === "listen/aquarium")
     return { kind: "activity", activity: "theater", journey: false };
   if (path === "play/aquarium")

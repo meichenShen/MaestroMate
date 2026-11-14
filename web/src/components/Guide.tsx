@@ -14,7 +14,7 @@ const steps = [
   {
     number: "03",
     title: "Make it your own.",
-    text: "The three rooms work on their own. A Program gently connects them, with a next step when you feel ready. You can leave or come back whenever you like.",
+    text: "The rooms work on their own. In Play, follow the sound clues or make a melody in Music Pool. A Program connects listening, a chat and Sound Detective. Leave or come back whenever you like.",
   },
 ];
 export function Guide({ onClose }: { onClose: () => void }) {

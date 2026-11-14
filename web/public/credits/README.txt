@@ -67,3 +67,14 @@ Studied GPU particle age, depth-sized sprites and buffered attributes.
 MaestroMate uses original spherical choreography, analytical ballistic trails
 and procedural soft sparks, with no borrowed sparkle texture or extra package.
 Reference license: /credits/particle-reference-MIT.txt
+
+Music Pool and tactile surfaces
+Original procedural Three.js water, five-note Web Audio instrument and CSS springs.
+These synthesized sounds are not extracted from the Aquarium recording.
+Interaction references (no code, textures or audio copied in this iteration):
+https://html-in-canvas.dev/demos/wishing-pond/
+https://html-in-canvas.dev/demos/3d-room-live-content/
+https://html-in-canvas.dev/demos/elastic-bulge/
+Showcase source: https://github.com/en-dash-consulting/html-in-canvas-dot-dev
+Aquarium/water research references: WebGLSamples Aquarium and Evan Wallace's
+WebGL Water. Their assets/code are not included in this Music Pool prototype.

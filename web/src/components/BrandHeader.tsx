@@ -18,7 +18,7 @@ export function BrandHeader({
           ]
       : route.kind === "library"
         ? route.intent
-        : route.kind === "games"
+        : route.kind === "games" || route.kind === "pool"
           ? "play"
           : route.kind === "summary"
             ? "program"

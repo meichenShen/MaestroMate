@@ -16,6 +16,8 @@ import { useComposerChat } from "./features/conversation/useComposerChat";
 import { Detective, initialProgress } from "./features/detective/Detective";
 import { GameRoom } from "./features/detective/GameRoom";
 import { ListeningLibrary } from "./features/library/ListeningLibrary";
+import { MusicPool } from "./features/water/MusicPool";
+import { emptyMelody } from "./features/water/model";
 import { useSmoothPage } from "./hooks/useSmoothPage";
 import { useRoute } from "./navigation/useRoute";
 import { activityHash, navigate } from "./navigation/routes";
@@ -29,6 +31,7 @@ function Site() {
     [progress, setProgress] = useState(initialProgress),
     [motion, setMotion] = useState(true),
     [visited, setVisited] = useState<ActivityId[]>([]);
+  const [melody, setMelody] = useState(emptyMelody);
   const [guide, setGuide] = useState(() => {
     try {
       return sessionStorage.getItem("maestromate-guide-v2") !== "seen";
@@ -140,6 +143,8 @@ function Site() {
         )
       ) : route.kind === "games" ? (
         <GameRoom />
+      ) : route.kind === "pool" ? (
+        <MusicPool melody={melody} onChange={setMelody} enabled={!guide && !entrance} />
       ) : route.kind === "summary" ? (
         <ProgramComplete
           motion={!guide && !entrance}
