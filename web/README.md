@@ -4,6 +4,8 @@ An English music demo built around Saint-Saëns’ **Aquarium**. Listen, compose
 
 Live: https://maestromate-aquarium.chirpyapple14.chatgpt.site
 
+Current exploratory audience: interested children6–12 with little music-theory experience. Peer usability pretests and child learning observations are separate; no child study or educational-effect validation has been completed.
+
 ## Development
 
 Requires Node.js 24 (local preview/tests use its SQLite support).
@@ -27,6 +29,9 @@ With the production preview running: `QA_BASE_URL=http://127.0.0.1:4173 npm run 
 | Brand and global Listen / Chat / Play / Program navigation          | `src/components/BrandHeader.tsx`                                                                                  |
 | Four homepage scenes, scattered entrances and contact links         | `src/features/home/Home.tsx`, `home.css`                                                                          |
 | Anonymous feedback form, API and database schema                    | `src/features/feedback/`, `worker/feedback.ts`, `db/schema.ts`, `drizzle/`                                          |
+| Music Pool notes, eight-step melody and local synthesized audio     | `src/features/water/{MusicPool.tsx,model.ts,audio.ts,music-pool.css}`                                                |
+| Original procedural water and stable note positions                 | `src/rendering/music-pool.ts`, `src/components/MusicPoolView.tsx`                                                   |
+| Elastic artwork and thin spatial Program previews                   | `src/hooks/useSpringPointer.ts`, `src/animation/spring.ts`, `src/features/home/surfaces.css`                        |
 | Large concert hall, camera orbit and instanced architecture         | `src/rendering/theatre.ts`, `hall-architecture.ts`, `hall-view.ts`, `orchestra.ts`, `components/TheatreStage.tsx` |
 | Large icon geometry, stable hover entrances and path drawing        | `src/components/DrawnIcon.tsx`, `RoomPortal.tsx`                                                                  |
 | Independent listening collection                                    | `src/features/library/ListeningLibrary.tsx`                                                                       |
@@ -65,11 +70,20 @@ For schema changes, edit `db/schema.ts`, run `npx drizzle-kit generate`, review 
 | `#listen` → `#listen/aquarium`               | Independent listening collection → room   |
 | `#chat`                                      | Independent composer conversation         |
 | `#play` → `#play/aquarium`                   | Independent music games → Sound Detective |
+| `#play/pool`                                 | Independent creative Music Pool           |
 | `#program`                                   | Optional whole-work Program collection    |
 | `#program/aquarium/listen`, `/chat`, `/play` | Guided Program steps                      |
 | `#program/aquarium/done`                     | End of the Program                        |
 
 The old `#programme`, `#experiences` and `#work/aquarium/{theater,conversation,detective}` links remain supported. Old activity links open standalone rooms, never silently create a guided journey.
+
+## Music Pool prototype
+
+Play offers Sound Detective and Music Pool as separate activities. Pool is a creative experiment with C4,D4,E4,G4,A4; it does not claim to reproduce Aquarium's melody/harmony or extract instrumental stems. Tap a light or use keyboard A/S/D/F/G. Each note fills/replaces the selected one of eight steps and advances; selecting a step previews it, then a new note changes it. Delete/Backspace clears the selected step. Play my melody plays the eight half-beat slots once at100bpm; Stop and Start fresh cancel scheduled sounds. Sound and Motion controls are independent.
+
+Melody state stays above route switches, within this visit; refreshing resets it. There is no recording, upload, export or permanent save. The existing MP3 element remains mounted and pauses on pool entry. A gesture-created Web Audio graph supplies original tones at a modest level with a compressor; Guide, page hiding, cancellation and leaving stop pending/active sound. Contexts close on unmount. The water is an original lazy Three.js renderer with analytic waves, not a fluid simulation. All controls remain normal HTML with keyboard/touch support; a static drawing remains usable if WebGL fails. The newer HTML-in-Canvas API is not required.
+
+Only drawings/previews tilt or stretch. Titles and entry controls remain stationary through Program opening; reduced motion disables decorative transforms and continuous water frames. Aquarium-specific open-source candidates and license/asset cautions are in [the rendering research note](../docs/research/aquarium-rendering-references.md); this iteration keeps the existing listening aquarium.
 
 ## Design and animation
 

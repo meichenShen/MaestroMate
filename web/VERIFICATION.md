@@ -209,3 +209,12 @@
 - 版本：`appgprj_6af14ade2f2c8191825208668540e338~appgver_612a08f1b7148191a8fe02af9a1cb1e2`；部署：`appgdep_6af2d44d7ef0819182c91b84a5d9b37c`。
 - 发布后原生数据库overview确认`DB`、`feedback`、`feedback_sessions`，再以返回的精确名称读取`feedback`：七列正确、0条记录、无后续页，证明线上迁移和拥有者读取可用，没有把本地测试邮件/反馈上传。匿名HTTP复查仍为CONNECT403/状态000，故线上匿名投递端到端验证仍未完成。
 - Codex打开浏览器与附加现有PR的RPC均返回`connection closed`，没有宣称已经替用户打开页面。交付直接HTTPS网址；PR2保持草稿，发布后仅补充文档记录，不改变运行代码。
+
+## 2026-11-14：音乐水池、立体节目单与弹性入口
+
+- 按用户选定的三项参考做可试玩迭代。Play新增独立`#play/pool`：五音C4/D4/E4/G4/A4，八步旋律编辑、单次回放/停止/清空、键盘A/S/D/F/G、声音与动态开关。旋律在同次访问的模块切换间保留，刷新重置；没有录音上传、永久保存或导出。Program仍保留原有三步骤和音乐侦探。
+- 原创Three.js圆形水面、有限分析波纹、程序化水光与独立Web Audio合成。全部按钮为正常HTML；不依赖新HTML-in-Canvas API、外链iframe、新运行依赖或自动发声。原录音保持唯一HTML audio元素，进入水池时暂停。原始录音、Chat、音乐侦探及私有反馈接口均保留。
+- 实际Web Audio经AnalyserNode测量输出，检查音符、静音、指引停止和离开时关闭Context。异步resume取消后不能发声或安排回放；被拒绝的过期resume先复现失败后修复。动态关闭、减少动态、缺失WebGL、真实WEBGL_lose_context均保留可操作控件；390px真实浏览器touch事件落入预期音符。
+- 节目单保留纵向两个作品及Swan未开放状态，添加轻薄空间展开/倾斜；三个入口添加弹簧拉伸与回弹，链接/标题保持固定。独立最终审查发现两项Important、无Critical/minor：手机音符命中区重叠、节目单展开带动标题/入口。两项均新增失败用例后修正；320px旧版点C右侧实际命中D，修正后320/390/1024的ready/fallback两种模式均通过分离/命中检查；20–900ms原生动画采样确认标题/CTA位置稳定。没有重复审查。
+- 修复后26项单元测试、录音完整性、TypeScript与生产构建通过；水池3D延迟包约5.49kB，Three.js保留约619.74kB的大包提示。已查看1440px和390/320px修复后截图。整站最终18组浏览器回归、发布信息随后记录；实体手机GPU与儿童学习表现未实测。
+- 新增开源水族馆研究记录`docs/research/aquarium-rendering-references.md`：核对WebGLSamples默认BSD3条款、Evan Wallace原源码MIT声明、idootop Three.js版本README的MIT及署名。具体模型/纹理仍需逐项核验，未复制这些项目的代码/资产或替换沉浸聆听背景。

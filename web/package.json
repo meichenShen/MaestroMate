@@ -8,7 +8,7 @@
     "build": "node scripts/check-assets.mjs && tsc --noEmit && node scripts/prepare-build.mjs && vite build && node scripts/build-worker.mjs",
     "preview": "node scripts/preview-worker.mjs",
     "test": "node --test tests/*.test.mjs",
-    "test:browser": "node tests/answer-layout.mjs && node tests/celebration.mjs && node tests/clarity.mjs && node tests/workspace.mjs && node tests/upgrade.mjs && node tests/refinements.mjs && node tests/rooms.mjs && node tests/entry.mjs && node tests/browser.mjs && node tests/keyboard.mjs && node tests/focus.mjs && node tests/snap.mjs && node tests/motion.mjs && node tests/context-loss.mjs && node tests/feedback-browser.mjs",
+    "test:browser": "node tests/answer-layout.mjs && node tests/celebration.mjs && node tests/clarity.mjs && node tests/workspace.mjs && node tests/upgrade.mjs && node tests/refinements.mjs && node tests/rooms.mjs && node tests/entry.mjs && node tests/browser.mjs && node tests/keyboard.mjs && node tests/focus.mjs && node tests/snap.mjs && node tests/motion.mjs && node tests/context-loss.mjs && node tests/feedback-browser.mjs && node tests/pool-browser.mjs && node tests/surfaces-browser.mjs && node tests/pool-layout-review.mjs",
     "test:feedback": "node --test tests/feedback-api.test.mjs && node tests/feedback-browser.mjs"
   },
   "dependencies": {
