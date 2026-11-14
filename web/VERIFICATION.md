@@ -218,3 +218,12 @@
 - 节目单保留纵向两个作品及Swan未开放状态，添加轻薄空间展开/倾斜；三个入口添加弹簧拉伸与回弹，链接/标题保持固定。独立最终审查发现两项Important、无Critical/minor：手机音符命中区重叠、节目单展开带动标题/入口。两项均新增失败用例后修正；320px旧版点C右侧实际命中D，修正后320/390/1024的ready/fallback两种模式均通过分离/命中检查；20–900ms原生动画采样确认标题/CTA位置稳定。没有重复审查。
 - 修复后26项单元测试、录音完整性、TypeScript与生产构建通过；水池3D延迟包约5.49kB，Three.js保留约619.74kB的大包提示。已查看1440px和390/320px修复后截图。整站最终18组浏览器回归、发布信息随后记录；实体手机GPU与儿童学习表现未实测。
 - 新增开源水族馆研究记录`docs/research/aquarium-rendering-references.md`：核对WebGLSamples默认BSD3条款、Evan Wallace原源码MIT声明、idootop Three.js版本README的MIT及署名。具体模型/纹理仍需逐项核验，未复制这些项目的代码/资产或替换沉浸聆听背景。
+- 最终完整`QA_BASE_URL=http://127.0.0.1:4173 QA_DB_PATH=.tmp/music-pool/preview.sqlite npm run test:browser`退出码0，18组脚本全部通过；最后一轮运行时源码和构建不变。包含真实MP3、六宽度旧流程、匿名反馈保存，以及新增水池4项、弹性/空间3项和审查修复2项浏览器契约。单元26/26，录音完整性/TypeScript/构建通过；实体手机GPU、真实读屏和儿童学习效果未测试。
+
+### 第11版公开发布
+
+- Sites第11版已发布，保持public范围；原生状态`succeeded`，时间2026-11-14T12:57:08.410945Z（北京时间20:57）。公开网址：https://maestromate-aquarium.chirpyapple14.chatgpt.site ，水池入口`#play/pool`。
+- GitHub运行源码：`24094d448064ea14f87944687afc222c678ccbcc`；Sites根目录源码：`ec793d4181d48c94553a7ca08a38934135c90f3a`。源准备工具核对远端SHA后打包2,309,417 bytes，原生归档30项，内容hash`sha256:f3dfceef8c04abe36549dfb910b8803ed4fbc445c6c3094d6f4782f30ac1e3cb`。
+- 版本：`appgprj_6af14ade2f2c8191825208668540e338~appgver_c7fdcd1fabf88191b45b4e57cd585cb6`；部署：`appgdep_6af85a9d26b081919b333e2b6a46a80b`。
+- 发布后原生数据库overview仍返回`DB`、`feedback`、`feedback_sessions`，本轮未改schema/迁移或读取真实反馈内容。匿名公开GET仍被云端代理以CONNECT403拦截，HTTP000，不把它解释为用户浏览器无法访问；上线依据原生成功结果，本地浏览器验证与线上直连复查分开报告。
+- 更新PR2标题/说明并保留草稿，未合并；附加PR与打开版本11浏览器链接的RPC均返回`connection closed`，未宣称已替用户打开。发布后仅补充记录，不改变运行代码；保留源目录/Git历史，停止本轮启动的Vite/Worker预览进程。

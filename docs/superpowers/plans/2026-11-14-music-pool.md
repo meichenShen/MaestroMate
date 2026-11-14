@@ -40,10 +40,10 @@ Files: new `src/hooks/useSpringPointer.ts`, spring math and owned surface CSS; m
 ## Task 3: research, verification and publication
 
 - [x] Record primary aquarium projects/licenses and next-direction tradeoffs without swapping the listening scene.
-- [ ] Unit tests, asset/TypeScript/build, inspect desktop/mobile screenshots, full browser suite.
-- [ ] One fresh gpt-6-astra/high final review of the iteration; fix Important findings RED→GREEN.
-- [ ] Commit/push existing feature branch and update draft PR2; package exact source and publish same public Site. Preserve DB migration history and audience.
-- [ ] Record exact provenance/limits; open literal URL when supported; stop owned servers.
+- [x] Unit tests, asset/TypeScript/build, inspect desktop/mobile screenshots, full browser suite.
+- [x] One fresh gpt-6-astra/high final review of the iteration; fix Important findings RED→GREEN.
+- [x] Commit/push existing feature branch and update draft PR2; package exact source and publish same public Site. Preserve DB migration history and audience.
+- [x] Record exact provenance/limits; attempt supported URL handoff and stop owned servers.
 
 ## Ledger
 
@@ -58,3 +58,5 @@ Final review: one fresh gpt-6-astra/high read-only review found two Important is
 - Program arrival: RED proved title/CTA geometry changes when native CSS animation times are sampled. Whole-list opening/closing is now opacity-only; 3D arrival is restricted to previews. GREEN samples20–900ms and confirms stationary headings/buttons. GPU is disabled only for this CSS geometry test; normal live-preview behavior is covered separately.
 
 Final repair verification:26 unit tests and production build pass; both new review regressions pass. Runtime/build stay frozen during the final18-script browser run. Updated screenshots inspected at1440px,390px and320px. No API/feedback schema change, no real user data captured by tests.
+
+Complete: final18-script browser command exited0, after the one fix pass, against the frozen Worker build. Published Sites v11 (`succeeded`) to the existing public URL; native D1 overview retains DB/feedback/feedback_sessions. Direct public GET remains blocked by managed CONNECT403; app browser/PR-attachment RPC returned connection closed, so no claim of direct production browser verification or successful handoff. Draft PR2 updated, not merged. Exact source/version/deployment provenance is in web/VERIFICATION.md. Final-only documentation does not change runtime. The existing source checkout remains; owned preview/dev servers are stopped at handoff.
