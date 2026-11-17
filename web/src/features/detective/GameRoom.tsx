@@ -15,6 +15,14 @@ export function GameRoom() {
           Follow whatever makes you curious.
         </p>
       </div>
+      <section className="learning-invitation">
+        <div>
+          <p>Start here · three small discoveries</p>
+          <strong>Notice. Discover. Create.</strong>
+          <p>Follow a rising tune, find its return, then make a variation.</p>
+        </div>
+        <a href="#play/learn">Explore the learning trail ↗</a>
+      </section>
       <div className="play-activities">
         <button
           className="game-door"

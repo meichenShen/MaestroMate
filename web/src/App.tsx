@@ -21,6 +21,8 @@ import { emptyMelody } from "./features/water/model";
 import { useSmoothPage } from "./hooks/useSmoothPage";
 import { useRoute } from "./navigation/useRoute";
 import { activityHash, navigate } from "./navigation/routes";
+import { LearningTrail } from "./features/learning/LearningTrail";
+import { emptyTrail } from "./content/learning";
 function Site() {
   const audio = useAudio(),
     route = useRoute();
@@ -31,6 +33,7 @@ function Site() {
     [progress, setProgress] = useState(initialProgress),
     [motion, setMotion] = useState(true),
     [visited, setVisited] = useState<ActivityId[]>([]);
+  const [trail, setTrail] = useState(emptyTrail);
   const [melody, setMelody] = useState(emptyMelody);
   const [guide, setGuide] = useState(() => {
     try {
@@ -143,13 +146,26 @@ function Site() {
         )
       ) : route.kind === "games" ? (
         <GameRoom />
+      ) : route.kind === "learning" ? (
+        <LearningTrail
+          progress={trail}
+          onChange={setTrail}
+          enabled={!guide && !entrance}
+          journey={route.journey}
+        />
       ) : route.kind === "pool" ? (
-        <MusicPool melody={melody} onChange={setMelody} enabled={!guide && !entrance} />
+        <MusicPool
+          melody={melody}
+          onChange={setMelody}
+          enabled={!guide && !entrance}
+        />
       ) : route.kind === "summary" ? (
         <ProgramComplete
+          trail={trail}
           motion={!guide && !entrance}
           onRestart={() => {
             setProgress(initialProgress);
+            setTrail(emptyTrail());
             chat.reset();
             startProgram();
           }}
@@ -231,7 +247,7 @@ function Site() {
                     activity === "theater"
                       ? activityHash("conversation", true)
                       : activity === "conversation"
-                        ? activityHash("detective", true)
+                        ? "#program/aquarium/learn"
                         : "#program/aquarium/done",
                   )
                 }

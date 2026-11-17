@@ -10,19 +10,23 @@ export function BrandHeader({
   onEntry: () => void;
 }) {
   const active =
-    route.kind === "activity"
+    route.kind === "learning"
       ? route.journey
         ? "program"
-        : { theater: "listen", conversation: "chat", detective: "play" }[
-            route.activity
-          ]
-      : route.kind === "library"
-        ? route.intent
-        : route.kind === "games" || route.kind === "pool"
-          ? "play"
-          : route.kind === "summary"
-            ? "program"
-            : "";
+        : "play"
+      : route.kind === "activity"
+        ? route.journey
+          ? "program"
+          : { theater: "listen", conversation: "chat", detective: "play" }[
+              route.activity
+            ]
+        : route.kind === "library"
+          ? route.intent
+          : route.kind === "games" || route.kind === "pool"
+            ? "play"
+            : route.kind === "summary"
+              ? "program"
+              : "";
   return (
     <header className="brand-header">
       <a className="brand" href="#home" aria-label="MaestroMate home">

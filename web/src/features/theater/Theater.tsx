@@ -3,6 +3,7 @@ import { Play, Pause } from "lucide-react";
 import { useAudio } from "../../audio/AudioProvider";
 import { formatTime } from "../../audio/timeline";
 import { chapters } from "../../content/aquarium";
+import { ListeningDiscoveries } from "./ListeningDiscoveries";
 export function Theater({
   onDiscover,
   motion,
@@ -30,6 +31,7 @@ export function Theater({
           <span className="micro">
             {audio.playing ? "Now listening" : "A small world, waiting"}
           </span>
+          <ListeningDiscoveries />
           <button
             role="switch"
             aria-label="Scene motion"
@@ -39,6 +41,7 @@ export function Theater({
             {motion ? "Motion on" : "Motion off"}
           </button>
         </div>
+        <span className="aquarium-glass-edge" aria-hidden="true" />
         <AquariumView
           time={audio.time}
           rate={audio.rate}

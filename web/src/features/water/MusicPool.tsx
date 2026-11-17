@@ -23,6 +23,7 @@ import { PoolAudio } from "./audio";
 import { emptyMelody, poolNotes, putNote, type Melody } from "./model";
 import { getPoolLayout } from "./layout";
 import "./music-pool.css";
+import { PoolMission } from "./PoolMission";
 export function MusicPool({
   melody,
   onChange,
@@ -212,6 +213,15 @@ export function MusicPool({
           <p>Tap a light. Hear a note. See where it takes you.</p>
         </div>
         <div className="pool-switches">
+          <PoolMission
+            melody={melody}
+            onOpen={stop}
+            onStart={() => {
+              stop();
+              onChange([0, 1, 2, 3, 0, 1, 2, 3]);
+              setSelected(7);
+            }}
+          />
           <button
             onClick={() => setMuted(!muted)}
             aria-pressed={!muted}

@@ -81,6 +81,7 @@ export function FeedbackEntry() {
         <label>About your visit<select value={kind} onChange={e => setKind(e.target.value)} disabled={sending}>
           <option value="impression">An impression</option><option value="idea">An idea</option><option value="problem">Something didn’t work</option>
         </select></label>
+        <p className="feedback-prompt">What did you discover? Was anything tricky to use or understand? Please leave out names, schools and other personal details.</p>
         <label>Your note<textarea autoFocus required maxLength={2000} rows={4} value={message} onChange={e => setMessage(e.target.value)} disabled={sending} /></label>
         <div className="feedback-count">{message.length} / 2,000</div>
         <label>Email (optional)<input type="email" maxLength={254} autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} disabled={sending} aria-describedby="feedback-privacy" /></label>

@@ -128,3 +128,11 @@ Prepared dialogue remains a fictional first-person adaptation based on Paris Ope
 The answer card has three grid rows: question/audio, choices, feedback/action. Question audio remains at the right after reveal, with its content-defined replay target. Previous/next stays outside the card with reserved space. The compact desktop treatment covers1366×600 and1366×640 as well as1440×900 and1024×768, including an expanded error player. Count typography uses explicit line height so it does not steal space from controls.
 
 `rendering/fireworks.ts` owns one buffered particle draw call: four spatial bursts with soft cores, depth-sized sparks and ballistic trails, lasting7.9 active seconds. It shares the hall renderer and camera, stops when finished, freezes behind Guide/offscreen and disposes its own geometry/material. Reduced motion keeps a static hall. The shader age/size approach was researched in Max van Leeuwen's MIT example; choreography and shaders are adapted to this site without an added package or texture. See public credits for the reference/license. `hall-view.ts` owns pointer mapping and shared camera pose; projection tests confirm that the front opening follows the pointer, rather than merely checking an internal yaw sign.
+
+## Beginner learning trail
+
+`#play/learn` leads through Notice → Discover → Create; `#program/aquarium/learn` keeps Program context and is now the Continue to Play destination. Existing Detective paths and Music Pool remain reachable. Every stage fits a desktop workspace; phone layouts scroll naturally. Stages are freely selectable, with no timer or score.
+
+Content/demonstrations/evaluation: `src/content/learning.ts`. Workspace: `src/features/learning/`. In-visit progress stays in App, resets on refresh or Program restart, and the summary reports actual successful checks. Sounds are original practice examples, not Aquarium excerpts or its formal analysis. Pool's optional variation mission clearly labels its replacement starter.
+
+`src/content/discoveries.ts` owns recording clips and sources for the optional listening dialog. It uses the existing audio provider and pauses/returns focus on close. Chat content and disabled free input remain unchanged. Editorial basis/trial guide: `docs/research/2026-11-17-aquarium-learning.md`. No AI, dependency or database/schema change.

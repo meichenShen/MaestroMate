@@ -1,9 +1,12 @@
 import { TheatreStage } from "../../components/TheatreStage";
 
+import { completedTrail, type TrailProgress } from "../../content/learning";
 export function ProgramComplete({
+  trail,
   onRestart,
   motion = true,
 }: {
+  trail: TrailProgress;
   onRestart: () => void;
   motion?: boolean;
 }) {
@@ -18,6 +21,23 @@ export function ProgramComplete({
           <br />
           Thank you for following your ears.
         </p>
+        <div className="learning-recap">
+          <p>Your discoveries this visit</p>
+          {completedTrail(trail).map((done, i) => (
+            <p key={i}>
+              {done ? "✓" : "○"}{" "}
+              {
+                [
+                  "Followed pitch: high and low",
+                  "Recognised a returning phrase",
+                  "Created a musical variation",
+                ][i]
+              }
+              {done ? "" : " · ready to explore"}
+            </p>
+          ))}
+          <a href="#program/aquarium/learn">Revisit your discoveries ↗</a>
+        </div>
         <div className="completion-actions">
           <a className="solid-button" href="#home" aria-label="Home">
             Home ↗

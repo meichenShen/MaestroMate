@@ -91,3 +91,9 @@ Program now exposes its cover on first entry. Opening reveals the same two verti
 Entrance icons now deform locally around the pointer through a generated radial SVG field, in addition to spring tilt/stretch. Before/after captures isolate the filter by disabling the parent transform; pixels change while link/title bounds stay fixed. Touch and reduced motion retain stable artwork. These effects use supported SVG/CSS, with no experimental browser API or new package.
 
 Final verification:28 unit tests, asset integrity, TypeScript/build and all19 Chromium script groups pass against the unchanged final Worker build. The opened-page containment regression passes at320/390/768/1024/1440; normal-motion desktop width is1440/1440. One fresh final review's Important finding was reproduced then fixed in one pass; no Critical or deferred minor remains.
+
+## 2026-11-17: beginner learning
+
+Three connected stages cover rising pitch, returning phrases and changing a detail to make a variation. Prompts/actions stay visible; retries have explanatory feedback; all valid lower endings are accepted. Legacy Detective/Pool remain available. Program reaches the trail and reports actual discoveries; the Pool mission transfers variation into two phrases.
+
+Inspected1440×900,1366×600 and390×844 captures. Failed bounds checks exposed inherited page padding; scoped desktop workspace now passes each stage. Phone retains natural vertical flow and no horizontal overflow. Source-dialog checks confirm one recording, stop/topic change/close and focus return. A fresh review found delayed AudioContext startup overwriting a checked answer: regression RED→GREEN after latest-state merging. Wording/navigation findings were corrected for beginner clarity: lower than original G (not necessarily a step), Back returns to Program overview. Chat unchanged. Final full regression is recorded in VERIFICATION.md.
