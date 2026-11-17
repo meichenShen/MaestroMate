@@ -273,3 +273,11 @@
 - 完整`QA_BASE_URL=http://127.0.0.1:4173 QA_DB_PATH=.tmp/workshop/preview.sqlite npm run test:browser`退出0，全20组脚本通过；运行期间运行源码/构建冻结。旧Play首页标题断言按已批准的新入口更新为“Stay in the music.”，没有删除导航行为检查。
 - 此后组合操作补充发现：接龙模式下加载旧变奏起始音，仍停留idle，八格不可编辑。第8项新回归先失败`idle !== free`；起始音加载时显式调用echo.free单点修复。重建后的最终版本以35项单元、作品专项8项及原水池浏览器4项复核；其余整站代码未改，完整20组结果与这轮局部复核分开记录。
 - 组合修正后的最终复核已退出0：单元35/35、作品专项8/8、原水池浏览器4/4，包含真实Web Audio输出/静音/释放、动态冻结、上下文丢失回退。复核后运行源码/构建未改。已查看作品入口、三档题面、回答后的短屏/手机与柔边水池截图；实体儿童/手机GPU尚无实测。
+
+### 第14版公开发布
+
+- 原生Sites发布`succeeded`，第14版，时间2026-11-17T04:02:42.710869Z（北京时间12:02），public范围不变。公开网址：https://maestromate-aquarium.chirpyapple14.chatgpt.site ，交付`?v=14#play`与`?v=14#play/pool`，带版本查询触发旧标签页重新加载。
+- GitHub运行源码`66dc3e5eb7e5572d76d80957f4afee77fcca3ec6`；Sites源码`3d0de0fd096061ff7abef0074e0fe5bc0dfdeb2a`。准备工具核对远端SHA后压缩包2,365,028 bytes；原生归档32项，hash`sha256:314697661d06056e9ad0df20a422092281f00529b44f7f2f4e9d7656ddd47d5b`。
+- 版本`appgprj_6af14ade2f2c8191825208668540e338~appgver_e2eae095e7e08191a93928878aa94e95`；部署`appgdep_6afbd1dba20c819190f566416a59ea0c`。
+- 发布后D1 overview仍有DB/feedback/feedback_sessions，没有读取真实反馈内容。公开GET仍被代理CONNECT403拦截（HTTP000）；依据原生成功确认发布，本地浏览器检查与生产直连复核区分记录。
+- PR2说明已更新，保持草稿未合并。打开页面/附加PR的RPC返回connection closed，未宣称已替用户打开。发布后仅提交记录，不改变运行代码。源文件、研究旧稿与Git历史保留，本轮Worker预览停止；临时QA数据留在忽略目录。

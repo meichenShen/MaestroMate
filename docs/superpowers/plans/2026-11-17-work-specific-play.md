@@ -8,7 +8,7 @@ Pool: remove body/rim and shader perimeter highlight; shared radius3.8 increases
 - [x] Registry/routes/state; visual workspace/nearby actions/brief help; update Program recap and Play cover.
 - [x] Larger rimless Pool and fish echo/free painting with safe audio lifecycle.
 - [x] Browser interactions, keyboard/touch/fallback,600px answered layout, real recording and cancelled audio; one final review then full regression.
-- [ ] Publish same public Site from exact committed source, update draft PR2/docs, stop owned preview.
+- [x] Publish same public Site from exact committed source, update draft PR2/docs, stop owned preview.
 Constraints: AGENTS.md; black/cyan/rose/amber, English; no AI/Chat/schema/dependency changes. Existing source/history retained. Future works get distinct registry entries/questions, unavailable works never silently use Aquarium's clips.
 Review focus: rapid game switching during sound startup; media mute vs synth; order correction without drag; repeated question persistence vs stale choices; echo stop/replay/Guide and lost graphics.
 
@@ -17,3 +17,5 @@ Fresh review found inherited constructor work URL crash (Important) and same-wor
 
 Final QA: full20-script command exited0 on frozen build. A subsequent combination probe found loading the existing Pool variation starter from echo mode stayed idle/locked. Added8th regression RED idle!==free, one-line echo.free on starter load, rebuilt; final35 units,8 workshop contracts and4 existing Pool browser contracts are the scoped final verification. No unrelated UI changed after full suite; do not describe the earlier full-suite build as the post-combination build. Sources/Chat/MP3/D1 remain unchanged. Publish pending.
 Final scoped checks exited0:35 units,8 workshop browser contracts and4 existing Pool browser contracts after the starter-mode fix. No deferred findings. No runtime changes after these checks. Desktop/phone artwork captures inspected; physical-device/child trials remain outside these local checks.
+
+Public v14 native succeeded2026-11-17T04:02:42Z. Runtime commit66dc3e5eb7e5572d76d80957f4afee77fcca3ec6; Sites source3d0de0fd096061ff7abef0074e0fe5bc0dfdeb2a. Exact version/deployment/hash recorded in VERIFICATION.md. Same public access and retained D1 tables; PR2 updated/draft, not merged. Direct production GET CONNECT403; browser/PR UI handoff connection closed, direct links delivered. Follow-up commit docs only; owned Worker preview stopped at handoff.
