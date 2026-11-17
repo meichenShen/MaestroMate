@@ -1,12 +1,16 @@
 import { TheatreStage } from "../../components/TheatreStage";
 
-import { completedTrail, type TrailProgress } from "../../content/learning";
+import {
+  workshopDone,
+  aquariumGames,
+  type WorkshopProgress,
+} from "../../content/play/aquarium";
 export function ProgramComplete({
-  trail,
+  workshop,
   onRestart,
   motion = true,
 }: {
-  trail: TrailProgress;
+  workshop: WorkshopProgress;
   onRestart: () => void;
   motion?: boolean;
 }) {
@@ -23,17 +27,15 @@ export function ProgramComplete({
         </p>
         <div className="learning-recap">
           <p>Your discoveries this visit</p>
-          {completedTrail(trail).map((done, i) => (
-            <p key={i}>
-              {done ? "✓" : "○"}{" "}
+          {["Notice", "Explore", "Invent"].map((label, level) => (
+            <p key={label}>
+              {label} ·{" "}
               {
-                [
-                  "Followed pitch: high and low",
-                  "Recognised a returning phrase",
-                  "Created a musical variation",
-                ][i]
+                aquariumGames.filter(
+                  (g, i) => g.level === level && workshopDone(workshop)[i],
+                ).length
               }
-              {done ? "" : " · ready to explore"}
+              /4 discoveries
             </p>
           ))}
           <a href="#program/aquarium/learn">Revisit your discoveries ↗</a>

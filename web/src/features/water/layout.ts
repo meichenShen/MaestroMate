@@ -27,8 +27,8 @@ export function getPoolLayout(width: number, height: number): PoolLayout {
     y: 50 - ((p.y * upY + p.z * upZ) / poolCamera.viewHeight) * 100,
   }));
   const spacing = ((notes[1].x - notes[0].x) * w) / 100;
-  const surfaceWidth = ((7 * scaleX) / (poolCamera.viewHeight * aspect)) * 100;
-  const surfaceHeight = ((7 * -upZ) / poolCamera.viewHeight) * 100;
+  const surfaceWidth = ((7.6 * scaleX) / (poolCamera.viewHeight * aspect)) * 100;
+  const surfaceHeight = ((7.6 * -upZ) / poolCamera.viewHeight) * 100;
   return {
     width: w,
     height: h,

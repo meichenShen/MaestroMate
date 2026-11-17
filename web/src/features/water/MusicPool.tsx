@@ -24,6 +24,8 @@ import { emptyMelody, poolNotes, putNote, type Melody } from "./model";
 import { getPoolLayout } from "./layout";
 import "./music-pool.css";
 import { PoolMission } from "./PoolMission";
+import { usePoolEcho } from "./usePoolEcho";
+import { PoolFish } from "./PoolFish";
 export function MusicPool({
   melody,
   onChange,
@@ -49,6 +51,13 @@ export function MusicPool({
     playingRef = useRef(false),
     alive = useRef(true);
   const release = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const echoCancel = useRef<() => void>(() => {}),
+    echoTap = useRef<{ active: boolean; tap: (n: number) => void }>({
+      active: false,
+      tap: () => {},
+    });
+  const [fish, setFish] = useState(2);
+  const paintAt = useRef(0);
   const state = useRef({ melody, selected, enabled, muted });
   state.current = { melody, selected, enabled, muted };
   useLayoutEffect(() => {
@@ -68,6 +77,7 @@ export function MusicPool({
   }, []);
   const stop = useCallback(() => {
     audio.current?.stop();
+    echoCancel.current();
     playingRef.current = false;
     setPlaying(false);
     setBeat(null);
@@ -108,14 +118,22 @@ export function MusicPool({
   const flash = useCallback((note: number) => {
     view.current?.pulse(note);
     setSounding(note);
+    setFish(note);
     clearTimeout(release.current);
     release.current = setTimeout(() => {
       if (alive.current) setSounding(null);
     }, 260);
   }, []);
+  const echo = usePoolEcho(audio, flash);
+  echoCancel.current = echo.cancel;
+  echoTap.current = { active: echo.active, tap: echo.tap };
   const playNote = useCallback(
     (note: number) => {
       if (!state.current.enabled || document.hidden) return;
+      if (echoTap.current.active) {
+        echoTap.current.tap(note);
+        return;
+      }
       if (playingRef.current) stop();
       onChange(putNote(state.current.melody, state.current.selected, note));
       setSelected((state.current.selected + 1) % 8);
@@ -201,6 +219,7 @@ export function MusicPool({
       tabIndex={-1}
       className="pool-room"
       data-pool-playing={playing}
+      data-pool-motion={motion && enabled}
     >
       <header className="pool-heading">
         <div>
@@ -208,9 +227,9 @@ export function MusicPool({
             <ArrowLeft size={18} />
             Back to the play room
           </a>
-          <p className="eyebrow">Music Pool · A little experiment</p>
+          <p className="eyebrow">Aquarium · Music Pool</p>
           <h1>Make a little ripple.</h1>
-          <p>Tap a light. Hear a note. See where it takes you.</p>
+          <p>Paint the water. Or follow a little fish.</p>
         </div>
         <div className="pool-switches">
           <PoolMission
@@ -218,12 +237,16 @@ export function MusicPool({
             onOpen={stop}
             onStart={() => {
               stop();
+              echo.free();
               onChange([0, 1, 2, 3, 0, 1, 2, 3]);
               setSelected(7);
             }}
           />
           <button
-            onClick={() => setMuted(!muted)}
+            onClick={() => {
+              stop();
+              setMuted(!muted);
+            }}
             aria-pressed={!muted}
             aria-label={muted ? "Unmute instrument" : "Mute instrument"}
           >
@@ -240,9 +263,43 @@ export function MusicPool({
         ref={stage}
         className="pool-stage"
         aria-label="Five-note water instrument"
+        data-echo-phase={echo.phase}
         onPointerDown={(event) => {
-          if (event.target === event.currentTarget)
-            view.current?.splash(event.clientX, event.clientY);
+          if ((event.target as HTMLElement).closest("button,a")) return;
+          view.current?.splash(event.clientX, event.clientY);
+          if (!echo.active) {
+            const r = event.currentTarget.getBoundingClientRect();
+            const x = ((event.clientX - r.left) / r.width) * 100;
+            const n = layout.notes.reduce(
+              (best, p, i) =>
+                Math.abs(p.x - x) < Math.abs(layout.notes[best].x - x)
+                  ? i
+                  : best,
+              0,
+            );
+            paintAt.current = performance.now();
+            playNote(n);
+          }
+        }}
+        onPointerMove={(event) => {
+          if (
+            event.pointerType !== "mouse" ||
+            !event.buttons ||
+            echo.active ||
+            (event.target as HTMLElement).closest("button,a")
+          )
+            return;
+          if (performance.now() - paintAt.current < 140) return;
+          paintAt.current = performance.now();
+          const r = event.currentTarget.getBoundingClientRect(),
+            x = ((event.clientX - r.left) / r.width) * 100;
+          const n = layout.notes.reduce(
+            (best, p, i) =>
+              Math.abs(p.x - x) < Math.abs(layout.notes[best].x - x) ? i : best,
+            0,
+          );
+          view.current?.splash(event.clientX, event.clientY);
+          playNote(n);
         }}
       >
         <MusicPoolView
@@ -251,6 +308,75 @@ export function MusicPool({
           active={enabled}
           layout={layout}
         />
+        <div className="pool-play-modes" aria-label="Pool play modes">
+          <button
+            aria-pressed={!echo.active}
+            onClick={() => {
+              stop();
+              echo.free();
+            }}
+          >
+            Paint a tune
+          </button>
+          <button
+            aria-pressed={echo.active}
+            onClick={() => {
+              stop();
+              void echo.start();
+            }}
+            disabled={!enabled || muted}
+          >
+            {echo.phase === "watch"
+              ? "Watch the fish…"
+              : echo.phase === "answer"
+                ? "Start trail again"
+                : "Follow the fish"}{" "}
+            ↗
+          </button>
+        </div>
+        <div
+          className={`pool-guide-fish ${echo.phase === "won" ? "fish-cheer" : ""}`}
+          style={{
+            left: layout.notes[fish].x + "%",
+            top: layout.notes[fish].y - 9 + "%",
+            color: poolNotes[fish].color,
+          }}
+        >
+          <PoolFish />
+        </div>
+        <div
+          className="pool-ambient-fish"
+          style={{
+            animationPlayState: motion && enabled ? "running" : "paused",
+          }}
+        >
+          <PoolFish />
+        </div>
+        {echo.active && (
+          <div className="pool-echo-coach">
+            <span role="status">
+              {echo.message}{" "}
+              {echo.phase === "answer" ? `${echo.position}/${echo.total}` : ""}
+            </span>
+            {echo.phase === "won" ? (
+              <button
+                onClick={() => {
+                  stop();
+                  void echo.next();
+                }}
+              >
+                Another trail ↗
+              </button>
+            ) : echo.phase === "idle" ? (
+              <button
+                disabled={!enabled || muted}
+                onClick={() => void echo.start()}
+              >
+                Play fish trail ▶
+              </button>
+            ) : null}
+          </div>
+        )}
         <span
           className="pool-register pool-low"
           style={{ left: layout.surface.left + "%" }}
@@ -285,7 +411,11 @@ export function MusicPool({
         ))}
         <p className="pool-key-hint">Try your keyboard: A S D F G</p>
       </section>
-      <section className="pool-composer" aria-label="Your melody">
+      <section
+        className="pool-composer"
+        aria-label="Your melody"
+        data-echo-active={echo.active}
+      >
         <div className="pool-sequence-heading">
           <h2>Your little melody</h2>
           <p>Pick a step to change it.</p>
@@ -316,6 +446,7 @@ export function MusicPool({
                 (note === null ? "empty" : poolNotes[note].name)
               }
               aria-pressed={selected === i}
+              disabled={echo.active}
               onClick={() => {
                 stop();
                 setSelected(i);
@@ -348,7 +479,9 @@ export function MusicPool({
             className="solid-button"
             aria-label={playing ? "Stop melody" : "Play melody"}
             onClick={replay}
-            disabled={!enabled || !melody.some((n) => n !== null)}
+            disabled={
+              !enabled || echo.active || !melody.some((n) => n !== null)
+            }
           >
             {playing ? <Square size={18} /> : <Play size={18} />}{" "}
             {playing ? "Stop" : "Play my melody"}
@@ -356,6 +489,7 @@ export function MusicPool({
           <button
             className="pool-clear"
             aria-label="Clear melody"
+            disabled={echo.active}
             onClick={() => {
               stop();
               onChange(emptyMelody());
@@ -371,7 +505,7 @@ export function MusicPool({
                 ? "That’s your melody."
                 : muted
                   ? "Sound is off. Your notes still make ripples."
-                  : "Five notes. So many possibilities.")}
+                  : "Tap the water to paint a tune.")}
           </p>
         </div>
       </section>

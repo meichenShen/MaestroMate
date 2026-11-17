@@ -12,7 +12,7 @@ test("pond remains rounder than a wide platter, independent of the page aspect",
     const l = getPoolLayout(w, h);
     const ratio = (l.surface.width * w) / (l.surface.height * h);
     assert.ok(ratio >= 1 && ratio <= 1.75, w + " aspect " + ratio);
-    assert.ok(l.surface.width <= 94 && l.surface.height <= 90);
+    assert.ok(l.surface.width <= 100 && l.surface.height <= 90);
   }
 });
 test("all note targets remain distinct and in-bounds even in short and narrow stages", () => {

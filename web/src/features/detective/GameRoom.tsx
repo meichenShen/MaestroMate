@@ -1,28 +1,50 @@
 import { ArrowUpRight } from "lucide-react";
 import { DrawnIcon } from "../../components/DrawnIcon";
+import { AquariumView } from "../../components/AquariumView";
 import { navigate } from "../../navigation/routes";
 import { PoolGlyph } from "../water/PoolGlyph";
+import { playWorks } from "../../content/play/aquarium";
 import "./game-room.css";
 export function GameRoom() {
   return (
     <main id="main" tabIndex={-1} className="game-lounge page-room">
       <div className="page-intro">
-        <p className="eyebrow">The play room</p>
-        <h1>A little play goes a long way.</h1>
-        <p>
-          Find a hidden detail. Make a melody of your own.
-          <br />
-          Follow whatever makes you curious.
-        </p>
+        <p className="eyebrow">Play by work</p>
+        <h1>Stay in the music.</h1>
       </div>
-      <section className="learning-invitation">
-        <div>
-          <p>Start here · three small discoveries</p>
-          <strong>Notice. Discover. Create.</strong>
-          <p>Follow a rising tune, find its return, then make a variation.</p>
-        </div>
-        <a href="#play/learn">Explore the learning trail ↗</a>
-      </section>
+      {Object.values(playWorks)
+        .filter((w) => !!w)
+        .map((w) => (
+          <section
+            className="work-play-cover"
+            key={w!.id}
+            aria-label={w!.title + " games"}
+          >
+            <div className="work-play-art">
+              <AquariumView preview />
+              <span>12 little discoveries</span>
+            </div>
+            <div className="work-play-copy">
+              <p>{w!.composer}</p>
+              <h2>{w!.title}</h2>
+              <p>Hear a detail. Catch an idea. Make it yours.</p>
+              <div className="work-level-doors">
+                {["Notice", "Explore", "Invent"].map((name, l) => (
+                  <a key={name} href={`#play/learn/${w!.id}/${l}`}>
+                    <span>{["Easy", "Medium", "Hard"][l]}</span>
+                    <strong>
+                      {name} <ArrowUpRight />
+                    </strong>
+                    <small>4 games</small>
+                  </a>
+                ))}
+              </div>
+              <a className="solid-button" href={"#play/learn/" + w!.id}>
+                Step into Aquarium <ArrowUpRight />
+              </a>
+            </div>
+          </section>
+        ))}
       <div className="play-activities">
         <button
           className="game-door"
@@ -32,9 +54,8 @@ export function GameRoom() {
           <DrawnIcon kind="play" />
           <span>
             <strong>Sound Detective</strong>
-            <small>Three sound clues. No rush. Just your ears.</small>
             <span className="game-cta">
-              Let's play <ArrowUpRight size={23} />
+              Three listening clues <ArrowUpRight size={23} />
             </span>
           </span>
         </button>
@@ -46,11 +67,8 @@ export function GameRoom() {
           <PoolGlyph />
           <span>
             <strong>Music Pool</strong>
-            <small>
-              Five notes, a little water, and something only you could make.
-            </small>
             <span className="game-cta">
-              Make a little ripple <ArrowUpRight size={23} />
+              Follow a fish. Paint a tune. <ArrowUpRight size={23} />
             </span>
           </span>
         </button>

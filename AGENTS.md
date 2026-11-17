@@ -33,3 +33,6 @@
 
 - Answer layout is owned by `web/src/features/detective/detective.css`: question/audio, choices and feedback/action are separate rows. Keep every control inside its card and separated from previous/next at short desktop heights, including600px with the expanded error player.
 - The theatre opening follows pointer direction; passive span is about34°. Preserve mesh-hit drag, damping and durable interruption behavior. Program fireworks use the existing renderer/camera; no second canvas, infinite animation, external runtime asset or decoration under reduced motion.
+
+- Work-specific Play content and evaluation live in `web/src/content/play/`; the active visual workspace is `web/src/features/workshop/`. Only registered works may resolve, including prototype-like URL names. New works require their own researched games and reviewed recording integration. Keep original practice sounds distinct from recorded passages. Per-work/game progress counts checked successes, resets on Program restart, and never gates exploration.
+- Music Pool uses a rimless soft-edged surface; do not restore decorative torus/body/outer stroke. Fish echo and free painting share the existing synth and must cancel stale startup/voices on mode/Guide/hide/navigation. Preserve44px-plus separate HTML targets and fallback, with no compulsory drag.

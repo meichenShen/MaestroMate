@@ -381,3 +381,208 @@
     transition: none;
   }
 }
+.pool-play-modes {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 3;
+  white-space: nowrap;
+}
+.pool-play-modes button {
+  min-height: 44px;
+  border-radius: 25px;
+  background: #211f30d9;
+  backdrop-filter: blur(8px);
+  padding: 10px 19px;
+  font-size: 15px;
+  color: #beb8cd;
+}
+.pool-play-modes [aria-pressed="true"] {
+  color: #101420;
+  background: #80d4f6;
+}
+.pool-guide-fish {
+  position: absolute;
+  width: 90px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition:
+    left 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+    top 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 0.3s;
+  filter: drop-shadow(0 9px 12px #0007);
+}
+.pool-guide-fish svg {
+  width: 100%;
+  height: auto;
+}
+.pool-ambient-fish {
+  position: absolute;
+  width: 55px;
+  left: 30%;
+  top: 42%;
+  color: #a593e066;
+  pointer-events: none;
+  animation: pool-drifter 18s ease-in-out infinite alternate;
+  filter: blur(0.5px);
+}
+.pool-ambient-fish svg {
+  width: 100%;
+}
+.pool-echo-coach {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffe9;
+  color: #282335;
+  border-radius: 26px;
+  padding: 10px 18px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  max-width: 95%;
+  z-index: 3;
+  white-space: nowrap;
+}
+.pool-echo-coach button {
+  background: #282236;
+  color: #ffda8e;
+  padding: 9px 14px;
+  border-radius: 22px;
+  min-height: 44px;
+}
+.pool-stage:has(.pool-echo-coach) .pool-key-hint {
+  display: none;
+}
+.pool-register {
+  display: none;
+}
+.pool-room .pool-back {
+  margin-bottom: 8px;
+}
+.pool-room .pool-heading h1 {
+  font-size: clamp(34px, 3.8vw, 52px);
+  margin-bottom: 6px;
+}
+.pool-room .pool-heading h1 + p {
+  font-size: 16px;
+}
+.pool-room .pool-heading .eyebrow {
+  margin-bottom: 4px;
+}
+.pool-room .pool-sequence-heading p {
+  display: none;
+}
+.pool-composer[data-echo-active="true"] .pool-sequence {
+  opacity: 0.35;
+  pointer-events: none;
+}
+.fish-cheer {
+  animation: pool-fish-cheer 0.8s ease-out;
+}
+.pool-stage {
+  background: radial-gradient(ellipse at 50% 60%, #1b254e55, transparent 72%);
+}
+@keyframes pool-drifter {
+  0% {
+    translate: -70px 0;
+    rotate: -5deg;
+  }
+  50% {
+    translate: 90px 30px;
+    rotate: 4deg;
+  }
+  100% {
+    translate: 200px -30px;
+    rotate: -3deg;
+  }
+}
+@keyframes pool-fish-cheer {
+  30% {
+    scale: 1.3;
+    rotate: -10deg;
+  }
+  65% {
+    scale: 1.2;
+    rotate: 8deg;
+  }
+}
+@media (min-width: 901px) and (max-height: 720px) {
+  .pool-play-modes {
+    top: 0;
+    gap: 8px;
+  }
+  .pool-play-modes button {
+    font-size: 13px;
+    min-height: 38px;
+    padding: 7px 15px;
+  }
+  .pool-guide-fish {
+    width: 62px;
+  }
+  .pool-echo-coach {
+    padding: 5px 12px;
+    font-size: 13px;
+    bottom: 0;
+  }
+  .pool-echo-coach button {
+    min-height: 35px;
+    padding: 7px 12px;
+  }
+  .pool-room .pool-heading h1 {
+    font-size: 34px;
+  }
+  .pool-room .pool-back {
+    margin-bottom: 4px;
+  }
+  .pool-room .pool-heading h1 + p {
+    font-size: 14px;
+  }
+}
+@media (max-width: 900px) {
+  .pool-room {
+    grid-template-rows: auto minmax(300px, 40vh) auto auto;
+  }
+  .pool-play-modes {
+    width: 100%;
+    justify-content: center;
+  }
+  .pool-play-modes button {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+  .pool-guide-fish {
+    width: 68px;
+  }
+  .pool-echo-coach {
+    font-size: 13px;
+    white-space: normal;
+    width: max-content;
+    max-width: 95%;
+    padding: 10px 14px;
+  }
+  .pool-echo-coach button {
+    white-space: nowrap;
+  }
+  .pool-room .pool-heading h1 {
+    font-size: 39px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pool-guide-fish {
+    transition: none;
+  }
+  .pool-ambient-fish,
+  .fish-cheer {
+    animation: none;
+  }
+}
+.pool-room[data-pool-motion="false"] .pool-guide-fish {
+  transition: none;
+  animation: none;
+}

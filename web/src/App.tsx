@@ -21,8 +21,9 @@ import { emptyMelody } from "./features/water/model";
 import { useSmoothPage } from "./hooks/useSmoothPage";
 import { useRoute } from "./navigation/useRoute";
 import { activityHash, navigate } from "./navigation/routes";
-import { LearningTrail } from "./features/learning/LearningTrail";
-import { emptyTrail } from "./content/learning";
+import { AquariumWorkshop } from "./features/workshop/AquariumWorkshop";
+import "./features/learning/learning.css";
+import { type WorkshopProgress } from "./content/play/aquarium";
 function Site() {
   const audio = useAudio(),
     route = useRoute();
@@ -33,7 +34,9 @@ function Site() {
     [progress, setProgress] = useState(initialProgress),
     [motion, setMotion] = useState(true),
     [visited, setVisited] = useState<ActivityId[]>([]);
-  const [trail, setTrail] = useState(emptyTrail);
+  const [workshops, setWorkshops] = useState<Record<string, WorkshopProgress>>(
+    {},
+  );
   const [melody, setMelody] = useState(emptyMelody);
   const [guide, setGuide] = useState(() => {
     try {
@@ -147,9 +150,16 @@ function Site() {
       ) : route.kind === "games" ? (
         <GameRoom />
       ) : route.kind === "learning" ? (
-        <LearningTrail
-          progress={trail}
-          onChange={setTrail}
+        <AquariumWorkshop
+          workId={route.workId || "aquarium"}
+          startLevel={route.level || 0}
+          progress={workshops[route.workId || "aquarium"] || {}}
+          onChange={(p) =>
+            setWorkshops((previous) => ({
+              ...previous,
+              [route.workId || "aquarium"]: p,
+            }))
+          }
           enabled={!guide && !entrance}
           journey={route.journey}
         />
@@ -161,11 +171,11 @@ function Site() {
         />
       ) : route.kind === "summary" ? (
         <ProgramComplete
-          trail={trail}
+          workshop={workshops.aquarium || {}}
           motion={!guide && !entrance}
           onRestart={() => {
             setProgress(initialProgress);
-            setTrail(emptyTrail());
+            setWorkshops({});
             chat.reset();
             startProgram();
           }}

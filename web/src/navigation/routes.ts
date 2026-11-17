@@ -6,7 +6,7 @@ export type Route =
   | { kind: "activity"; activity: ActivityId; journey: boolean }
   | { kind: "games" }
   | { kind: "pool" }
-  | { kind: "learning"; journey: boolean }
+  | { kind: "learning"; journey: boolean; workId?: string; level?: number }
   | { kind: "summary" };
 const names: Record<string, ActivityId> = {
   listen: "theater",
@@ -32,6 +32,14 @@ export function parseRoute(hash: string): Route {
   if (path === "play") return { kind: "games" };
   if (path === "play/learn" || path === "program/aquarium/learn")
     return { kind: "learning", journey: path.startsWith("program/") };
+  const playWork = path.match(/^play\/learn\/([a-z0-9-]+)(?:\/([0-2]))?$/);
+  if (playWork)
+    return {
+      kind: "learning",
+      journey: false,
+      workId: playWork[1],
+      level: Number(playWork[2] || 0),
+    };
   if (path === "play/pool") return { kind: "pool" };
   if (path === "listen/aquarium")
     return { kind: "activity", activity: "theater", journey: false };

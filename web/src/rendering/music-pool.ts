@@ -58,25 +58,6 @@ export function createMusicPool(
     root.add(mesh);
     return mesh;
   };
-  const body = add(
-    new THREE.CylinderGeometry(3.5, 3.4, 0.18, 96),
-    new THREE.MeshStandardMaterial({
-      color: "#272439",
-      metalness: 0.55,
-      roughness: 0.24,
-    }),
-  );
-  body.position.y = -0.15;
-  const rim = add(
-    new THREE.TorusGeometry(3.51, 0.033, 8, 128),
-    new THREE.MeshStandardMaterial({
-      color: "#554963",
-      metalness: 0.3,
-      roughness: 0.4,
-    }),
-  );
-  rim.rotation.x = -Math.PI / 2;
-  rim.position.y = -0.035;
   const ripples = Array.from(
     { length: 16 },
     () => new THREE.Vector4(0, 0, -100, 0),
@@ -87,25 +68,25 @@ export function createMusicPool(
     uniforms,
     transparent: true,
     side: THREE.DoubleSide,
-    vertexShader: `uniform float uTime;uniform vec4 uRipples[16];varying vec2 vUv;varying vec3 vWorld;varying float vHeight;
-      void main(){vUv=uv;vec3 p=position;float wave=sin(p.x*1.4+uTime*.7)*cos(p.z*1.8-uTime*.55)*.017;
-        for(int i=0;i<16;i++){float age=uTime-uRipples[i].z;if(age>=0.&&age<4.){float d=length(vec2(p.x,p.z)-uRipples[i].xy);wave+=sin(d*13.-age*10.)*exp(-age*1.4)*exp(-d*.65)*uRipples[i].w;}}
-        p.y+=wave;vHeight=wave;vec4 world=modelMatrix*vec4(p,1.);vWorld=world.xyz;gl_Position=projectionMatrix*viewMatrix*world;}`,
-    fragmentShader: `uniform float uTime;varying vec2 vUv;varying vec3 vWorld;varying float vHeight;
+    vertexShader: `uniform float uTime;uniform vec4 uRipples[16];varying vec2 vUv;varying vec3 vWorld;varying float vHeight;varying vec3 vSurfaceNormal;
+      void main(){vUv=uv;vec3 p=position;float ax=p.x*1.4+uTime*.7;float az=p.z*1.8-uTime*.55;float wave=sin(ax)*cos(az)*.017;vec2 gradient=vec2(cos(ax)*cos(az)*.0238,-sin(ax)*sin(az)*.0306);
+        for(int i=0;i<16;i++){float age=uTime-uRipples[i].z;if(age>=0.&&age<4.){vec2 delta=vec2(p.x,p.z)-uRipples[i].xy;float d=length(delta);float angle=d*13.-age*10.;float envelope=exp(-age*1.4-d*.65)*uRipples[i].w;wave+=sin(angle)*envelope;gradient+=delta/max(d,.0001)*(13.*cos(angle)-.65*sin(angle))*envelope;}}
+        p.y+=wave;vHeight=wave;vSurfaceNormal=normalize(vec3(-gradient.x,1.,-gradient.y));vec4 world=modelMatrix*vec4(p,1.);vWorld=world.xyz;gl_Position=projectionMatrix*viewMatrix*world;}`,
+    fragmentShader: `uniform float uTime;varying vec2 vUv;varying vec3 vWorld;varying float vHeight;varying vec3 vSurfaceNormal;
       void main(){vec2 p=vUv*2.-1.;float r=length(p);if(r>1.)discard;
-        vec3 normal=normalize(cross(dFdx(vWorld),dFdy(vWorld)));if(normal.y<0.)normal=-normal;
+        vec3 normal=normalize(vSurfaceNormal);
         vec3 viewDir=normalize(cameraPosition-vWorld);vec3 light=normalize(vec3(-.4,1.,.5));
         float gloss=pow(max(0.,dot(reflect(-light,normal),viewDir)),52.);
         float fresnel=pow(1.-max(0.,dot(normal,viewDir)),3.);
         float lines=sin(p.x*16.+sin(p.y*13.+uTime*.35)*2.+vHeight*25.)+cos(p.y*19.-uTime*.2+p.x*5.);
         float caustic=pow(max(0.,1.-abs(lines)*.8),7.);
         vec3 color=mix(vec3(.075,.075,.14),vec3(.15,.18,.29),1.-r*.4);
-        color+=vec3(.17,.15,.27)*fresnel+vec3(.15,.32,.40)*caustic*.45+vec3(.85,.80,.65)*gloss*.7;
-        color+=vec3(.12,.16,.23)*vHeight*3.;color=mix(color,vec3(.29,.25,.41),smoothstep(.94,1.,r)*.55);
-        gl_FragColor=vec4(color,.96);}`,
+        color+=vec3(.17,.15,.27)*fresnel+vec3(.15,.32,.40)*caustic*.45+vec3(.85,.80,.65)*gloss*.3;
+        color+=vec3(.12,.16,.23)*vHeight*3.;
+        gl_FragColor=vec4(color,(1.-smoothstep(.82,1.,r))*.96);}`,
   });
   const surface = add(
-    new THREE.PlaneGeometry(7, 7, 72, 72).rotateX(-Math.PI / 2),
+    new THREE.PlaneGeometry(7.6, 7.6, 72, 72).rotateX(-Math.PI / 2),
     waterMaterial,
   );
   surface.position.y = 0.01;
@@ -178,7 +159,7 @@ export function createMusicPool(
   renderer.domElement.addEventListener("webglcontextlost", onLost);
   const ripple = (x: number, z: number) => {
     if (!active()) return;
-    ripples[rippleIndex++ % 16].set(x, z, elapsed, 0.105);
+    ripples[rippleIndex++ % 16].set(x, z, elapsed, 0.07);
     schedule();
   };
   const ray = new THREE.Raycaster(),
@@ -207,7 +188,7 @@ export function createMusicPool(
       );
       if (ray.ray.intersectPlane(plane, hit)) {
         root.worldToLocal(hit);
-        if (Math.hypot(hit.x, hit.z) < 3.4) ripple(hit.x, hit.z);
+        if (Math.hypot(hit.x, hit.z) < 3.7) ripple(hit.x, hit.z);
       }
     },
     dispose() {

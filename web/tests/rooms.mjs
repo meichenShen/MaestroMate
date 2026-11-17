@@ -98,7 +98,7 @@ try {
     .click();
   await page
     .getByRole("heading", {
-      name: "A little play goes a long way.",
+      name: "Stay in the music.",
       exact: true,
     })
     .waitFor();

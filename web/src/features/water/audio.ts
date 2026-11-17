@@ -83,10 +83,15 @@ export class PoolAudio {
     melody: Melody,
     onStep: (step: number) => void,
     onDone: () => void,
+    length = 8,
   ) {
     this.stop();
     const ticket = this.generation;
     if (!(await this.ready(ticket))) return false;
+    const slots = Math.max(
+      1,
+      Math.min(8, Math.floor(Number.isFinite(length) ? length : 8)),
+    );
     const start = this.context!.currentTime + 0.025;
     const later = (seconds: number, action: () => void) => {
       const timer = setTimeout(() => {
@@ -95,13 +100,13 @@ export class PoolAudio {
       }, seconds * 1000);
       this.timers.add(timer);
     };
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < slots; i++) {
       const note = melody[i];
       if (typeof note === "number" && poolNotes[note])
         this.voice(note, start + i * stepSeconds, 0.27);
       later(0.025 + i * stepSeconds, () => onStep(i));
     }
-    later(0.025 + 8 * stepSeconds, () => {
+    later(0.025 + slots * stepSeconds, () => {
       this.stop();
       onDone();
     });

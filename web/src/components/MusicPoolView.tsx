@@ -64,7 +64,8 @@ export const MusicPoolView = forwardRef<
           <defs>
             <radialGradient id="pool-floor">
               <stop stopColor="#30334e" />
-              <stop offset="1" stopColor="#161522" />
+              <stop offset=".75" stopColor="#20243c" />
+              <stop offset="1" stopColor="#0b0b10" stopOpacity="0" />
             </radialGradient>
           </defs>
           <ellipse
@@ -73,26 +74,6 @@ export const MusicPoolView = forwardRef<
             rx={layout.surface.width * 5}
             ry={layout.surface.height * 5}
             fill="url(#pool-floor)"
-            stroke="#a593e0"
-            strokeOpacity=".3"
-          />
-          <ellipse
-            cx="500"
-            cy="500"
-            rx={layout.surface.width * 3.5}
-            ry={layout.surface.height * 3.5}
-            fill="none"
-            stroke="#45d9fd"
-            strokeOpacity=".18"
-          />
-          <ellipse
-            cx="500"
-            cy="500"
-            rx={layout.surface.width * 1.8}
-            ry={layout.surface.height * 1.8}
-            fill="none"
-            stroke="#a593e0"
-            strokeOpacity=".22"
           />
         </svg>
       )}
