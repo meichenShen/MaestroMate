@@ -40,10 +40,12 @@ const topics = [
   },
 ];
 export function Conversation({
+  journey = false,
   turns,
   pending,
   onAsk,
 }: {
+  journey?: boolean;
   turns: ChatTurn[];
   pending: boolean;
   onAsk: (id: string) => void;
@@ -158,7 +160,10 @@ export function Conversation({
                           <p>{q.sourceLabel}</p>
                         )}
                       </details>
-                      <a className="chat-play-link" href={unitHash(q.playUnit)}>
+                      <a
+                        className="chat-play-link"
+                        href={unitHash(q.playUnit, journey)}
+                      >
                         Try this idea in Play
                       </a>
                     </div>

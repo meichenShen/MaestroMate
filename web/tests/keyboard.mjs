@@ -57,9 +57,8 @@ try {
     .getByRole("navigation", { name: "Main navigation" })
     .getByRole("link", { name: "Play", exact: true })
     .click();
-  await page
-    .getByRole("button", { name: "Play Sound Detective", exact: true })
-    .click();
+  await page.getByRole("link",{name:"Explore a piece",exact:true}).click();
+  await page.getByRole("link",{name:"Sound Detective · extra listening clues",exact:true}).click();
   await page
     .getByRole("navigation", { name: "Main navigation" })
     .getByRole("link", { name: "Chat", exact: true })

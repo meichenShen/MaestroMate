@@ -66,7 +66,7 @@ export const units: LearningUnit[] = [
     ],
     makeTitle: "Build a tiny underwater duet.",
     makePrompt: "Keep the moving layer. Add your own four-note tune.",
-    starter: [2, 3, 4, 2],
+    starter: [null, null, null, null],
     context: {
       title: "A listening lens",
       text: "This recording was produced by Kevin MacLeod. Our layer switches play an original teaching model: they do not separate instruments from the recording.",
@@ -262,7 +262,7 @@ export const units: LearningUnit[] = [
     makeTitle: "Give your tune some company.",
     makePrompt:
       "Choose four notes. Switch the accompaniment on and hear them together.",
-    starter: [0, 2, 3, 2],
+    starter: [null, null, null, null],
   },
 ];
 const registry: Record<string, LearningUnit> = Object.assign(
@@ -276,13 +276,19 @@ export interface UnitProgress {
   notes: (number | null)[];
   beats: boolean[];
   made: boolean;
+  colour: "smooth" | "sparkling";
+  heardColours: ("smooth" | "sparkling")[];
+  accompaniment: boolean;
 }
 export type CurriculumProgress = Record<string, UnitProgress>;
 export const emptyUnitProgress = (u: LearningUnit): UnitProgress => ({
   answers: [null, null],
   checked: [false, false],
   notes: [...u.starter],
-  beats: [true, false, true, false],
+  beats: [false, false, false, false],
+  colour: "smooth",
+  heardColours: [],
+  accompaniment: true,
   made: false,
 });
 export function evaluateCreation(
@@ -320,4 +326,22 @@ export function evaluateCreation(
 export const checksDone = (u: LearningUnit, p: UnitProgress) =>
   u.checks.every((q, i) => p.checked[i] && p.answers[i] === q.answer);
 export const unitDone = (u: LearningUnit, p?: UnitProgress) =>
-  !!p && checksDone(u, p) && p.made;
+  !!p &&
+  checksDone(u, p) &&
+  p.made &&
+  evaluateCreation(u, p.notes, p.beats).correct &&
+  (u.kind !== "layers" || p.accompaniment) &&
+  (u.kind !== "colour" ||
+    (p.heardColours.includes("smooth") &&
+      p.heardColours.includes("sparkling")));
+
+export function resolveUnitInArea(
+  id: string,
+  area: LearningArea,
+  workId?: string,
+) {
+  const u = resolveUnit(id);
+  return u && u.area === area && (area !== "works" || workId === "aquarium")
+    ? u
+    : undefined;
+}

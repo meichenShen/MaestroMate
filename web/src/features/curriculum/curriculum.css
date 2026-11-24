@@ -1668,3 +1668,4 @@
 .lesson-room .lesson-phases button[aria-current]:hover:not(:disabled) {
   color: #10111b;
 }
+.full-mix-label{display:inline;font-size:12px;color:#b5b3c1;margin-left:9px}

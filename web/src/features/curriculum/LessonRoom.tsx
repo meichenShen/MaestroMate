@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { BookOpen, Check, Play, Square, Volume2, VolumeX } from "lucide-react";
 import {
   resolveUnit,
+  resolveUnitInArea,
+  type LearningArea,
   units,
   checksDone,
   unitDone,
@@ -18,13 +20,15 @@ import { CreationBoard } from "./CreationBoard";
 import "./curriculum.css";
 export function LessonRoom(props: {
   unitId: string;
+  area: LearningArea;
+  workId?: string;
   progress: CurriculumProgress;
   onChange: (id: string, p: UnitProgress) => void;
   enabled: boolean;
   journey?: boolean;
   onSendToPool: (notes: (number | null)[]) => void;
 }) {
-  const candidate = resolveUnit(props.unitId);
+  const candidate = resolveUnitInArea(props.unitId, props.area, props.workId);
   const unit =
     props.journey && candidate?.area !== "works" ? undefined : candidate;
   if (!unit)
@@ -202,6 +206,8 @@ function LessonWorkspace({
           {u.clip && phase !== "make" && (
             <button
               className="lesson-recording"
+              aria-label={u.clip.label}
+              aria-description="Full-mix recording excerpt"
               disabled={!enabled || sound.muted}
               onClick={() => sound.clip(u.clip!)}
             >
@@ -211,7 +217,10 @@ function LessonWorkspace({
               ) : (
                 <Play size={18} />
               )}
-              <span>{u.clip.label}</span>
+              <span>
+                {u.clip.label}
+                <small className="full-mix-label">Full mix</small>
+              </span>
             </button>
           )}
         </header>

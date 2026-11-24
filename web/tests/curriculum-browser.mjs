@@ -43,6 +43,36 @@ async function practice(p, u) {
       .click();
   }
 }
+async function prepareCreation(p, u) {
+  if (u.kind === "layers")
+    for (let i = 0; i < 4; i++) {
+      await p
+        .getByRole("button", { name: "Note space " + (i + 1), exact: true })
+        .click();
+      await p
+        .getByRole("button", {
+          name: "Choose " + ["C", "D", "E", "A"][i],
+          exact: true,
+        })
+        .click();
+    }
+  if (u.kind === "rhythm")
+    await p
+      .getByRole("button", { name: "Creation beat 1", exact: true })
+      .click();
+  if (u.kind === "colour") {
+    await p
+      .getByRole("button", { name: "Hear my creation", exact: true })
+      .click();
+    await p
+      .getByRole("button", { name: "Stop my creation", exact: true })
+      .waitFor();
+    await p
+      .getByRole("button", { name: "Stop my creation", exact: true })
+      .waitFor({ state: "hidden" });
+    await p.getByRole("button", { name: "Sparkling", exact: true }).click();
+  }
+}
 test("Play has three clear pillars and separate work, theory and creation catalogues", async () => {
   const p = await visit();
   try {
@@ -94,6 +124,7 @@ test("all six units teach, assess twice and apply; wrong answers never complete 
       );
       await p.getByRole("button", { name: "Learn", exact: true }).click();
       await practice(p, u);
+      await prepareCreation(p, u);
       if (u.id === "pitch") {
         for (let i = 0; i < 4; i++) {
           await p
@@ -270,6 +301,7 @@ test("creation transfers notes, route changes retain progress, Program summary i
       .getByRole("navigation", { name: "Your Program", exact: true })
       .waitFor();
     await practice(p, u);
+    await prepareCreation(p, u);
     await p
       .getByRole("button", { name: "Hear my creation", exact: true })
       .click();
@@ -280,7 +312,7 @@ test("creation transfers notes, route changes retain progress, Program summary i
         exact: true,
       })
       .click();
-    await p.getByRole("button", { name: "Step 1: E", exact: true }).waitFor();
+    await p.getByRole("button", { name: "Step 1: C", exact: true }).waitFor();
     assert.equal(await p.locator("audio").count(), 1);
     await p.evaluate(() => (location.hash = "#program/aquarium/done"));
     await p.locator(".learning-recap").waitFor();
@@ -378,6 +410,7 @@ test("short desktop keeps every creation, feedback and onward action separated a
       );
       await p.locator('.lesson-room[data-phase="learn"]').waitFor();
       await practice(p, u);
+      await prepareCreation(p, u);
       if (u.id === "pitch") {
         for (let i = 0; i < 4; i++) {
           await p

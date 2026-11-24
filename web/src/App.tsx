@@ -22,7 +22,10 @@ import { useRoute } from "./navigation/useRoute";
 import { activityHash, navigate } from "./navigation/routes";
 import { LessonRoom } from "./features/curriculum/LessonRoom";
 import { PlayCatalog } from "./features/curriculum/PlayCatalog";
-import { type CurriculumProgress } from "./content/curriculum";
+import {
+  resolveUnitInArea,
+  type CurriculumProgress,
+} from "./content/curriculum";
 import "./features/learning/learning.css";
 
 function Site() {
@@ -54,6 +57,26 @@ function Site() {
       return !location.hash;
     }
   });
+  const lessonSelection =
+    route.kind === "lesson"
+      ? route
+      : route.kind === "learning"
+        ? {
+            unitId: ["aquarium-layers", "aquarium-colour", "aquarium-return"][
+              route.level || 0
+            ],
+            area: "works" as const,
+            workId: route.workId || "aquarium",
+            journey: route.journey,
+          }
+        : null;
+  const selectedLesson =
+    lessonSelection &&
+    resolveUnitInArea(
+      lessonSelection.unitId,
+      lessonSelection.area,
+      lessonSelection.workId,
+    );
   const closeGuide = useCallback(() => {
     setGuide(false);
     try {
@@ -68,6 +91,10 @@ function Site() {
       setVisited((items) =>
         items.includes(route.activity) ? items : [...items, route.activity],
       );
+    if (lessonSelection?.journey && selectedLesson)
+      setVisited((items) =>
+        items.includes("detective") ? items : [...items, "detective"],
+      );
     let frame = 0;
     frame = requestAnimationFrame(() => {
       frame = requestAnimationFrame(() => {
@@ -81,7 +108,7 @@ function Site() {
       });
     });
     return () => cancelAnimationFrame(frame);
-  }, [route, audio.pause, scrollTo]);
+  }, [route, audio.pause, scrollTo, selectedLesson]);
   const chooseEntry = (choice: EntryRoute) => {
     setEntrance(false);
     try {
@@ -153,15 +180,9 @@ function Site() {
         />
       ) : route.kind === "learning" || route.kind === "lesson" ? (
         <LessonRoom
-          unitId={
-            route.kind === "lesson"
-              ? route.unitId
-              : route.workId && route.workId !== "aquarium"
-                ? route.workId
-                : ["aquarium-layers", "aquarium-colour", "aquarium-return"][
-                    route.level || 0
-                  ]
-          }
+          unitId={lessonSelection!.unitId}
+          area={lessonSelection!.area}
+          workId={lessonSelection!.workId}
           progress={curriculum}
           onChange={(id, p) =>
             setCurriculum((previous) => ({ ...previous, [id]: p }))
@@ -225,6 +246,7 @@ function Site() {
             <div id="activity-panel" className="activity-panel">
               {activity === "theater" ? (
                 <Theater
+                  journey={route.journey}
                   onDiscover={
                     route.journey
                       ? undefined
@@ -235,6 +257,7 @@ function Site() {
                 />
               ) : activity === "conversation" ? (
                 <Conversation
+                  journey={route.journey}
                   turns={chat.turns}
                   pending={chat.pending}
                   onAsk={chat.ask}

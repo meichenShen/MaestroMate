@@ -99,9 +99,8 @@ try {
     "Prepared chat response and clip replay stopping at the exact end",
   );
   await nav("Play").click();
-  await p
-    .getByRole("button", { name: "Play Sound Detective", exact: true })
-    .click();
+  await p.getByRole("link",{name:"Explore a piece",exact:true}).click();
+  await p.getByRole("link",{name:"Sound Detective · extra listening clues",exact:true}).click();
   const stage = p.locator("#current-sound-case");
   await stage.waitFor();
   assert.equal(await p.getByRole("article").count(), 3);
@@ -138,9 +137,8 @@ try {
   await p.locator(".game-completion").waitFor();
   await nav("Chat").click();
   await nav("Play").click();
-  await p
-    .getByRole("button", { name: "Play Sound Detective", exact: true })
-    .click();
+  await p.getByRole("link",{name:"Explore a piece",exact:true}).click();
+  await p.getByRole("link",{name:"Sound Detective · extra listening clues",exact:true}).click();
   await p.getByRole("button", { name: "Previous case", exact: true }).click();
   assert.equal(await stage.getByRole("radio").nth(1).isChecked(), true);
   checks.push(

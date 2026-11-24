@@ -7,7 +7,13 @@ export type Route =
   | { kind: "games" }
   | { kind: "pool" }
   | { kind: "playcatalog"; area: "works" | "lessons" | "create" }
-  | { kind: "lesson"; unitId: string; journey: boolean }
+  | {
+      kind: "lesson";
+      unitId: string;
+      journey: boolean;
+      area: "works" | "lessons";
+      workId?: string;
+    }
   | { kind: "learning"; journey: boolean; workId?: string; level?: number }
   | { kind: "summary" };
 const names: Record<string, ActivityId> = {
@@ -38,22 +44,43 @@ export function parseRoute(hash: string): Route {
       kind: "playcatalog",
       area: catalogue[1] as "works" | "lessons" | "create",
     };
-  const lesson = path.match(
-    /^play\/(?:works\/aquarium|lessons)\/([a-zA-Z0-9_-]+)$/,
+  const workLesson = path.match(
+    /^play\/works\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/,
   );
-  if (lesson) return { kind: "lesson", unitId: lesson[1], journey: false };
+  if (workLesson)
+    return {
+      kind: "lesson",
+      unitId: workLesson[2],
+      workId: workLesson[1],
+      area: "works",
+      journey: false,
+    };
+  const lesson = path.match(/^play\/lessons\/([a-zA-Z0-9_-]+)$/);
+  if (lesson)
+    return {
+      kind: "lesson",
+      unitId: lesson[1],
+      area: "lessons",
+      journey: false,
+    };
   const programLesson = path.match(
     /^program\/aquarium\/learn\/([a-zA-Z0-9_-]+)$/,
   );
   if (programLesson)
-    return { kind: "lesson", unitId: programLesson[1], journey: true };
+    return {
+      kind: "lesson",
+      unitId: programLesson[1],
+      area: "works",
+      workId: "aquarium",
+      journey: true,
+    };
   if (
     path === "play/learn" ||
     path === "program/aquarium/learn" ||
     path === "program/aquarium/play"
   )
     return { kind: "learning", journey: path.startsWith("program/") };
-  const playWork = path.match(/^play\/learn\/([a-z0-9-]+)(?:\/([0-2]))?$/);
+  const playWork = path.match(/^play\/learn\/([a-zA-Z0-9_-]+)(?:\/([0-2]))?$/);
   if (playWork)
     return {
       kind: "learning",

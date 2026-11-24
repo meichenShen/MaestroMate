@@ -5,10 +5,12 @@ import { formatTime } from "../../audio/timeline";
 import { chapters } from "../../content/aquarium";
 import { ListeningDiscoveries } from "./ListeningDiscoveries";
 export function Theater({
+  journey = false,
   onDiscover,
   motion,
   onMotionChange,
 }: {
+  journey?: boolean;
   onDiscover?: () => void;
   motion: boolean;
   onMotionChange: (value: boolean) => void;
@@ -31,7 +33,7 @@ export function Theater({
           <span className="micro">
             {audio.playing ? "Now listening" : "A small world, waiting"}
           </span>
-          <ListeningDiscoveries />
+          <ListeningDiscoveries journey={journey} />
           <button
             role="switch"
             aria-label="Scene motion"

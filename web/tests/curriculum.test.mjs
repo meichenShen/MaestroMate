@@ -36,6 +36,7 @@ test("completion needs both correct checked answers and an actually successful c
   p.answers = u.checks.map((q) => q.answer);
   p.checked = [true, true];
   assert.equal(unitDone(u, p), false);
+  p.notes = [0, 1, 2, 4];
   p.made = true;
   assert.equal(unitDone(u, p), true);
   p.answers[1] = -1;

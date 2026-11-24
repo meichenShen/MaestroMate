@@ -46,6 +46,7 @@ export function LessonVisual({
     [volume, setVolume] = useState(0.55),
     [part, setPart] = useState("both"),
     [instrument, setInstrument] = useState(0),
+    [ending, setEnding] = useState<"same" | "new">("new"),
     [beats, setBeats] = useState([true, false, true, false]);
   const disabled = !enabled || sound.muted;
   const hear = (
@@ -182,7 +183,7 @@ export function LessonVisual({
   }
   if (u.kind === "rhythm")
     return (
-      <div className="rhythm-lab">
+      <div className="rhythm-lab" data-demo-beat={sound.beat}>
         <div className="pulse-circles" aria-label="Four steady beats">
           {beats.map((on, i) => (
             <button
@@ -191,7 +192,9 @@ export function LessonVisual({
               aria-pressed={on}
               className={
                 (on ? "sound-on " : "") +
-                (sound.beat === i ? "pulse-active" : "")
+                (sound.beat !== null && sound.beat % 4 === i
+                  ? "pulse-active"
+                  : "")
               }
               onClick={() => {
                 sound.stop();
@@ -228,9 +231,9 @@ export function LessonVisual({
             />
           </div>
           <div>
-            <span>A new ending</span>
+            <span>{ending === "same" ? "The same again" : "A new ending"}</span>
             <NoteRibbon
-              notes={[0, 1, 2, 0]}
+              notes={[0, 1, 2, ending === "same" ? 3 : 0]}
               beat={
                 sound.beat !== null && sound.beat >= 4 ? sound.beat - 4 : null
               }
@@ -240,14 +243,20 @@ export function LessonVisual({
         <div className="demo-actions">
           <button
             disabled={disabled}
-            onClick={() => hear([0, 1, 2, 3, 0, 1, 2, 3])}
+            onClick={() => {
+              setEnding("same");
+              hear([0, 1, 2, 3, 0, 1, 2, 3]);
+            }}
           >
             <Play size={16} />
             Same + same
           </button>
           <button
             disabled={disabled}
-            onClick={() => hear([0, 1, 2, 3, 0, 1, 2, 0])}
+            onClick={() => {
+              setEnding("new");
+              hear([0, 1, 2, 3, 0, 1, 2, 0]);
+            }}
           >
             <Play size={16} />
             Same + new ending

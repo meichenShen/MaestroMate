@@ -23,9 +23,9 @@ export function CreationBoard({
   onSend: (notes: (number | null)[]) => void;
 }) {
   const [slot, setSlot] = useState(u.kind === "return" ? 3 : 0),
-    [colour, setColour] = useState<"smooth" | "sparkling">("smooth"),
-    [withLayer, setWithLayer] = useState(true),
     [attempted, setAttempted] = useState(false);
+  const colour = p.colour,
+    withLayer = p.accompaniment;
   const result =
       u.kind === "layers" && !withLayer
         ? {
@@ -39,7 +39,7 @@ export function CreationBoard({
   const edit = (patch: Partial<UnitProgress>) => {
     sound.stop();
     setAttempted(false);
-    onChange({ ...p, ...patch, made: false });
+    onChange({ ...p, ...patch, made: false, heardColours: [] });
   };
   const notes = rhythm
     ? [...p.beats, ...p.beats].map((on) => (on ? 0 : null))
@@ -52,7 +52,14 @@ export function CreationBoard({
       accompaniment: layer && withLayer,
       colour,
       duration: colour === "sparkling" ? 0.12 : 0.4,
-      onDone: () => onChange({ ...p, made: true }),
+      onDone: () => {
+        const heardColours = Array.from(new Set([...p.heardColours, colour]));
+        onChange({
+          ...p,
+          heardColours,
+          made: u.kind !== "colour" || heardColours.length === 2,
+        });
+      },
     });
   };
   return (
@@ -135,8 +142,7 @@ export function CreationBoard({
               aria-pressed={colour === c}
               onClick={() => {
                 sound.stop();
-                setColour(c);
-                onChange({ ...p, made: false });
+                onChange({ ...p, colour: c, made: false });
               }}
             >
               {c === "smooth" ? "Smooth" : "Sparkling"}
@@ -150,8 +156,7 @@ export function CreationBoard({
           aria-pressed={withLayer}
           onClick={() => {
             sound.stop();
-            setWithLayer(!withLayer);
-            onChange({ ...p, made: false });
+            onChange({ ...p, accompaniment: !withLayer, made: false });
           }}
         >
           <Waves size={20} />
@@ -172,6 +177,13 @@ export function CreationBoard({
           <span className="creation-kept" role="status">
             <Check size={18} />
             You made it your own.
+          </span>
+        )}
+        {u.kind === "colour" && !p.made && (
+          <span className="creation-nudge" role="status">
+            {p.heardColours.length === 0
+              ? "Hear Smooth, then try Sparkling."
+              : `You heard ${p.heardColours[0]}. Now hear ${p.heardColours[0] === "smooth" ? "Sparkling" : "Smooth"} with the same notes.`}
           </span>
         )}
         {attempted && !result.correct && (

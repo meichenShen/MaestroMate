@@ -2,7 +2,11 @@ import { useRef, useState } from "react";
 import { discoveries } from "../../content/discoveries";
 import { unitHash } from "../curriculum/PlayCatalog";
 import { useAudio } from "../../audio/AudioProvider";
-export function ListeningDiscoveries() {
+export function ListeningDiscoveries({
+  journey = false,
+}: {
+  journey?: boolean;
+}) {
   const dialog = useRef<HTMLDialogElement>(null),
     opener = useRef<HTMLButtonElement>(null),
     [index, setIndex] = useState(0),
@@ -67,7 +71,13 @@ export function ListeningDiscoveries() {
         <a href={d.source} target="_blank" rel="noreferrer">
           {d.label} ↗
         </a>
-        <a href={unitHash(["aquarium-layers", "aquarium-return", "aquarium-colour"][index])} onClick={() => dialog.current?.close()}>
+        <a
+          href={unitHash(
+            ["aquarium-layers", "aquarium-return", "aquarium-colour"][index],
+            journey,
+          )}
+          onClick={() => dialog.current?.close()}
+        >
           Try the idea in Play ↗
         </a>
       </dialog>
