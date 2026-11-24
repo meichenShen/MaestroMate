@@ -39,4 +39,4 @@ Interfaces: curated composerQuestions/questionPresentation/reference records; Pr
 - [x] Capture and inspect desktop/short desktop/phone screenshots; test keyboard, reduced motion, audio errors, Guide interruption, feedback and existing rooms.
 - [x] Resolve observed regressions, run affected checks and production build.
 - [x] Run one fresh whole-change review; fix important findings with regression checks.
-- [ ] Update verification/editing documentation, commit/push feature branch, synchronize existing Sites source and publish preserving public audience. Record verified deployment URL/version; attach existing PR.
+- [x] Update verification/editing documentation, commit/push feature branch, synchronize existing Sites source and publish preserving public audience. Record verified deployment URL/version; attach existing PR.

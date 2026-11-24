@@ -300,3 +300,13 @@
 - 修复后完整39项单元测试、MP3校验、TypeScript和生产构建再次通过。8组课程契约中7组在审查修复版本通过；剩余录音中断检查发现新增 Full mix 文案改变按钮的无障碍名称，补上稳定名称和补充描述后单独通过。4组审查回归均通过；未将旧版浏览器结果冒充最终版本的全量单次运行。
 - 原20个浏览器脚本已分批覆盖并通过：前5组见 `.tmp/nov24/browser-full3.log`；refinements、rooms、entry 见 `browser-remaining.log`；后12组见 `remaining-final-cwd.log`。覆盖真实录音、键盘、首页停靠、motion/显卡失效、匿名反馈持久化、水池声学/布局/鱼群回声及节目册。保留对应构建阶段差异；审查后仅补稳定录音按钮名称，相关检查已复跑。
 - 最终模板与运行依赖、音频/图像/3D素材、数据库schema和公开访问范围均沿用现有版本。GitHub/Sites发布来源在下一节记录。
+
+### v15 公开发布
+
+- 公开网址：https://maestromate-aquarium.chirpyapple14.chatgpt.site/#play
+- 2026-11-24，Sites第15版，沿用 public，原生部署状态 `succeeded`；完成时间 `2026-11-24T10:57:32.155710Z`。
+- GitHub运行代码提交：`105c652456bc9c5ba6563a5e4830b02f911f7a1b`，已核对远端 `feat/aquarium-demo` 同一SHA。
+- Sites根目录源码提交：`83dbfb43716d84547dea08b37806ce59ebb346de`，由上述GitHub提交的 `web/` 子树封装。
+- 保存版本：`appgprj_6af14ade2f2c8191825208668540e338~appgver_1578b6d033008191be3ea7ad9cd9520b`。
+- 部署：`appgdep_6b056d9589248191aa43940fd8e70f6a`。构建包上传成功，32个条目；无环境变量/API密钥修订，`env_set_revision: 0`。
+- 发布前最后一轮39项单元测试、生产构建和稳定录音按钮名称/音频中断检查通过。公开上线由原生Sites返回结果确认；没有将本地浏览器检查写成公网浏览器验收。后续仅增加本段发布记录和完成标记，不改变运行代码。
