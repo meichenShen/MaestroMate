@@ -1,0 +1,253 @@
+.chat-studio .prepared-disclosure {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #c2b9ce;
+  margin: 0 0 10px;
+  flex-shrink: 0;
+}
+.chat-studio .knowledge-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  font-size: 15px;
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 24px;
+  background: #ee256015;
+  color: #ff93b3;
+}
+.chat-studio .question-tiles {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  padding: 3px 2px 10px;
+  min-height: 0;
+}
+.chat-studio .question-tile {
+  position: relative;
+  flex: 0 0 235px;
+  max-width: none;
+  min-height: 88px;
+  display: grid;
+  grid-template-columns: 1fr 20px;
+  grid-template-rows: auto 1fr;
+  gap: 7px 10px;
+  padding: 12px 16px;
+  text-align: left;
+  scroll-snap-align: start;
+  border-radius: 22px;
+}
+.chat-studio .question-tile strong {
+  font-size: 15px;
+  color: #ff9cba;
+  grid-column: 1;
+}
+.chat-studio .question-tile > svg {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+}
+.chat-studio .question-tile .question-full {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  position: static;
+  transform: none;
+  pointer-events: auto;
+  grid-column: 1/-1;
+  width: auto;
+  max-width: none;
+  background: transparent;
+  color: #f0eaf6;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.45;
+  inset: auto;
+  white-space: normal;
+}
+.chat-studio .question-full:after {
+  display: none;
+}
+.chat-studio .prompt-heading {
+  gap: 12px;
+  margin-bottom: 5px;
+}
+.question-rail-actions {
+  display: flex;
+  gap: 7px;
+  margin-left: auto;
+}
+.question-rail-actions button {
+  font-size: 14px;
+  min-height: 44px;
+  padding: 7px 11px;
+  border-radius: 20px;
+  background: #ffffff07;
+  color: #ded5e6;
+}
+.chat-studio .thread-bottom {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+}
+.chat-studio .chat-note {
+  font-size: 13px;
+  margin: 7px 0 0;
+  color: #bfb6ca;
+}
+.chat-studio .chat-play-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 14px;
+  color: #ffb2cb;
+  margin-top: 8px;
+}
+.knowledge-dialog section {
+  margin: 25px 0;
+  padding: 0;
+}
+.knowledge-dialog h3 {
+  font-size: 23px;
+  margin: 10px 0;
+}
+.knowledge-dialog section > p {
+  font-size: 17px;
+  line-height: 1.7;
+}
+.knowledge-dialog .knowledge-note {
+  font-size: 15px;
+  color: var(--muted);
+}
+.knowledge-dialog section a {
+  display: block;
+  font-size: 15px;
+  color: #80d4f6;
+  min-height: 44px;
+  padding: 8px 0;
+  line-height: 1.6;
+}
+@media (min-width: 951px) {
+  .chat-studio .chat-prompts {
+    padding: 10px 18px 12px;
+  }
+  .chat-studio .chat-thread {
+    padding: 18px 22px;
+  }
+  .chat-studio .chat-room-heading {
+    margin-bottom: 5px;
+  }
+  .chat-studio .chat-room-heading h2 {
+    font-size: 32px;
+  }
+  .chat-studio .chat-topics {
+    margin-top: 12px;
+  }
+  .chat-studio .artist-roles {
+    font-size: 14px;
+  }
+}
+@media (min-width: 951px) and (max-height: 750px) {
+  .chat-studio .artist-emblem {
+    width: 65px;
+    height: 65px;
+    margin: 8px 0;
+  }
+  .chat-studio .artist-emblem > svg {
+    width: 43px;
+    height: 43px;
+  }
+  .chat-studio .artist-profile h1 {
+    font-size: 28px;
+  }
+  .chat-studio .chat-topics {
+    margin-top: 6px;
+    gap: 2px;
+  }
+  .chat-studio .chat-topics > button {
+    min-height: 40px;
+    padding: 6px 10px;
+    font-size: 15px;
+  }
+  .chat-studio .knowledge-open {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+  .chat-studio .prepared-disclosure {
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+  .chat-studio .chat-room-heading {
+    min-height: 34px;
+  }
+  .chat-studio .chat-room-heading h2 {
+    font-size: 27px;
+  }
+  .chat-studio .chat-message {
+    padding: 12px 16px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .chat-studio .chat-message p {
+    line-height: 1.6;
+  }
+  .chat-studio .chat-prompts {
+    padding: 7px 15px 9px;
+  }
+  .chat-studio .question-tile {
+    min-height: 76px;
+    padding: 9px 12px;
+    gap: 4px 8px;
+    flex-basis: 215px;
+  }
+  .chat-studio .question-tile .question-full {
+    font-size: 14px;
+  }
+  .chat-studio .question-tile strong {
+    font-size: 14px;
+  }
+  .chat-studio .question-tiles {
+    padding-bottom: 5px;
+  }
+  .chat-studio .chat-note {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .chat-studio .prompt-heading > p {
+    font-size: 15px;
+  }
+}
+@media (max-width: 950px) {
+  .chat-studio .prepared-disclosure {
+    font-size: 14px;
+  }
+  .chat-studio .question-tile {
+    flex-basis: 235px;
+  }
+  .chat-studio .chat-prompts {
+    padding: 16px;
+  }
+  .chat-studio .prompt-heading > p {
+    font-size: 15px;
+  }
+  .question-rail-actions button {
+    font-size: 13px;
+    padding: 7px 9px;
+  }
+  .chat-studio .chat-note {
+    font-size: 13px;
+  }
+  .chat-studio .knowledge-open {
+    margin-top: 8px;
+  }
+  .chat-studio .artist-profile {
+    padding-bottom: 10px;
+  }
+}

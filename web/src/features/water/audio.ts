@@ -2,6 +2,12 @@ import { midiFrequency, poolNotes, stepSeconds, type Melody } from "./model.ts";
 
 // A local instrument, unrelated to the historical recording. No audio files,
 // network requests or second HTMLAudioElement. Creation requires an interaction.
+export interface SoundLayer {
+  notes: Melody;
+  duration?: number;
+  gain?: number;
+  colour?: "smooth" | "sparkling";
+}
 export class PoolAudio {
   private context: AudioContext | null = null;
   private master: GainNode | null = null;
@@ -44,19 +50,25 @@ export class PoolAudio {
     this.level = Math.max(0, Math.min(0.4, value));
     if (this.master) this.master.gain.value = this.level;
   }
-  private voice(note: number, when: number, duration: number) {
+  private voice(
+    note: number,
+    when: number,
+    duration: number,
+    gainScale = 1,
+    colour = "smooth",
+  ) {
     const ctx = this.context!;
     const frequency = midiFrequency(poolNotes[note].midi);
     for (const [ratio, level] of [
       [1, 0.7],
-      [2, 0.12],
+      [2, colour === "sparkling" ? 0.4 : 0.12],
     ]) {
       const oscillator = ctx.createOscillator(),
         gain = ctx.createGain();
       oscillator.type = "sine";
       oscillator.frequency.value = frequency * ratio;
       gain.gain.setValueAtTime(0.0001, when);
-      gain.gain.linearRampToValueAtTime(level, when + 0.012);
+      gain.gain.linearRampToValueAtTime(level * gainScale, when + 0.012);
       gain.gain.exponentialRampToValueAtTime(0.0001, when + duration);
       oscillator.connect(gain);
       gain.connect(this.master!);
@@ -85,6 +97,14 @@ export class PoolAudio {
     onDone: () => void,
     length = 8,
   ) {
+    return this.playLayers([{ notes: melody }], onStep, onDone, length);
+  }
+  async playLayers(
+    layers: readonly SoundLayer[],
+    onStep: (step: number) => void,
+    onDone: () => void,
+    length = 8,
+  ) {
     this.stop();
     const ticket = this.generation;
     if (!(await this.ready(ticket))) return false;
@@ -101,9 +121,17 @@ export class PoolAudio {
       this.timers.add(timer);
     };
     for (let i = 0; i < slots; i++) {
-      const note = melody[i];
-      if (typeof note === "number" && poolNotes[note])
-        this.voice(note, start + i * stepSeconds, 0.27);
+      for (const layer of layers.slice(0, 2)) {
+        const note = layer.notes[i];
+        if (typeof note === "number" && poolNotes[note])
+          this.voice(
+            note,
+            start + i * stepSeconds,
+            Math.min(0.8, Math.max(0.05, layer.duration ?? 0.27)),
+            Math.min(1, Math.max(0, layer.gain ?? 1)),
+            layer.colour,
+          );
+      }
       later(0.025 + i * stepSeconds, () => onStep(i));
     }
     later(0.025 + slots * stepSeconds, () => {

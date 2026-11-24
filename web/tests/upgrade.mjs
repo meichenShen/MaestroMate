@@ -1,6 +1,7 @@
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
+import { questions, questionPresentation } from "../src/content/aquarium.ts";
 let b;
 const base = process.env.QA_BASE_URL || "http://127.0.0.1:5173";
 before(
@@ -94,7 +95,11 @@ test("composer topic navigation changes prompts without losing messages", async 
     const life = p.getByRole("button", { name: "Life", exact: true });
     assert.equal(await life.count(), 1);
     await life.click();
-    assert.equal(await p.locator(".question-tile").count(), 2);
+    assert.equal(
+      await p.locator(".question-tile").count(),
+      questions.filter((q) => questionPresentation[q.id].topic === "life")
+        .length,
+    );
     await p
       .getByRole("button", {
         name: "How did you become a musician?",

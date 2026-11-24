@@ -1,16 +1,16 @@
 import { TheatreStage } from "../../components/TheatreStage";
 
 import {
-  workshopDone,
-  aquariumGames,
-  type WorkshopProgress,
-} from "../../content/play/aquarium";
+  units,
+  unitDone,
+  type CurriculumProgress,
+} from "../../content/curriculum";
 export function ProgramComplete({
-  workshop,
+  curriculum,
   onRestart,
   motion = true,
 }: {
-  workshop: WorkshopProgress;
+  curriculum: CurriculumProgress;
   onRestart: () => void;
   motion?: boolean;
 }) {
@@ -18,7 +18,7 @@ export function ProgramComplete({
     <main id="main" tabIndex={-1} className="program-summary page-room">
       <TheatreStage celebrate motion={motion} />
       <div className="completion-copy">
-        <p className="eyebrow">Your Aquarium Program · Complete</p>
+        <p className="eyebrow">Your Aquarium Program · Visit complete</p>
         <h1>Lovely wandering.</h1>
         <p>
           One piece. A few new discoveries.
@@ -26,18 +26,25 @@ export function ProgramComplete({
           Thank you for following your ears.
         </p>
         <div className="learning-recap">
-          <p>Your discoveries this visit</p>
-          {["Notice", "Explore", "Invent"].map((label, level) => (
-            <p key={label}>
-              {label} ·{" "}
-              {
-                aquariumGames.filter(
-                  (g, i) => g.level === level && workshopDone(workshop)[i],
-                ).length
-              }
-              /4 discoveries
-            </p>
-          ))}
+          <p>
+            Your discoveries this visit ·{" "}
+            {
+              units.filter(
+                (u) => u.area === "works" && unitDone(u, curriculum[u.id]),
+              ).length
+            }
+            /3 explored
+          </p>
+          {units
+            .filter((u) => u.area === "works")
+            .map((u) => (
+              <p key={u.id}>
+                {u.title} ·{" "}
+                {unitDone(u, curriculum[u.id])
+                  ? "Learned, tried & made"
+                  : "Still yours to explore"}
+              </p>
+            ))}
           <a href="#program/aquarium/learn">Revisit your discoveries ↗</a>
         </div>
         <div className="completion-actions">

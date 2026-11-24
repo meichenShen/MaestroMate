@@ -1,0 +1,1670 @@
+/* Shared curriculum layout. Scene, concept and feedback are independent regions. */
+.play-hub.page-room,
+.play-catalog.page-room {
+  padding: 30px var(--gutter) 20px;
+  max-width: 1600px;
+  min-height: calc(100svh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.curriculum-intro p {
+  color: var(--muted);
+  font-size: 18px;
+  margin: 0;
+}
+.curriculum-intro .eyebrow {
+  font-size: 16px;
+}
+.curriculum-intro h1 {
+  font: 350 clamp(38px, 4.5vw, 65px)/1.1 var(--display);
+  margin: 10px 0 15px;
+  letter-spacing: -0.035em;
+}
+.play-pillars,
+.lesson-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 50px);
+  flex: 1;
+  align-items: center;
+  min-height: 0;
+}
+.play-pillar,
+.lesson-cover {
+  color: var(--fg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-width: 0;
+  border-radius: 38px;
+  padding: 24px 26px;
+  background: radial-gradient(
+    ellipse at 50% 35%,
+    color-mix(in srgb, var(--unit-colour) 9%, transparent),
+    #181720 80%
+  );
+  transition:
+    transform 0.5s ease,
+    background 0.5s ease;
+}
+.play-pillar:nth-child(2) {
+  transform: translateY(17px);
+}
+.play-pillar:nth-child(3) {
+  transform: translateY(-8px);
+}
+.play-pillar:hover,
+.play-pillar:focus-visible,
+.lesson-cover:hover,
+.lesson-cover:focus-visible {
+  transform: translateY(-7px);
+}
+.learning-art {
+  display: block;
+  width: 100%;
+  height: clamp(145px, 24vh, 260px);
+  color: var(--unit-colour);
+  overflow: visible;
+}
+.pillar-tag {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--unit-colour);
+  font-size: 14px;
+}
+.play-pillar h2,
+.lesson-cover h2 {
+  font: 400 clamp(26px, 2.5vw, 38px)/1.12 var(--display);
+  margin: 5px 0 12px;
+  letter-spacing: -0.025em;
+}
+.play-pillar p,
+.lesson-cover p {
+  font-size: 17px;
+  line-height: 1.5;
+  color: #c9c4d5;
+  margin: 0 0 20px;
+  max-width: 26ch;
+}
+.pill-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: var(--unit-colour, var(--accent));
+  color: #10111b;
+  border-radius: 30px;
+  min-height: 44px;
+  padding: 10px 20px;
+  font-size: 16px;
+  width: fit-content;
+}
+.curriculum-footnote {
+  font-size: 15px;
+  color: var(--muted);
+  text-align: center;
+  margin: 8px 0 0;
+}
+.catalog-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 44px;
+}
+.catalog-top > a {
+  color: var(--muted);
+  font-size: 15px;
+}
+.pillar-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pillar-links a {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 24px;
+  min-height: 44px;
+  padding: 8px 15px;
+  color: var(--muted);
+  font-size: 15px;
+}
+.pillar-links a[aria-current] {
+  background: #ffffff0d;
+  color: var(--fg);
+}
+.lesson-cover {
+  padding: 16px 24px 24px;
+}
+.lesson-cover .learning-art {
+  height: clamp(120px, 19vh, 210px);
+}
+.lesson-kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--unit-colour);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.lesson-cover h2 {
+  font-size: clamp(27px, 2.5vw, 38px);
+}
+.lesson-cover p {
+  margin-bottom: 18px;
+}
+.catalog-connections {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  font-size: 15px;
+  color: var(--muted);
+  padding: 10px 0;
+}
+.catalog-connections a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.lesson-room.page-room {
+  max-width: 1600px;
+  height: calc(100svh - var(--header-height));
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px var(--gutter) 18px;
+}
+.lesson-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  min-height: 48px;
+}
+.lesson-top > div > a {
+  font-size: 14px;
+  color: var(--muted);
+}
+.lesson-top p {
+  font: 400 22px var(--display);
+  margin: 4px 0 0;
+}
+.lesson-top p span {
+  font: 14px var(--font);
+  margin-left: 10px;
+  color: var(--muted);
+}
+.lesson-tools {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.lesson-tools button,
+.lesson-tools a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.lesson-unit-rail {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.lesson-unit-rail a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 24px;
+  background: #ffffff05;
+  color: var(--muted);
+  font-size: 16px;
+  white-space: nowrap;
+}
+.lesson-unit-rail a[aria-current] {
+  background: color-mix(in srgb, var(--unit-colour) 13%, transparent);
+  color: var(--unit-colour);
+}
+.lesson-stage {
+  flex: 1;
+  min-height: 0;
+  border-radius: 34px;
+  background: radial-gradient(
+    ellipse at 0 60%,
+    color-mix(in srgb, var(--unit-colour) 8%, #191722),
+    #17161f 65%
+  );
+  display: flex;
+  flex-direction: column;
+  padding: 18px 28px;
+  gap: 12px;
+  isolation: isolate;
+}
+.lesson-stage-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+  gap: 15px;
+}
+.lesson-concept {
+  font-size: 15px;
+  color: var(--unit-colour);
+  margin: 0;
+}
+.lesson-phases {
+  display: flex;
+  gap: 4px;
+  background: #0b0b1055;
+  padding: 3px;
+  border-radius: 25px;
+}
+.lesson-phases button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 40px;
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: 15px;
+  color: var(--muted);
+}
+.lesson-phases button[aria-current] {
+  color: #0b0b10;
+  background: var(--unit-colour);
+}
+.lesson-phases button:disabled {
+  opacity: 0.45;
+}
+.lesson-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-shrink: 0;
+}
+.lesson-question > div {
+  min-width: 0;
+}
+.lesson-question h1 {
+  font: 400 clamp(28px, 2.8vw, 43px)/1.12 var(--display);
+  margin: 0 0 7px;
+  letter-spacing: -0.02em;
+  outline: none;
+}
+.lesson-question p {
+  font-size: 17px;
+  line-height: 1.5;
+  color: #c9c4d5;
+  margin: 0;
+}
+.lesson-recording {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 10px 17px;
+  color: #45d9fd;
+  background: #45d9fd12;
+  border-radius: 25px;
+  flex-shrink: 0;
+  font-size: 15px;
+}
+.lesson-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  animation: lesson-arrive 0.35s ease both;
+}
+.lesson-learn {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 36px;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+.lesson-demonstration {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.lesson-teaching {
+  max-width: 38ch;
+  align-self: center;
+  padding: 12px 6px;
+}
+.lesson-teaching p {
+  font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.7;
+  color: #e2ddea;
+  margin: 12px 0 15px;
+}
+.teaching-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff07;
+  width: 42px;
+  height: 42px;
+  border-radius: 15px;
+  color: var(--unit-colour);
+}
+.teaching-invitation {
+  font-size: 14px;
+  color: var(--muted);
+}
+.note-ribbon {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  min-height: 65px;
+  position: relative;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 10px 26px;
+}
+.note-ribbon > span {
+  flex: 1;
+  position: relative;
+  color: var(--note-colour);
+}
+.note-ribbon i {
+  position: absolute;
+  top: var(--note-height);
+  height: 18px;
+  width: 24px;
+  background: var(--note-colour);
+  border-radius: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-18deg);
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+.note-ribbon b {
+  position: absolute;
+  bottom: -25px;
+  font-size: 14px;
+  font-weight: 400;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.note-ribbon .active-note i {
+  transform: translate(-50%, -50%) scale(1.35);
+  box-shadow: 0 0 25px var(--note-colour);
+}
+.layers-lab,
+.rhythm-lab,
+.return-lab,
+.colour-lab {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  height: 100%;
+  min-height: 0;
+}
+.layer-tune {
+  flex: 1;
+  min-height: 80px;
+  max-height: 150px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px;
+}
+.layer-tune > span,
+.layer-ripple > span {
+  font-size: 14px;
+  color: var(--muted);
+}
+.layer-tune .note-ribbon {
+  flex: 1;
+  min-height: 50px;
+}
+.layer-ripple {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 12px;
+}
+.layer-ripple > div {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-around;
+  min-height: 44px;
+}
+.layer-ripple i {
+  display: block;
+  width: 18px;
+  border-radius: 12px;
+  background: var(--unit-colour);
+  opacity: 0.4;
+}
+.part-melody .layer-ripple,
+.part-ripple .layer-tune {
+  opacity: 0.3;
+}
+.demo-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.demo-actions button,
+.rhythm-lab > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 16px;
+  border-radius: 25px;
+  background: #ffffff0a;
+  font-size: 15px;
+  color: #e1dce8;
+}
+.demo-actions button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--unit-colour) 18%, transparent);
+  color: var(--unit-colour);
+}
+.pitch-lab {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-height: 300px;
+}
+.pitch-orbit {
+  height: 90%;
+  min-height: 145px;
+  flex: 1;
+  position: relative;
+  border-radius: 100px;
+  background: linear-gradient(0deg, #45d9fd05, #a593e015);
+}
+.pitch-orbit > span {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 30%);
+  border-radius: 50%;
+  transition: all 0.3s;
+  box-shadow:
+    inset -8px -8px 15px #0003,
+    0 15px 35px #0004;
+}
+.pitch-orbit small,
+.pitch-orbit b {
+  position: absolute;
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 400;
+  left: 15px;
+}
+.pitch-orbit small {
+  bottom: 10px;
+}
+.pitch-orbit b {
+  top: 10px;
+}
+.pitch-controls {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.pitch-controls label {
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #ded8e7;
+}
+.pitch-controls input {
+  width: 100%;
+  accent-color: var(--unit-colour);
+  min-height: 28px;
+  cursor: pointer;
+}
+.pitch-controls p,
+.rhythm-lab > p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+.pulse-circles {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  align-items: center;
+}
+.pulse-circles button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: clamp(66px, 8vw, 118px);
+  aspect-ratio: 1;
+  background: #ffffff07;
+  border-radius: 50%;
+  color: #a59dad;
+  transition:
+    background 0.2s,
+    transform 0.15s;
+}
+.pulse-circles button > span {
+  font-size: 34px;
+  line-height: 1;
+}
+.pulse-circles button > small {
+  font-size: 14px;
+}
+.pulse-circles .sound-on {
+  color: var(--unit-colour);
+  background: color-mix(in srgb, var(--unit-colour) 12%, transparent);
+}
+.pulse-active {
+  box-shadow: inset 0 0 0 2px var(--unit-colour);
+  filter: brightness(1.25);
+}
+.rhythm-lab > button {
+  margin: 0 auto;
+}
+.rhythm-lab > p {
+  text-align: center;
+}
+.phrase-pair {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  max-height: 190px;
+}
+.phrase-pair > div {
+  background: #ffffff04;
+  flex: 1;
+  min-width: 0;
+  border-radius: 25px;
+  padding: 15px 12px 32px;
+  display: flex;
+  flex-direction: column;
+}
+.phrase-pair > div > span {
+  font-size: 14px;
+  color: var(--muted);
+}
+.phrase-pair .note-ribbon {
+  min-height: 65px;
+  flex: 1;
+}
+.instrument-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.instrument-cards button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 115px;
+  background: #ffffff06;
+  border-radius: 24px;
+  padding: 12px 6px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.instrument-cards button .game-symbol {
+  height: 44px;
+  width: 44px;
+  color: var(--unit-colour);
+}
+.instrument-cards button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--unit-colour) 15%, transparent);
+  color: #fff1f4;
+}
+.instrument-note {
+  min-height: 54px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #c9c4d5;
+  padding: 0 6px;
+}
+.lesson-practice {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  gap: 12px;
+  justify-content: center;
+}
+.question-example {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 65px;
+  max-height: 95px;
+  flex: 1;
+}
+.question-example .note-ribbon {
+  height: 65px;
+}
+.question-example > button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  white-space: nowrap;
+  background: #ffffff09;
+  padding: 10px 18px;
+  border-radius: 24px;
+  font-size: 15px;
+}
+.answer-pictures {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 18px;
+  flex: 1;
+  max-height: 210px;
+  min-height: 110px;
+}
+.answer-pictures button {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 28px;
+  background: #ffffff06;
+  color: #e9e3ef;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+.answer-pictures button:hover {
+  background: #ffffff0d;
+  transform: translateY(-2px);
+}
+.answer-pictures .game-symbol {
+  width: clamp(35px, 6vh, 65px);
+  height: clamp(35px, 6vh, 65px);
+  color: var(--unit-colour);
+}
+.answer-pictures strong {
+  font: 400 clamp(19px, 1.9vw, 27px)/1.2 var(--display);
+  text-align: center;
+}
+.answer-pictures button > span {
+  font-size: 14px;
+  color: var(--muted);
+}
+.answer-pictures button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--unit-colour) 14%, #1c1926);
+  box-shadow: inset 0 0 0 2px var(--unit-colour);
+}
+.lesson-feedback {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 52px;
+  color: var(--muted);
+  padding: 6px 3px;
+}
+.lesson-feedback strong {
+  font-size: 17px;
+  color: var(--unit-colour);
+  white-space: nowrap;
+}
+.lesson-feedback[data-feedback="retry"] strong {
+  color: #ff91b1;
+}
+.lesson-dock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+  min-height: 52px;
+}
+.lesson-dock p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+.lesson-dock > div > span {
+  font-size: 13px;
+  color: #b5b0c0;
+}
+.lesson-dock-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.lesson-primary,
+.lesson-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 46px;
+  border-radius: 28px;
+  padding: 10px 23px;
+  font-size: 16px;
+}
+.lesson-primary {
+  background: var(--unit-colour);
+  color: #10111b;
+}
+.lesson-secondary {
+  background: #ffffff07;
+  color: #d6cfe0;
+}
+.make-coach {
+  font-size: 15px;
+  color: var(--muted);
+}
+.creation-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+.creation-slots {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  max-width: 620px;
+  flex: 1;
+  min-height: 100px;
+  max-height: 190px;
+}
+.creation-slots button {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  border-radius: 25px;
+  background: #ffffff06;
+  color: var(--note-colour);
+  padding: 15px 12px 25px;
+}
+.creation-slots button[aria-pressed="true"] {
+  background: #ffffff0d;
+  box-shadow: inset 0 0 0 2px var(--note-colour);
+}
+.creation-slots button > i {
+  position: absolute;
+  top: var(--note-height);
+  left: 50%;
+  height: 19px;
+  width: 26px;
+  border-radius: 50%;
+  background: var(--note-colour);
+  transform: translate(-50%, -50%) rotate(-15deg);
+}
+.creation-slots strong {
+  position: absolute;
+  top: 12px;
+  left: 15px;
+  font: 400 25px var(--display);
+}
+.creation-slots small {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.note-picker {
+  display: flex;
+  gap: 12px;
+}
+.note-picker button {
+  display: grid;
+  place-items: center;
+  height: 46px;
+  width: 46px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--note-colour) 12%, transparent);
+  color: var(--note-colour);
+  font-size: 21px;
+}
+.creation-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  min-height: 44px;
+  flex-wrap: wrap;
+}
+.creation-kept {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+  color: var(--unit-colour);
+}
+.creation-nudge {
+  color: #ffb4c8;
+  font-size: 15px;
+}
+.pool-handoff,
+.accompaniment-switch {
+  min-height: 44px;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 15px;
+  border-radius: 24px;
+  background: #ffffff08;
+  color: #ded8e8;
+}
+.example-note {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+}
+.lesson-error {
+  color: #ffb4c8 !important;
+}
+.curriculum-dialog section {
+  margin: 22px 0;
+}
+.curriculum-dialog h3 {
+  font-size: 22px;
+}
+.curriculum-dialog a {
+  display: inline-block;
+  color: var(--accent);
+  min-height: 44px;
+  line-height: 1.6;
+}
+.curriculum-dialog section p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+@keyframes lesson-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes art-drift {
+  50% {
+    transform: translateY(-7px) rotate(1deg);
+  }
+}
+.play-pillar:hover .art-float {
+  animation: art-drift 3s ease-in-out infinite;
+}
+@media (min-width: 951px) and (max-height: 750px) {
+  .play-hub.page-room,
+  .play-catalog.page-room {
+    gap: 12px;
+    padding-top: 18px;
+  }
+  .curriculum-intro h1 {
+    font-size: 43px;
+    margin: 6px 0 10px;
+  }
+  .curriculum-intro > p {
+    font-size: 16px;
+  }
+  .play-pillar {
+    padding: 18px 20px;
+  }
+  .learning-art {
+    height: 150px;
+  }
+  .play-pillar h2 {
+    font-size: 30px;
+  }
+  .play-pillar p {
+    font-size: 15px;
+    margin-bottom: 14px;
+  }
+  .lesson-cover .learning-art {
+    height: 120px;
+  }
+  .lesson-cover h2 {
+    font-size: 29px;
+  }
+  .lesson-cover p {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+  .lesson-room.page-room {
+    gap: 8px;
+    padding-top: 8px;
+    padding-bottom: 10px;
+  }
+  .lesson-top {
+    min-height: 44px;
+  }
+  .lesson-top p {
+    font-size: 19px;
+  }
+  .lesson-stage {
+    padding: 12px 22px;
+    gap: 8px;
+    border-radius: 28px;
+  }
+  .lesson-unit-rail a {
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 15px;
+  }
+  .lesson-stage-top {
+    min-height: 40px;
+  }
+  .lesson-question h1 {
+    font-size: 29px;
+    margin-bottom: 4px;
+  }
+  .lesson-question p {
+    font-size: 15px;
+  }
+  .lesson-question {
+    gap: 15px;
+  }
+  .lesson-learn {
+    gap: 26px;
+  }
+  .lesson-teaching p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 8px 0;
+  }
+  .teaching-mark {
+    display: none;
+  }
+  .teaching-invitation {
+    font-size: 14px;
+  }
+  .pitch-controls {
+    gap: 8px;
+  }
+  .pitch-controls label {
+    gap: 3px;
+    font-size: 15px;
+  }
+  .pitch-orbit {
+    min-height: 130px;
+  }
+  .pitch-orbit > span {
+    max-width: 76px;
+    max-height: 76px;
+  }
+  .lesson-dock {
+    min-height: 46px;
+  }
+  .lesson-dock > div > span {
+    display: none;
+  }
+  .lesson-feedback {
+    font-size: 14px;
+    min-height: 42px;
+    gap: 10px;
+  }
+  .lesson-feedback strong {
+    font-size: 15px;
+  }
+  .answer-pictures {
+    min-height: 82px;
+    gap: 12px;
+  }
+  .answer-pictures button {
+    padding: 9px 14px;
+    gap: 5px;
+  }
+  .answer-pictures strong {
+    font-size: 21px;
+  }
+  .answer-pictures .game-symbol {
+    width: 34px;
+    height: 34px;
+  }
+  .answer-pictures button > span {
+    display: none;
+  }
+  .question-example {
+    min-height: 50px;
+    max-height: 55px;
+    gap: 15px;
+  }
+  .question-example .note-ribbon {
+    height: 45px;
+    min-height: 45px;
+    padding-bottom: 20px;
+  }
+  .question-example .note-ribbon b {
+    bottom: -18px;
+  }
+  .creation-board {
+    gap: 8px;
+  }
+  .creation-slots {
+    min-height: 75px;
+    max-height: 125px;
+  }
+  .creation-slots button {
+    border-radius: 20px;
+  }
+  .creation-slots strong {
+    font-size: 20px;
+    top: 8px;
+  }
+  .creation-slots i {
+    height: 15px !important;
+    width: 21px !important;
+  }
+  .creation-slots small {
+    font-size: 12px;
+    bottom: 6px;
+  }
+  .example-note {
+    display: none;
+  }
+  .pulse-circles button {
+    width: 85px;
+  }
+  .instrument-cards button {
+    min-height: 90px;
+    gap: 7px;
+  }
+  .instrument-cards button .game-symbol {
+    height: 34px;
+    width: 34px;
+  }
+  .instrument-note {
+    font-size: 15px;
+    min-height: 45px;
+  }
+  .layers-lab,
+  .rhythm-lab,
+  .return-lab {
+    gap: 8px;
+  }
+  .layer-tune {
+    min-height: 70px;
+  }
+  .layer-ripple {
+    gap: 3px;
+  }
+  .layer-ripple > div {
+    min-height: 35px;
+  }
+  .demo-actions button {
+    min-height: 44px;
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+  .lesson-practice {
+    gap: 8px;
+  }
+  .lesson-recording {
+    font-size: 14px;
+  }
+  .phrase-pair {
+    max-height: 130px;
+  }
+  .phrase-pair > div {
+    padding: 10px 9px 25px;
+  }
+  .phrase-pair .note-ribbon {
+    min-height: 40px;
+  }
+  .creation-actions .pill-action {
+    font-size: 15px;
+    min-height: 44px;
+    padding: 9px 18px;
+  }
+  .pool-handoff,
+  .accompaniment-switch {
+    min-height: 44px;
+    padding: 8px 13px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 950px) {
+  .play-hub.page-room,
+  .play-catalog.page-room {
+    padding: 24px var(--gutter);
+    gap: 22px;
+  }
+  .play-pillars,
+  .lesson-cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    flex: none;
+  }
+  .play-pillar,
+  .lesson-cover {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 10px 18px;
+    padding: 20px;
+  }
+  .play-pillar:nth-child(n) {
+    transform: none;
+  }
+  .play-pillar .pillar-tag {
+    grid-column: 1/-1;
+  }
+  .play-pillar .learning-art,
+  .lesson-cover .learning-art {
+    height: 150px;
+    grid-column: 1;
+    grid-row: 2/6;
+  }
+  .play-pillar > div {
+    grid-column: 2;
+  }
+  .play-pillar h2,
+  .lesson-cover h2 {
+    font-size: 30px;
+  }
+  .play-pillar p,
+  .lesson-cover p {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  .lesson-cover .learning-art {
+    grid-row: 1/5;
+  }
+  .lesson-cover > *:not(.learning-art) {
+    grid-column: 2;
+  }
+  .lesson-kicker {
+    font-size: 13px;
+    margin: 0;
+  }
+  .catalog-top {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pillar-links {
+    gap: 0;
+  }
+  .pillar-links a {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  .curriculum-intro h1 {
+    font-size: 43px;
+  }
+  .curriculum-intro > p {
+    font-size: 17px;
+  }
+  .lesson-room.page-room {
+    height: auto;
+    min-height: calc(100svh - var(--header-height));
+    padding: 14px var(--gutter);
+    gap: 12px;
+  }
+  .lesson-top {
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .lesson-top p {
+    font-size: 18px;
+  }
+  .lesson-tools {
+    gap: 10px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .lesson-tools span {
+    display: none;
+  }
+  .lesson-tools button {
+    font-size: 13px;
+  }
+  .lesson-unit-rail a {
+    flex: none;
+    font-size: 14px;
+    padding: 8px 13px;
+  }
+  .lesson-stage {
+    padding: 18px;
+    gap: 18px;
+    min-height: 630px;
+    border-radius: 27px;
+  }
+  .lesson-stage-top {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .lesson-concept {
+    font-size: 14px;
+  }
+  .lesson-phases button {
+    min-height: 40px;
+    padding: 8px 16px;
+  }
+  .lesson-question {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 13px;
+  }
+  .lesson-question h1 {
+    font-size: 31px;
+  }
+  .lesson-question p {
+    font-size: 16px;
+  }
+  .lesson-recording {
+    font-size: 14px;
+  }
+  .lesson-content {
+    flex: 1;
+    min-height: 250px;
+  }
+  .lesson-learn {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    align-content: start;
+  }
+  .lesson-demonstration {
+    min-height: 220px;
+  }
+  .lesson-teaching {
+    padding: 0;
+    max-width: none;
+  }
+  .lesson-teaching p {
+    font-size: 17px;
+    line-height: 1.65;
+    margin-top: 0;
+  }
+  .teaching-mark {
+    display: none;
+  }
+  .lesson-dock {
+    align-items: flex-start;
+    gap: 12px;
+    flex-direction: column;
+  }
+  .lesson-dock > div > span {
+    display: none;
+  }
+  .lesson-dock-actions {
+    align-self: stretch;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .lesson-primary,
+  .lesson-secondary {
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+  .answer-pictures {
+    min-height: 175px;
+    gap: 10px;
+  }
+  .answer-pictures button {
+    padding: 12px 10px;
+    gap: 10px;
+  }
+  .answer-pictures strong {
+    font-size: 21px;
+  }
+  .answer-pictures .game-symbol {
+    width: 50px;
+    height: 50px;
+  }
+  .lesson-feedback {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 16px;
+    min-height: 100px;
+    padding: 10px 0;
+  }
+  .lesson-practice {
+    justify-content: flex-start;
+    gap: 20px;
+  }
+  .question-example {
+    min-height: 100px;
+    flex: none;
+    flex-wrap: wrap;
+    max-height: none;
+  }
+  .question-example .note-ribbon {
+    flex: 1;
+    min-width: 130px;
+  }
+  .question-example > button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+  .creation-board {
+    justify-content: flex-start;
+    gap: 18px;
+    padding: 10px 0;
+  }
+  .creation-slots {
+    min-height: 150px;
+    flex: none;
+    gap: 10px;
+  }
+  .creation-slots button {
+    border-radius: 20px;
+  }
+  .pulse-circles {
+    gap: 10px;
+  }
+  .pulse-circles button {
+    width: 70px;
+    min-height: 70px;
+    aspect-ratio: 1;
+  }
+  .pulse-circles button > span {
+    font-size: 28px;
+  }
+  .pulse-circles button > small {
+    font-size: 13px;
+  }
+  .instrument-cards {
+    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .instrument-cards button {
+    min-height: 100px;
+  }
+  .instrument-note {
+    font-size: 16px;
+  }
+  .layers-lab {
+    min-height: 220px;
+  }
+  .pitch-lab {
+    min-height: 220px;
+  }
+  .pitch-controls {
+    gap: 13px;
+  }
+  .pitch-controls p {
+    font-size: 13px;
+  }
+  .pitch-controls label {
+    font-size: 15px;
+  }
+  .phrase-pair {
+    min-height: 150px;
+  }
+  .phrase-pair > div {
+    padding: 12px 7px 30px;
+  }
+  .demo-actions {
+    gap: 7px;
+  }
+  .demo-actions button {
+    font-size: 14px;
+    padding: 9px 13px;
+  }
+  .catalog-connections {
+    justify-content: flex-start;
+    gap: 5px 18px;
+  }
+  .creation-actions {
+    flex-direction: column;
+  }
+  .lesson-dock .make-coach {
+    font-size: 14px;
+  }
+}
+@media (max-width: 370px) {
+  .play-pillar,
+  .lesson-cover {
+    grid-template-columns: 96px 1fr;
+    padding: 18px 14px;
+    gap: 10px;
+  }
+  .play-pillar .learning-art,
+  .lesson-cover .learning-art {
+    height: 120px;
+  }
+  .play-pillar h2,
+  .lesson-cover h2 {
+    font-size: 26px;
+  }
+  .play-pillar p,
+  .lesson-cover p {
+    font-size: 15px;
+  }
+  .pillar-tag {
+    font-size: 13px;
+  }
+  .curriculum-intro h1 {
+    font-size: 37px;
+  }
+  .lesson-stage {
+    padding: 15px;
+  }
+  .lesson-top > div > a {
+    font-size: 13px;
+  }
+  .lesson-top p {
+    font-size: 16px;
+  }
+  .lesson-tools {
+    max-width: 125px;
+  }
+  .lesson-tools button {
+    font-size: 12px;
+  }
+  .lesson-question h1 {
+    font-size: 28px;
+  }
+  .lesson-phases button {
+    padding: 8px 13px;
+  }
+  .pulse-circles {
+    gap: 8px;
+  }
+  .pulse-circles button {
+    width: 55px;
+    min-height: 55px;
+  }
+  .pulse-circles button > small {
+    font-size: 12px;
+  }
+  .creation-slots {
+    gap: 7px;
+  }
+  .creation-slots strong {
+    font-size: 21px;
+  }
+  .creation-slots small {
+    font-size: 12px;
+  }
+  .note-picker {
+    gap: 8px;
+  }
+  .note-picker button {
+    width: 44px;
+    height: 44px;
+  }
+  .answer-pictures strong {
+    font-size: 19px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lesson-content,
+  .art-float {
+    animation: none !important;
+  }
+  .play-pillar,
+  .lesson-cover,
+  .answer-pictures button,
+  .pitch-orbit > span {
+    transition: none !important;
+  }
+  .play-pillar:hover,
+  .play-pillar:nth-child(n),
+  .lesson-cover:hover {
+    transform: none;
+  }
+  .note-ribbon i {
+    transition: none;
+  }
+}
+.note-ribbon .rest-note i {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px #b5b3c155;
+  width: 16px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+}
+.lesson-program-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.lesson-program-links a[aria-current] {
+  color: var(--unit-colour);
+}
+@media (max-width: 950px) {
+  .lesson-program-links {
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+  .lesson-program-links a {
+    font-size: 13px;
+  }
+  .lesson-room:has(.lesson-program-links) .lesson-top {
+    flex-wrap: wrap;
+  }
+  .lesson-room:has(.lesson-program-links) .lesson-tools {
+    justify-content: flex-start;
+    max-width: none;
+  }
+}
+/* A side-by-side making desk prevents success actions adding a fifth vertical row. */
+@media (min-width: 951px) and (max-height: 850px) {
+  .creation-board {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(340px, 1fr);
+    grid-template-rows: repeat(4, minmax(44px, 1fr));
+    gap: 3px 24px;
+    align-items: center;
+    justify-items: center;
+    align-content: stretch;
+    width: 100%;
+  }
+  .creation-board > .creation-slots {
+    grid-column: 1;
+    grid-row: 1/-1;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    min-height: 0;
+    align-self: stretch;
+  }
+  .creation-board > .pulse-circles {
+    grid-column: 1;
+    grid-row: 1/-1;
+  }
+  .creation-board > .note-picker {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .creation-board .note-picker button {
+    height: 44px;
+    width: 44px;
+  }
+  .creation-board > .demo-actions,
+  .creation-board > .accompaniment-switch {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .creation-board > .creation-actions {
+    grid-column: 2;
+    grid-row: 2;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .creation-colour > .creation-actions,
+  .creation-layers > .creation-actions {
+    grid-row: 3;
+  }
+  .creation-board > .pool-handoff {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  .creation-colour > .pool-handoff,
+  .creation-layers > .pool-handoff {
+    grid-row: 4;
+  }
+  .creation-board .creation-kept {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .creation-board .creation-actions:has(.creation-nudge) {
+    grid-row: 2/4;
+    flex-direction: column;
+    align-items: center;
+  }
+  .creation-colour .creation-actions:has(.creation-nudge),
+  .creation-layers .creation-actions:has(.creation-nudge) {
+    grid-row: 3/5;
+  }
+  .creation-board .creation-nudge {
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
+  }
+}
+/* Baseline button hover inherits cyan; coloured primary buttons need dark labels. */
+.lesson-room .pill-action:hover:not(:disabled),
+.lesson-room .lesson-primary:hover:not(:disabled),
+.lesson-room .lesson-phases button[aria-current]:hover:not(:disabled) {
+  color: #10111b;
+}

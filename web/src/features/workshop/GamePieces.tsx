@@ -34,6 +34,23 @@ const icons: Record<string, LucideIcon> = {
   fish: Fish,
 };
 export function GameGlyph({ kind }: { kind: string }) {
+  if (kind === "strings")
+    return (
+      <svg
+        className="game-symbol symbol-strings"
+        viewBox="0 0 64 64"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        aria-hidden="true"
+      >
+        <path d="m39 5 5 3-7 22c9 7 10 16 3 22-8 8-22 6-27-2-5-7 0-15 9-18l9-24 5-3Z" />
+        <path
+          d="M34 14 24 45m14-29-10 30M16 42c7-4 16-1 22 5m-23-9 21 8M47 11 58 57"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
   const Icon = icons[kind] || Waves;
   return (
     <Icon

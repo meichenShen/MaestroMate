@@ -6,6 +6,8 @@ export type Route =
   | { kind: "activity"; activity: ActivityId; journey: boolean }
   | { kind: "games" }
   | { kind: "pool" }
+  | { kind: "playcatalog"; area: "works" | "lessons" | "create" }
+  | { kind: "lesson"; unitId: string; journey: boolean }
   | { kind: "learning"; journey: boolean; workId?: string; level?: number }
   | { kind: "summary" };
 const names: Record<string, ActivityId> = {
@@ -30,7 +32,26 @@ export function parseRoute(hash: string): Route {
   if (path === "chat")
     return { kind: "activity", activity: "conversation", journey: false };
   if (path === "play") return { kind: "games" };
-  if (path === "play/learn" || path === "program/aquarium/learn")
+  const catalogue = path.match(/^play\/(works|lessons|create)$/);
+  if (catalogue)
+    return {
+      kind: "playcatalog",
+      area: catalogue[1] as "works" | "lessons" | "create",
+    };
+  const lesson = path.match(
+    /^play\/(?:works\/aquarium|lessons)\/([a-zA-Z0-9_-]+)$/,
+  );
+  if (lesson) return { kind: "lesson", unitId: lesson[1], journey: false };
+  const programLesson = path.match(
+    /^program\/aquarium\/learn\/([a-zA-Z0-9_-]+)$/,
+  );
+  if (programLesson)
+    return { kind: "lesson", unitId: programLesson[1], journey: true };
+  if (
+    path === "play/learn" ||
+    path === "program/aquarium/learn" ||
+    path === "program/aquarium/play"
+  )
     return { kind: "learning", journey: path.startsWith("program/") };
   const playWork = path.match(/^play\/learn\/([a-z0-9-]+)(?:\/([0-2]))?$/);
   if (playWork)
@@ -65,7 +86,9 @@ export function activityHash(activity: ActivityId, journey = false) {
     activity
   ];
   return journey
-    ? "#program/aquarium/" + name
+    ? activity === "detective"
+      ? "#program/aquarium/learn"
+      : "#program/aquarium/" + name
     : activity === "conversation"
       ? "#chat"
       : "#" + name + "/aquarium";

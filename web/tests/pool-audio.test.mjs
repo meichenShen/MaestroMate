@@ -94,3 +94,29 @@ test("a rejected permission request after cancellation is ignored", async () => 
   assert.equal(f.ctx.created, 0);
   engine.dispose();
 });
+test("layered teaching audio cancels pending startup and schedules both parts on one context", async () => {
+  const f = fakeContext(),
+    engine = new PoolAudio(() => f.ctx);
+  assert.equal(typeof engine.playLayers, "function");
+  const pending = engine.playLayers(
+    [{ notes: [0, 2, 4, null] }, { notes: [0, 0, 0, 0] }],
+    () => {},
+    () => {},
+    4,
+  );
+  engine.stop();
+  f.release();
+  assert.equal(await pending, false);
+  assert.equal(f.ctx.created, 0);
+  assert.equal(
+    await engine.playLayers(
+      [{ notes: [0, 2, 4, null] }, { notes: [0, 0, 0, 0] }],
+      () => {},
+      () => {},
+      4,
+    ),
+    true,
+  );
+  assert.equal(f.ctx.created, 14);
+  engine.dispose();
+});

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAudio } from "../../audio/AudioProvider";
-import { PoolAudio } from "../water/audio";
+import { PoolAudio, type SoundLayer } from "../water/audio";
 import type { Melody } from "../water/model";
 import type { Clip } from "../../content/aquarium";
 export function useWorkshopSound(enabled: boolean) {
@@ -45,15 +45,38 @@ export function useWorkshopSound(enabled: boolean) {
   useEffect(() => {
     synth.current?.setVolume(muted ? 0 : 0.2);
   }, [muted]);
-  const practice = async (notes: Melody) => {
+  const practice = async (
+    notes: Melody,
+    options?: {
+      gain?: number;
+      colour?: "smooth" | "sparkling";
+      accompaniment?: boolean;
+      duration?: number;
+      onDone?: () => void;
+    },
+  ) => {
     stop();
     if (!enabled || document.hidden || mutedRef.current) return;
     const id = ticket.current;
     setPlaying(true);
     setError("");
     try {
-      const ok = await synth.current?.play(
-        notes,
+      const layers: SoundLayer[] = [
+        {
+          notes,
+          gain: options?.gain,
+          colour: options?.colour,
+          duration: options?.duration,
+        },
+      ];
+      if (options?.accompaniment)
+        layers.push({
+          notes: notes.map((_, i) => (i % 2 ? 1 : 0)),
+          gain: 0.35,
+          duration: 0.12,
+        });
+      const ok = await synth.current?.playLayers(
+        layers,
         (i) => {
           if (alive.current && ticket.current === id) setBeat(i);
         },
@@ -61,8 +84,10 @@ export function useWorkshopSound(enabled: boolean) {
           if (alive.current && ticket.current === id) {
             setPlaying(false);
             setBeat(null);
+            options?.onDone?.();
           }
         },
+        notes.length,
       );
       if (alive.current && id === ticket.current && !ok) setPlaying(false);
     } catch {

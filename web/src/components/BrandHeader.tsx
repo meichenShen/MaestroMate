@@ -10,7 +10,7 @@ export function BrandHeader({
   onEntry: () => void;
 }) {
   const active =
-    route.kind === "learning"
+    route.kind === "learning" || route.kind === "lesson"
       ? route.journey
         ? "program"
         : "play"
@@ -22,7 +22,9 @@ export function BrandHeader({
             ]
         : route.kind === "library"
           ? route.intent
-          : route.kind === "games" || route.kind === "pool"
+          : route.kind === "games" ||
+              route.kind === "pool" ||
+              route.kind === "playcatalog"
             ? "play"
             : route.kind === "summary"
               ? "program"

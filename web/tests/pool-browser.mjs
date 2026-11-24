@@ -28,9 +28,8 @@ test("Music Pool is a separate Play activity, builds and edits a melody, and sto
   const errors = [];
   p.on("pageerror", (e) => errors.push(e.message));
   try {
-    await p
-      .getByRole("button", { name: "Play Music Pool", exact: true })
-      .click();
+    await p.getByRole("link", { name: "Create & play", exact: true }).click();
+    await p.getByRole("link", { name: "Music Pool", exact: true }).click();
     await p
       .getByRole("heading", { name: "Make a little ripple.", exact: true })
       .waitFor();
@@ -68,9 +67,8 @@ test("Music Pool is a separate Play activity, builds and edits a melody, and sto
     await p
       .getByRole("link", { name: "Back to the play room", exact: true })
       .click();
-    await p
-      .getByRole("button", { name: "Play Music Pool", exact: true })
-      .click();
+    await p.getByRole("link", { name: "Create & play", exact: true }).click();
+    await p.getByRole("link", { name: "Music Pool", exact: true }).click();
     await p.getByRole("button", { name: "Step 1: G", exact: true }).waitFor();
     assert.equal(
       await p.getByRole("button", { name: "Step 1: G", exact: true }).count(),
@@ -96,9 +94,8 @@ test("pool keeps controls visible in short desktop and touch, including a WebGL 
   ]) {
     const p = await visit(w, h);
     try {
-      await p
-        .getByRole("button", { name: "Play Music Pool", exact: true })
-        .click();
+      await p.getByRole("link", { name: "Create & play", exact: true }).click();
+      await p.getByRole("link", { name: "Music Pool", exact: true }).click();
       await p
         .getByRole("heading", { name: "Make a little ripple.", exact: true })
         .waitFor();
@@ -180,9 +177,8 @@ test("real Web Audio emits notes, mutes, stops behind Guide and releases on leav
     await p.getByRole("button", { name: "Play music", exact: true }).click();
     await p.waitForFunction(() => !document.querySelector("audio").paused);
     await p.getByRole("link", { name: "Play", exact: true }).click();
-    await p
-      .getByRole("button", { name: "Play Music Pool", exact: true })
-      .click();
+    await p.getByRole("link", { name: "Create & play", exact: true }).click();
+    await p.getByRole("link", { name: "Music Pool", exact: true }).click();
     assert.equal(await p.locator("audio").evaluate((a) => a.paused), true);
     await p.locator('[data-pool-render="ready"]').waitFor();
     await p.getByRole("button", { name: "Play C", exact: true }).click();
@@ -217,9 +213,8 @@ test("real Web Audio emits notes, mutes, stops behind Guide and releases on leav
 test("water animation freezes on request, and a lost context leaves the instrument usable", async () => {
   const p = await visit(1280, 800, "no-preference");
   try {
-    await p
-      .getByRole("button", { name: "Play Music Pool", exact: true })
-      .click();
+    await p.getByRole("link", { name: "Create & play", exact: true }).click();
+    await p.getByRole("link", { name: "Music Pool", exact: true }).click();
     await p.locator('[data-pool-render="ready"]').waitFor();
     const host = p.locator(".pool-canvas");
     const first = Number(await host.getAttribute("data-frame"));

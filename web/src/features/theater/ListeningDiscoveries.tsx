@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { discoveries } from "../../content/discoveries";
+import { unitHash } from "../curriculum/PlayCatalog";
 import { useAudio } from "../../audio/AudioProvider";
 export function ListeningDiscoveries() {
   const dialog = useRef<HTMLDialogElement>(null),
@@ -66,7 +67,7 @@ export function ListeningDiscoveries() {
         <a href={d.source} target="_blank" rel="noreferrer">
           {d.label} ↗
         </a>
-        <a href="#play/learn" onClick={() => dialog.current?.close()}>
+        <a href={unitHash(["aquarium-layers", "aquarium-return", "aquarium-colour"][index])} onClick={() => dialog.current?.close()}>
           Try the idea in Play ↗
         </a>
       </dialog>

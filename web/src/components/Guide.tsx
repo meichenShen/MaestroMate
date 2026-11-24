@@ -9,12 +9,12 @@ const steps = [
   {
     number: "02",
     title: "Take your time.",
-    text: "On the home page, scroll and let each scene settle. Inside a room, take your time. In Chat, choose a question and your conversation will unfold.",
+    text: "On the home page, scroll and let each scene settle. Inside a room, take your time. In Chat, choose a prepared question and explore the sources behind the reply.",
   },
   {
     number: "03",
     title: "Make it your own.",
-    text: "The rooms work on their own. In Play, try Aquarium’s Notice, Explore and Invent games, follow sound clues, or follow a fish in Music Pool. A Program connects listening, a chat and your learning trail. Leave or come back whenever you like.",
+    text: "The rooms work on their own. Play has three spaces: Explore a piece, Music lessons and Create & play. Learn an idea, try two little checks, then make something. A Program connects the rooms around Aquarium. Leave or come back whenever you like.",
   },
 ];
 export function Guide({ onClose }: { onClose: () => void }) {

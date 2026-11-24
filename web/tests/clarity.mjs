@@ -38,7 +38,7 @@ test("questions are visible without hover and fit each fixed answer stage", asyn
     [1440, 900],
     [1024, 768],
   ]) {
-    const p = await visit("#program/aquarium/play", w, h, "reduce", w === 1024);
+    const p = await visit("#play/aquarium", w, h, "reduce", w === 1024);
     if (w === 1024) await p.getByRole("alert").waitFor();
     try {
       for (let i = 0; i < detectiveQuestions.length; i++) {
@@ -113,7 +113,7 @@ test("case rail scrolls horizontally when its contents no longer fit", async () 
   }
 });
 test("Program ending celebrates and provides Home, restart and another Program", async () => {
-  const p = await visit("#program/aquarium/play");
+  const p = await visit("#play/aquarium");
   try {
     await p.locator("#current-sound-case").getByRole("radio").nth(1).check();
     await p.getByRole("button", { name: "Check answer", exact: true }).click();
@@ -147,7 +147,7 @@ test("Program ending celebrates and provides Home, restart and another Program",
       await p.locator("audio").getAttribute("data-identity"),
       "retained",
     );
-    await p.evaluate(() => (location.hash = "#program/aquarium/play"));
+    await p.evaluate(() => (location.hash = "#play/aquarium"));
     await p.locator("#current-sound-case").waitFor();
     assert.equal(await p.locator("input[type=radio]:checked").count(), 0);
   } finally {

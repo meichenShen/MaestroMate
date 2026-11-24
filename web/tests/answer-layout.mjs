@@ -28,7 +28,7 @@ test("question audio and answer actions never overlap their card or navigation i
     });
     if (height < 800) await p.route("**/audio/aquarium.mp3", (r) => r.abort());
     try {
-      await p.goto(base + "/#program/aquarium/play");
+      await p.goto(base + "/#play/aquarium");
       if (height < 800) await p.getByRole("alert").waitFor();
       for (let i = 1; i <= 3; i++) {
         await p

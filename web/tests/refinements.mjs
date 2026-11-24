@@ -142,6 +142,7 @@ test("composer speaks in first person with biographical sources", async () => {
       await p
         .locator('[data-speaker="camille"]')
         .nth(1)
+        .locator(".message-source")
         .getByRole("link")
         .count(),
       1,

@@ -98,12 +98,18 @@ try {
     .click();
   await page
     .getByRole("heading", {
-      name: "Stay in the music.",
+      name: "Hear it. Get it. Make it yours.",
       exact: true,
     })
     .waitFor();
   await page
-    .getByRole("button", { name: "Play Sound Detective", exact: true })
+    .getByRole("link", { name: "Explore a piece", exact: true })
+    .click();
+  await page
+    .getByRole("link", {
+      name: "Sound Detective · extra listening clues",
+      exact: true,
+    })
     .click();
   await page
     .getByRole("heading", { name: "Follow the clues.", exact: true })
@@ -136,9 +142,9 @@ try {
   );
   await page.getByRole("link", { name: /Next: Play/ }).click();
   await page
-    .getByRole("heading", { name: "Follow the clues.", exact: true })
+    .getByRole("heading", { name: "Below the ripples", exact: true })
     .waitFor();
-  await page.getByRole("link", { name: /Finish your visit/ }).click();
+  await page.getByRole("link", { name: "Finish visit", exact: true }).click();
   await page
     .getByRole("heading", { name: "Lovely wandering.", exact: true })
     .waitFor();

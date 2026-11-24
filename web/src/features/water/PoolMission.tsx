@@ -56,7 +56,7 @@ export function PoolMission({
             ? "✓ Your reply keeps the opening and changes the ending. You made a variation!"
             : "Your challenge: keep the first phrase, then change only the ending of its reply."}
         </p>
-        <a href="#play/learn">Explore pitch, return and variation ↗</a>
+        <a href="#play/works/aquarium/aquarium-return">Learn about repetition & variation</a>
       </dialog>
     </>
   );

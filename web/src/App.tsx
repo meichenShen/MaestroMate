@@ -14,16 +14,17 @@ import { Theater } from "./features/theater/Theater";
 import { Conversation } from "./features/conversation/Conversation";
 import { useComposerChat } from "./features/conversation/useComposerChat";
 import { Detective, initialProgress } from "./features/detective/Detective";
-import { GameRoom } from "./features/detective/GameRoom";
 import { ListeningLibrary } from "./features/library/ListeningLibrary";
 import { MusicPool } from "./features/water/MusicPool";
 import { emptyMelody } from "./features/water/model";
 import { useSmoothPage } from "./hooks/useSmoothPage";
 import { useRoute } from "./navigation/useRoute";
 import { activityHash, navigate } from "./navigation/routes";
-import { AquariumWorkshop } from "./features/workshop/AquariumWorkshop";
+import { LessonRoom } from "./features/curriculum/LessonRoom";
+import { PlayCatalog } from "./features/curriculum/PlayCatalog";
+import { type CurriculumProgress } from "./content/curriculum";
 import "./features/learning/learning.css";
-import { type WorkshopProgress } from "./content/play/aquarium";
+
 function Site() {
   const audio = useAudio(),
     route = useRoute();
@@ -34,9 +35,7 @@ function Site() {
     [progress, setProgress] = useState(initialProgress),
     [motion, setMotion] = useState(true),
     [visited, setVisited] = useState<ActivityId[]>([]);
-  const [workshops, setWorkshops] = useState<Record<string, WorkshopProgress>>(
-    {},
-  );
+  const [curriculum, setCurriculum] = useState<CurriculumProgress>({});
   const [melody, setMelody] = useState(emptyMelody);
   const [guide, setGuide] = useState(() => {
     try {
@@ -147,21 +146,32 @@ function Site() {
             />
           </main>
         )
-      ) : route.kind === "games" ? (
-        <GameRoom />
-      ) : route.kind === "learning" ? (
-        <AquariumWorkshop
-          workId={route.workId || "aquarium"}
-          startLevel={route.level || 0}
-          progress={workshops[route.workId || "aquarium"] || {}}
-          onChange={(p) =>
-            setWorkshops((previous) => ({
-              ...previous,
-              [route.workId || "aquarium"]: p,
-            }))
+      ) : route.kind === "games" || route.kind === "playcatalog" ? (
+        <PlayCatalog
+          area={route.kind === "playcatalog" ? route.area : undefined}
+          progress={curriculum}
+        />
+      ) : route.kind === "learning" || route.kind === "lesson" ? (
+        <LessonRoom
+          unitId={
+            route.kind === "lesson"
+              ? route.unitId
+              : route.workId && route.workId !== "aquarium"
+                ? route.workId
+                : ["aquarium-layers", "aquarium-colour", "aquarium-return"][
+                    route.level || 0
+                  ]
+          }
+          progress={curriculum}
+          onChange={(id, p) =>
+            setCurriculum((previous) => ({ ...previous, [id]: p }))
           }
           enabled={!guide && !entrance}
           journey={route.journey}
+          onSendToPool={(notes) => {
+            setMelody([...notes]);
+            navigate("#play/pool");
+          }}
         />
       ) : route.kind === "pool" ? (
         <MusicPool
@@ -171,11 +181,11 @@ function Site() {
         />
       ) : route.kind === "summary" ? (
         <ProgramComplete
-          workshop={workshops.aquarium || {}}
+          curriculum={curriculum}
           motion={!guide && !entrance}
           onRestart={() => {
             setProgress(initialProgress);
-            setWorkshops({});
+            setCurriculum({});
             chat.reset();
             startProgram();
           }}

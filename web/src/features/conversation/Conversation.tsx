@@ -10,6 +10,8 @@ import {
 import { questions, questionPresentation } from "../../content/aquarium";
 import { ClipButton } from "../../components/ClipButton";
 import { Hint } from "../../components/Hint";
+import { KnowledgeShelf } from "./KnowledgeShelf";
+import { unitHash } from "../curriculum/PlayCatalog";
 import type { ChatTurn } from "./useComposerChat";
 const topics = [
   {
@@ -47,8 +49,12 @@ export function Conversation({
   onAsk: (id: string) => void;
 }) {
   const thread = useRef<HTMLDivElement>(null),
-    follow = useRef(true);
+    follow = useRef(true),
+    questionRail = useRef<HTMLDivElement>(null);
   const [topic, setTopic] = useState("all");
+  useEffect(() => {
+    questionRail.current?.scrollTo({ left: 0 });
+  }, [topic]);
   const latest = () =>
     thread.current?.scrollTo({
       top: thread.current.scrollHeight,
@@ -90,6 +96,7 @@ export function Conversation({
             </button>
           ))}
         </nav>
+        <KnowledgeShelf />
       </aside>
       <div className="chat-main">
         <header className="chat-room-heading">
@@ -99,6 +106,9 @@ export function Conversation({
             sources shown; they are not historical quotations or live AI.
           </Hint>
         </header>
+        <p className="prepared-disclosure">
+          Prepared conversation · AI is not connected
+        </p>
         <div className="chat-window">
           <div
             ref={thread}
@@ -148,6 +158,9 @@ export function Conversation({
                           <p>{q.sourceLabel}</p>
                         )}
                       </details>
+                      <a className="chat-play-link" href={unitHash(q.playUnit)}>
+                        Try this idea in Play
+                      </a>
                     </div>
                   )}
                 </div>
@@ -161,7 +174,37 @@ export function Conversation({
           </div>
           <div className="chat-prompts">
             <div className="prompt-heading">
-              <p>Ask me about…</p>
+              <p>Choose a question</p>
+              <div className="question-rail-actions">
+                <button
+                  aria-label="Previous questions"
+                  onClick={() =>
+                    questionRail.current?.scrollBy({
+                      left: -260,
+                      behavior: matchMedia("(prefers-reduced-motion: reduce)")
+                        .matches
+                        ? "instant"
+                        : "smooth",
+                    })
+                  }
+                >
+                  Previous
+                </button>
+                <button
+                  aria-label="More questions"
+                  onClick={() =>
+                    questionRail.current?.scrollBy({
+                      left: 260,
+                      behavior: matchMedia("(prefers-reduced-motion: reduce)")
+                        .matches
+                        ? "instant"
+                        : "smooth",
+                    })
+                  }
+                >
+                  More
+                </button>
+              </div>
               <button
                 className="thread-bottom"
                 aria-label="Show latest messages"
@@ -173,7 +216,12 @@ export function Conversation({
                 <ArrowDown size={18} />
               </button>
             </div>
-            <div className="question-tiles">
+            <div
+              className="question-tiles"
+              ref={questionRail}
+              role="group"
+              aria-label="Suggested questions"
+            >
               {questions
                 .filter(
                   (q) =>
@@ -198,7 +246,8 @@ export function Conversation({
                 ))}
             </div>
             <p className="chat-note">
-              An imagined conversation, with real history.
+              Imagined first-person replies, based on the sources shown. Not
+              historical quotations.
             </p>
           </div>
         </div>
