@@ -229,7 +229,7 @@ export async function handleChat(
     try {
       const upstream = await fetcher(endpoint, {
         method: "POST",
-        redirect: "error",
+        redirect: "manual",
         signal: controller.signal,
         headers: {
           "Content-Type": "application/json",
