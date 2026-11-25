@@ -383,3 +383,4 @@ test("an editorial citation carries inspectable source notes, not only a home li
     DB.close();
   }
 });
+test('provider failure diagnostics contain only stage and HTTP status, never credentials or response text',async()=>{const {DB,env,token}=await setup();const old=console.warn,logs=[];console.warn=(...args)=>logs.push(args);try{await handleChat(req('',body(),{'x-chat-token':token}),env,async()=>new Response('private vendor body test-key',{status:401}));assert.ok(logs.some(x=>JSON.stringify(x).includes('401')));assert.ok(!JSON.stringify(logs).includes('test-key'));assert.ok(!JSON.stringify(logs).includes('private vendor'));}finally{console.warn=old;DB.close()}});
