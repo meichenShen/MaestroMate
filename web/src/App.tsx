@@ -258,9 +258,7 @@ function Site() {
               ) : activity === "conversation" ? (
                 <Conversation
                   journey={route.journey}
-                  turns={chat.turns}
-                  pending={chat.pending}
-                  onAsk={chat.ask}
+                  chat={chat}
                 />
               ) : (
                 <Detective progress={progress} onChange={setProgress} />

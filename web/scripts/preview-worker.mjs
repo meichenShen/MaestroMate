@@ -35,7 +35,7 @@ const server = createServer(async (incoming, outgoing) => {
     const origin = `http://${incoming.headers.host}`;
     const init = { method: incoming.method, headers: incoming.headers };
     if (!['GET', 'HEAD'].includes(incoming.method)) { init.body = incoming; init.duplex = 'half'; }
-    const response = await worker.fetch(new Request(new URL(incoming.url, origin), init), { DB, ASSETS });
+    const response = await worker.fetch(new Request(new URL(incoming.url, origin), init), { DB, ASSETS, DASHSCOPE_API_KEY: process.env.DASHSCOPE_API_KEY });
     outgoing.writeHead(response.status, Object.fromEntries(response.headers));
     if (response.body) for await (const chunk of response.body) outgoing.write(chunk);
     outgoing.end();

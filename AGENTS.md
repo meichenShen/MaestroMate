@@ -14,7 +14,7 @@
 - Real-time fish rendering belongs in `web/src/rendering/` and `AquariumView`; pre-rendered illustrations belong in `web/public/images/`. Preserve that distinction in credits and claims. Model/source licenses live with the assets.
 
 - Listen, Chat and Play are independent routes/features. Program is an optional guided route through them; show progress/next only for explicit Program URLs.
-- Retain ordered prepared chat turns above route switches; do not turn them into one replaceable answer or enable free AI input.
+- Retain ordered conversation turns above route switches; do not replace the thread with one answer. Live AI is now explicitly authorized: keep it opt-in, sourced, bounded and server-only.
 - Home-only scene snapping must respect dialogs, nested chat scrolling and reduced motion. Keep libraries and rooms freely scrollable.
 - Theatre art is original texture-free3D geometry. Large icons may draw their strokes. Do not reintroduce generated theatre/portrait/environment rasters; static fallback should be captured from actual rendering.
 
@@ -38,4 +38,4 @@
 - Music Pool uses a rimless soft-edged surface; do not restore decorative torus/body/outer stroke. Fish echo and free painting share the existing synth and must cancel stale startup/voices on mode/Guide/hide/navigation. Preserve44px-plus separate HTML targets and fallback, with no compulsory drag.
 
 - Current Play uses `web/src/features/curriculum/` and `web/src/content/curriculum.ts`: Explore a piece / Music lessons / Create & play. Learn, two Try checks, and Make are distinct screens in the fixed desktop stage. Keep recording-backed work content separate from general lessons and original synth examples. The v14 twelve-game workshop is archived source, not the active navigation.
-- Prepared Chat knowledge and sources live in `web/src/content/knowledge/`. Keep full suggested questions visible; only supplementary hints may rely on hover. No live AI/free input until API work is explicitly resumed. Unit progress is visit-local and counts two checked answers plus a completed valid creation; audio cancellation never marks completion.
+- Prepared Chat knowledge and sources live in `web/src/content/knowledge/`. Keep full suggested questions visible; only supplementary hints may rely on hover. AI is now resumed with Qwen; worker/chat.ts owns provider calls, typed knowledge/retrieval owns reference context, and private D1 stores quota metadata only. Never put keys in VITE variables or deploy a Cloud proxy placeholder as a vendor secret. Unit progress is visit-local and counts two checked answers plus a completed valid creation; audio cancellation never marks completion.

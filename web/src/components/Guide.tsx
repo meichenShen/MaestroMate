@@ -9,7 +9,7 @@ const steps = [
   {
     number: "02",
     title: "Take your time.",
-    text: "On the home page, scroll and let each scene settle. Inside a room, take your time. In Chat, choose a prepared question and explore the sources behind the reply.",
+    text: "On the home page, scroll and let each scene settle. Inside a room, take your time. In Chat, choose a question and explore its sources. AI is optional in Settings.",
   },
   {
     number: "03",

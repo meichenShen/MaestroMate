@@ -249,12 +249,12 @@ test("Chat shows full prompts, prepared mode and local knowledge sources without
   const p = await visit("#chat");
   const calls = [];
   p.on("request", (r) => {
-    if (/\/api\/(chat|responses)|api\.openai|apinebula/.test(r.url()))
+    if (/\/api\/chat$|\/api\/responses|api\.openai|apinebula/.test(r.url()))
       calls.push(r.url());
   });
   try {
     await p
-      .getByText("Prepared conversation · AI is not connected", { exact: true })
+      .getByText("Prepared conversation · Imagined replies, with sources", { exact: true })
       .waitFor();
     const q = p.getByRole("button", { name: "Why an aquarium?", exact: true });
     await q.waitFor();

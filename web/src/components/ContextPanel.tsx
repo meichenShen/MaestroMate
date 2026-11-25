@@ -43,7 +43,7 @@ export function ContextPanel({ activity }: { activity: ActivityId }) {
               {activity === "theater"
                 ? "The scene is our interpretation. Yours can be completely different."
                 : activity === "conversation"
-                  ? "Choose a prepared question. These are editorial notes, not the composer speaking."
+                  ? "Choose a question or try AI in Settings. This is imagined dialogue, with sources to explore."
                   : "No timer. No score. Just another reason to listen."}
             </p>
           </section>
@@ -51,7 +51,7 @@ export function ContextPanel({ activity }: { activity: ActivityId }) {
             <p className="eyebrow">The work</p>
             <p>
               The seventh miniature in <em>The Carnival of the Animals</em>.
-              Composed in France, 1886.
+              Composed in 1886.
             </p>
             <p>{work.recording}</p>
             <p>{work.recordingNote}</p>

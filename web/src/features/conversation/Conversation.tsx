@@ -12,7 +12,9 @@ import { ClipButton } from "../../components/ClipButton";
 import { Hint } from "../../components/Hint";
 import { KnowledgeShelf } from "./KnowledgeShelf";
 import { unitHash } from "../curriculum/PlayCatalog";
-import type { ChatTurn } from "./useComposerChat";
+import type { useComposerChat } from "./useComposerChat";
+import { ChatSettings } from "./ChatSettings";
+import { references, type ReferenceId } from "../../content/knowledge/sources";
 const topics = [
   {
     id: "all",
@@ -41,15 +43,13 @@ const topics = [
 ];
 export function Conversation({
   journey = false,
-  turns,
-  pending,
-  onAsk,
+  chat,
 }: {
   journey?: boolean;
-  turns: ChatTurn[];
-  pending: boolean;
-  onAsk: (id: string) => void;
+  chat: ReturnType<typeof useComposerChat>;
 }) {
+  const { turns, pending, ask: onAsk } = chat;
+  const [draft, setDraft] = useState("");
   const thread = useRef<HTMLDivElement>(null),
     follow = useRef(true),
     questionRail = useRef<HTMLDivElement>(null);
@@ -104,12 +104,22 @@ export function Conversation({
         <header className="chat-room-heading">
           <h2>Pull up a chair.</h2>
           <Hint id="conversation-note" label="About this conversation">
-            An imagined first-person conversation. Prepared replies draw on the
-            sources shown; they are not historical quotations or live AI.
+            An imagined educational conversation, not historical quotations. AI
+            replies may contain mistakes; check the sources shown.
           </Hint>
+          <ChatSettings
+            config={chat.config}
+            enabled={chat.aiEnabled}
+            pending={pending}
+            model={chat.model}
+            onModel={chat.setModel}
+            onEnable={chat.setAI}
+          />
         </header>
         <p className="prepared-disclosure">
-          Prepared conversation · AI is not connected
+          {chat.aiEnabled
+            ? "AI preview · An imagined Camille, with sources"
+            : "Prepared conversation · Imagined replies, with sources"}
         </p>
         <div className="chat-window">
           <div
@@ -135,12 +145,12 @@ export function Conversation({
               </p>
             </div>
             {turns.map((turn) => {
-              const q = questions.find((q) => q.id === turn.questionId)!;
+              const q = questions.find((q) => q.id === turn.questionId);
               return (
                 <div className="chat-turn" key={turn.id}>
                   <div className="chat-message outgoing" data-speaker="you">
                     <span className="speaker-name">You</span>
-                    <p>{q.prompt}</p>
+                    <p>{turn.question}</p>
                   </div>
                   {turn.replied && (
                     <div
@@ -148,24 +158,100 @@ export function Conversation({
                       data-speaker="camille"
                     >
                       <span className="speaker-name">Camille</span>
-                      <p>{q.answer}</p>
-                      {q.clip && <ClipButton clip={q.clip} />}
+                      <span className="reply-label">
+                        {turn.mode === "prepared"
+                          ? "Prepared reply"
+                          : turn.reply?.mode === "guidance"
+                            ? "A little guidance"
+                            : turn.reply?.kind === "listening"
+                              ? "AI · Listening idea"
+                              : turn.reply?.kind === "unknown"
+                                ? "AI · A limit to what we know"
+                                : "AI · From the knowledge shelf"}
+                      </span>
+                      <p>
+                        {turn.mode === "prepared"
+                          ? q?.answer
+                          : turn.reply?.answer}
+                      </p>
+                      {q?.clip && <ClipButton clip={q.clip} />}
                       <details className="message-source">
                         <summary>Behind this reply</summary>
-                        {q.source ? (
-                          <a href={q.source} target="_blank" rel="noreferrer">
-                            {q.sourceLabel} ↗
-                          </a>
+                        {turn.mode === "prepared" ? (
+                          q?.source ? (
+                            <a href={q.source} target="_blank" rel="noreferrer">
+                              {q.sourceLabel} ↗
+                            </a>
+                          ) : (
+                            <p>{q?.sourceLabel}</p>
+                          )
                         ) : (
-                          <p>{q.sourceLabel}</p>
+                          <>
+                            <p>
+                              AI adapted these reference notes into an imagined
+                              reply. Source links are checked; factual accuracy
+                              still needs your judgement.
+                            </p>
+                            {turn.reply?.sourceIds.map((id) =>
+                              Object.hasOwn(references, id) ? (
+                                <a
+                                  key={id}
+                                  href={references[id as ReferenceId].url}
+                                  target={
+                                    id === "editorial" ? undefined : "_blank"
+                                  }
+                                  rel="noreferrer"
+                                >
+                                  {references[id as ReferenceId].label} ↗
+                                </a>
+                              ) : null,
+                            )}
+                            {!turn.reply?.sourceIds.length && (
+                              <p>No supporting reference was returned.</p>
+                            )}
+                          </>
                         )}
                       </details>
-                      <a
-                        className="chat-play-link"
-                        href={unitHash(q.playUnit, journey)}
-                      >
-                        Try this idea in Play
-                      </a>
+                      {q && (
+                        <a
+                          className="chat-play-link"
+                          href={unitHash(q.playUnit, journey)}
+                        >
+                          Try this idea in Play
+                        </a>
+                      )}
+                    </div>
+                  )}
+                  {turn.error && (
+                    <div className="chat-error" role="alert">
+                      <p>
+                        {turn.error === "rate_limited"
+                          ? "Our AI needs a little rest. Try again later, or explore the prepared questions."
+                          : "That reply could not be checked. Try again, or use our prepared questions."}
+                      </p>
+                      <div>
+                        <button
+                          disabled={pending}
+                          onClick={() => chat.retry(turn.id)}
+                        >
+                          Try that question again
+                        </button>
+                        {q ? (
+                          <button
+                            disabled={pending}
+                            onClick={() => chat.readPrepared(turn.id)}
+                          >
+                            Read the prepared reply
+                          </button>
+                        ) : (
+                          <button
+                            disabled={pending}
+                            onClick={() => chat.setAI(false)}
+                          >
+                            Use prepared questions
+                          </button>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -173,7 +259,7 @@ export function Conversation({
             })}
             {pending && (
               <div className="typing-indicator" role="status">
-                Camille is replying…
+                Looking through the knowledge shelf…
               </div>
             )}
           </div>
@@ -250,9 +336,46 @@ export function Conversation({
                   </button>
                 ))}
             </div>
-            <p className="chat-note">
-              Imagined first-person replies, based on the sources shown. Not
-              historical quotations.
+            {chat.aiEnabled && (
+              <form
+                className="chat-compose"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!pending && draft.trim()) {
+                    chat.askText(draft.trim());
+                    setDraft("");
+                    follow.current = true;
+                  }
+                }}
+              >
+                <label className="sr-only" htmlFor="music-question">
+                  Your music question
+                </label>
+                <input
+                  id="music-question"
+                  type="text"
+                  autoComplete="off"
+                  placeholder="Ask about the music…"
+                  maxLength={600}
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  disabled={pending}
+                  aria-describedby="chat-input-note"
+                />
+                <button
+                  type="submit"
+                  aria-label="Send question"
+                  disabled={pending || !draft.trim()}
+                >
+                  <Send size={19} />
+                  <span>Send</span>
+                </button>
+              </form>
+            )}
+            <p className="chat-note" id="chat-input-note">
+              {chat.aiEnabled
+                ? "Keep private details out. AI can make mistakes; check the sources."
+                : "Choose a question, or explore AI in Settings. Replies are imagined, not quotations."}
             </p>
           </div>
         </div>

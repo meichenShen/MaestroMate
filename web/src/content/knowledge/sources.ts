@@ -1,4 +1,9 @@
 export const references = {
+  editorial: {
+    label: "MaestroMate · Listening and visual interpretation",
+    url: "#about",
+    note: "Contemporary educational interpretation; not a historical document or quotation.",
+  },
   score: {
     label: "IMSLP · Original score and work catalogue",
     url: "https://imslp.org/wiki/Le_Carnaval_des_Animaux_(Saint-Sa%C3%ABns,_Camille)",
