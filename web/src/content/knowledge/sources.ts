@@ -29,6 +29,36 @@ export const references = {
     url: "https://learningmusic.ableton.com/",
     note: "Further exploration of beats, notes and musical patterns. Our examples and activities are original.",
   },
+  analysis: {
+    label: "Philharmonie de Paris · Carnival teaching dossier",
+    url: "https://drop.philharmoniedeparis.fr/CMDP/Orchestre-de-Paris/2022-2023/Carnaval/festin-et-carnaval.pdf",
+    note: "Movement analysis, Aquarium themes and animal contrasts. Uses a different performance with celesta; its timestamps do not apply here.",
+  },
+  glass: {
+    label: "The Franklin Institute · Glass armonica",
+    url: "https://fi.edu/en/science-and-education/collection/benjamin-franklins-glass-armonica",
+    note: "Instrument construction, damp-finger excitation and Franklin's 1761 invention.",
+  },
+  beat: {
+    label: "Ableton · Beat and tempo",
+    url: "https://learningmusic.ableton.com/make-beats/beat-and-tempo.html",
+    note: "Pulse and beats per minute; not a tempo measurement of our recording.",
+  },
+  chords: {
+    label: "Ableton · Chords",
+    url: "https://learningmusic.ableton.com/chords/major-triads.html",
+    note: "Introductory chord examples, separate from Aquarium's score.",
+  },
+  scales: {
+    label: "Ableton · Minor scales",
+    url: "https://learningmusic.ableton.com/notes-and-scales/minor-scales.html",
+    note: "Scale patterns and common descriptions of major/minor colour, not a universal emotional rule.",
+  },
+  timbre: {
+    label: "iZotope · What is timbre?",
+    url: "https://www.izotope.com/community/blog/what-is-timbre-and-why-is-it-important",
+    note: "Sound quality distinguished from pitch, loudness and duration.",
+  },
   recording: {
     label: "Kevin MacLeod · Aquarium recording",
     url: "https://incompetech.com/music/royalty-free/index.html?Search=Search&isrc=USUAN1900026",

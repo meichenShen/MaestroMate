@@ -1,6 +1,6 @@
 # MaestroMate — three rooms, one curious visit
 
-An English music demo built around Saint-Saëns’ **Aquarium**. Listen, composer Chat and music Play are independent destinations. **Program** is a separate, optional route through all three. The first-visit guide introduces two primary entrances; “Just looking for now” is a smaller action only in the entry dialog.
+An English / Chinese music demo built around Saint-Saëns’ **Aquarium**. Listen, composer Chat and music Play are independent destinations. **Program** is a separate, optional route through all three. The first-visit guide introduces two primary entrances; “Just looking for now” is a smaller action only in the entry dialog.
 
 Live: https://maestromate-aquarium.chirpyapple14.chatgpt.site
 
@@ -201,3 +201,11 @@ The persistent language picker in the top header controls the whole interface: h
 `src/i18n/locale.ts` owns the reactive visit-wide setting. Components subscribe with `useLocale()` and translate display text through `t()`. English source content, work/unit/answer IDs and event handlers stay canonical; switching language does not remount the shared audio provider or reset answers/drafts. `ui.zh.json` holds interface copy, `content.zh.json` holds educational copy, and `translate.ts` handles normalized keys plus dynamic labels. Add a Chinese entry when introducing new English copy; unknown copy falls back to its English original. Pitch letters, model brands, URLs and license identifiers remain unchanged. This is local reviewed translation, with no translation API.
 
 Chat uses the same preference for new questions and API replies. Existing user input and AI reply snapshots are never translated as interface text. Per-question source evidence and the distinction between recording, score and synthetic examples remain unchanged. The optional Chat language selector edits the same global preference.
+
+### Chinese copy, type and grounded answers
+
+Chinese UI/lesson copy lives in `src/i18n/{ui,content}.zh.json`; the ten prepared replies live in `src/content/knowledge/chinese.ts`. Keep terms consistent: 音高 (pitch), 音色 (timbre), 响度 (perceived loudness), 音量 (player control), 速度 (tempo), 节奏 (rhythm). Prefer a concrete instruction or fact over motivational slogans. Static Chat copy uses the same catalogue; authored questions and saved replies remain unchanged.
+
+`src/i18n/language.css` loads renamed, self-hosted SC subsets in `public/fonts/`, with source and OFL licence alongside them. Latin fonts are retained. GB2312 plus UI characters are covered; rarer Chinese characters use the system fallback. To regenerate, run `python3 scripts/subset-chinese-fonts.py --font-dir /path/to/noto-ttc` with fonttools[woff] installed; this is an optional asset-authoring step, not a build/runtime dependency. Check headings and prose at 1440×900, 1366×600 and 390×844 using `node tests/chinese-layout-browser.mjs`.
+
+Chat reference notes and citations live in `src/content/knowledge/{retrieval,sources}.ts`. New facts require reviewed sources; a source ID alone does not establish that an answer is true. Retrieval ranks the current question first and uses up to three earlier user questions for elliptical follow-ups. The source collection distinguishes original scoring, another institution's performance analysis, our produced recording and contemporary visual interpretations. The server prompt requires plain, native-language explanations and forbids inferred personal feelings or forced closing invitations. Keep the existing opt-in, quota and server-only credential controls.

@@ -73,6 +73,20 @@ export const knowledgeEntries: KnowledgeEntry[] = [
     sourceIds: ["editorial", "theory"],
   },
 ];
+// Reviewed additions: facts are deliberately split by topic so a question does
+// not get answered with an unrelated biography paragraph. Source review: 2026-11-25.
+knowledgeEntries.push(
+  {id:"aquarium-analysis",keywords:"Aquarium analysis form structure theme themes chromatic descending contrary motion muted strings flowing water rippling",text:"The Philharmonie teaching dossier describes a sustained, singing flute-and-muted-string theme above rapid piano figures in contrary motion, contrasted with descending chromatic piano material. This describes musical writing, not literal recorded water or a specific fish. The dossier discusses a performance using celesta: distinguish that substitute from the original glass-harmonica part. Its excerpt times do not apply to this site. A complete bar-by-bar harmonic analysis is not supplied here.",sourceIds:["analysis","score"]},
+  {id:"animal-contrasts",keywords:"animals movements lion tortoise elephant kangaroo cuckoo aviary fossils Swan cello contrast",text:"The Carnival presents contrasting short movements: the lion is introduced by a stately march; tortoises use a slowed-down cancan quotation; the elephant features double bass; The Swan features cello with two pianos. These are examples from the whole Carnival, not the instrumentation of Aquarium. Their source recording and excerpt times differ from ours.",sourceIds:["analysis","score"]},
+  {id:"works",keywords:"works wrote other pieces compositions opera symphony concerto Samson Dalila Danse macabre organ third",text:"Saint-Saëns wrote across genres. Examples include the opera Samson et Dalila (1877), the symphonic poem Danse macabre (1875), Symphony No. 3 with organ (1886), and five piano concertos. Aquarium is only one movement of one work, not a summary of his output.",sourceIds:["biography"]},
+  {id:"film",keywords:"film cinema movie soundtrack Guise assassination 1908",text:"In 1908 Saint-Saëns composed music for the film The Assassination of the Duke of Guise. This is a different work from Aquarium. Do not claim Aquarium was composed for cinema or that he invented film music.",sourceIds:["biography"]},
+  {id:"travel",keywords:"travel travelled traveled abroad outside France Algeria Egypt Algiers death died 1921",text:"Saint-Saëns toured internationally as a pianist and composer, and regularly visited Algeria and Egypt from 1873. He died in Algiers on 16 December 1921. These facts do not establish what he thought or felt on any particular journey.",sourceIds:["biography"]},
+  {id:"glass",keywords:"glass harmonica armonica Franklin friction vibrate vibration sound wet fingers bowls spinning invention 1761",text:"Franklin completed his glass armonica in 1761. It uses graduated glass bowls on a rotating spindle, sounded by damp fingers touching the glass. Friction makes the glass vibrate. It is not a mouth-blown harmonica, nor the same instrument as a celesta. The original Aquarium calls for glass harmonica; our produced recording does not provide isolated proof of each instrument.",sourceIds:["glass","score"]},
+  {id:"tempo",keywords:"tempo speed fast slow bpm beat pulse rhythm rest silence steady duration",text:"A beat is a recurring pulse. Tempo is its speed, measured in beats per minute (BPM): at 60 BPM one beat lasts a second, at 120 BPM there are two beats per second. Rhythm is the arrangement of sounds and rests in time; different rhythms can share one tempo. These examples explain concepts, not the measured tempo of this site's recording.",sourceIds:["beat"]},
+  {id:"harmony",keywords:"harmony chord chords triad triads simultaneous melody arpeggio broken",text:"A chord groups pitches heard together; a basic triad uses three notes. A melody unfolds as a sequence of pitches. An arpeggio plays chord tones successively rather than all at once. C–E–G is a C-major triad used here as a general example, not a transcription of Aquarium.",sourceIds:["chords"]},
+  {id:"scales",keywords:"scale scales major minor key keys happy sad emotion mood intervals semitone whole tone tonal",text:"Major and natural-minor scales arrange whole steps and half steps differently. For C major the notes are C D E F G A B; for C natural minor they are C D E-flat F G A-flat B-flat. Major is often described as bright and minor as dark, but these are common associations, not rules for a listener's feelings. Do not infer an exact Aquarium key or harmonic analysis from these introductory examples.",sourceIds:["scales"]},
+  {id:"timbre",keywords:"timbre tone colour color distinguish flute violin piano pitch loudness volume high low",text:"Pitch describes how high or low a sound is (on a piano keyboard pitches get higher from left to right); loudness describes how loud or soft it seems. Timbre is the sound quality that helps distinguish, for example, a flute and a violin even at a similar pitch and loudness. Timbre is not the same as pitch or loudness. General comparisons do not identify individual sources in the site's produced mix.",sourceIds:["timbre"]},
+);
 const questionNotes: Record<string, string[]> = {
   aquarium: ["carnival", "score", "layers"],
   layers: ["layers", "score"],
@@ -88,7 +102,7 @@ const questionNotes: Record<string, string[]> = {
 export function retrieveKnowledge(
   question: string,
   questionId?: string,
-  followUpContext = "",
+  followUpContext: string | string[] = "",
 ): KnowledgeEntry[] {
   const suggestion =
     questionId || questions.find((q) => q.prompt === question.trim())?.id;
@@ -99,42 +113,35 @@ export function retrieveKnowledge(
         )
       : [];
 
-  const chineseTerms:Record<string,string>={乐器:'instruments',玻璃:'glass harmonica',钢琴:'piano',旋律:'melody',伴奏:'accompaniment',巴黎:'Paris',福雷:'Fauré teaching',学生:'teaching',生平:'biography life',出生:'born',节奏:'rhythm',音高:'pitch',录音:'recording',鱼:'fish scene',创作:'making variation',狂欢节:'Carnival history'};
-  question += ' ' + Object.entries(chineseTerms).filter(([term])=>question.includes(term)).map(([,word])=>word).join(' ');
-  const words =
-    (question + " " + (anchors.length ? "" : followUpContext))
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .match(/[a-z]{3,}/g) || [];
-  const ranked = knowledgeEntries
-    .map((entry, i) => ({
-      entry,
-      i,
-      score: words.reduce(
-        (n, w) =>
-          n +
-          (entry.keywords
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .includes(w)
-            ? 1
-            : 0),
-        0,
-      ),
-    }))
-    .sort((a, b) => b.score - a.score || a.i - b.i);
-  // The persona, work and editorial boundary are always available, even for follow-ups.
-  const selected = [
-    ...anchors,
-    ...ranked
-      .filter((x) => x.score > 0)
-      .slice(0, 4)
-      .map((x) => x.entry),
-    knowledgeEntries[0],
-    knowledgeEntries[2],
-    knowledgeEntries[5],
-  ];
-  return [...new Map(selected.map((x) => [x.id, x])).values()].slice(0, 7);
+  const current = tokens(question);
+  // Expand Chinese context too: pronouns such as 它 otherwise lose their topic.
+  const previous = (Array.isArray(followUpContext) ? followUpContext : [followUpContext]).slice(-3).reverse().map(tokens);
+  const ranked = knowledgeEntries.map((entry, i) => {
+    const keywords = tokens(entry.keywords);
+    const score = [...current].reduce((n, w) => n + (keywords.has(w) ? 1 : 0), 0);
+    const context = anchors.length ? 0 : previous.reduce((total, words, age) => total + [...words].filter(w=>keywords.has(w)).length/(age+1),0);
+    return {entry, i, score, context};
+  }).filter(x=>x.score>0||x.context>0).sort((a,b)=>b.score-a.score||b.context-a.context||a.i-b.i);
+  const baseIds = ["person","carnival","scene"];
+  const topics = [...anchors, ...ranked.slice(0,5).map(x=>x.entry)].filter(x=>!baseIds.includes(x.id));
+  const selected = [...new Map(topics.map(x=>[x.id,x])).values()].slice(0,6);
+  // Reserve the persona and interpretation boundary; never truncate them away.
+  for(const id of baseIds)
+    selected.push(knowledgeEntries.find(n=>n.id===id)!);
+  return [...new Map(selected.map(x=>[x.id,x])).values()].slice(0,9);
+}
+const aliases:Record<string,string> = {
+  水族馆:"Aquarium",开头:"theme layers",乐器:"instruments",玻璃:"glass harmonica",发声:"vibration",钢琴:"piano",长笛:"flute",小提琴:"violin",
+  音色:"timbre",音高:"pitch",响度:"loudness",音量:"volume",旋律:"melody",伴奏:"accompaniment",
+  教堂:"Madeleine",巴黎:"Paris",福雷:"Faure teaching",学生:"teaching",老师:"teaching",生平:"life",小时候:"childhood",童年:"childhood",出生:"born",
+  拍点:"beat pulse",一拍:"beat pulse",节奏:"rhythm",节拍:"beat",拍子:"beat",速度:"tempo",快慢:"tempo",休止:"rest",谁演奏:"recording performer",谁做的:"recording",录制:"recording",录音:"recording",版本:"recording",演奏者:"performer",
+  鱼:"fish scene",画面:"scene",创作:"compositions",作品:"works",写过:"works",歌剧:"opera",交响曲:"symphony",协奏曲:"concerto",骷髅:"macabre",
+  结构:"structure",曲式:"form",主题:"theme",半音:"chromatic",水流:"flowing water",海水:"water",乌龟:"tortoise",大象:"elephant",狮子:"lion",大提琴:"cello",狂欢节:"Carnival history",天鹅:"Swan",乐章:"movement",出版:"publish",遗憾:"regret",后悔:"regret",电影:"film",配乐:"soundtrack",
+  去过:"travel",国家:"abroad",法国以外:"abroad outside France",旅行:"travel",去世:"death",埃及:"Egypt",阿尔及利亚:"Algeria",
+  和弦:"chord",三和弦:"triad",分解和弦:"arpeggio",和声:"harmony",大调:"major scale",小调:"minor scale",音阶:"scale",快乐:"happy",悲伤:"sad",变奏:"variation",
+};
+const stopwords = new Set("what which when where why how would could should can did does have has had you your yours tell about something anything please more this that these those with from were was the and for are not its into want like know music musical composer saint saens camille".split(" "));
+function tokens(text:string):Set<string> {
+  const expanded=text+" "+Object.entries(aliases).filter(([term])=>text.includes(term)).map(([,value])=>value).join(" ");
+  return new Set((expanded.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").match(/[a-z]{3,}/g)||[]).filter(w=>!stopwords.has(w)));
 }

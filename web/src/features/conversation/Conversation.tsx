@@ -63,23 +63,23 @@ export function Conversation({ journey = false, chat, }: {
     }, [turns, pending]);
     return (<section className="conversation-feature chat-studio" aria-labelledby="conversation-title">
       <aside className="artist-profile" data-lenis-prevent>
-        <p className="eyebrow">{t(zh ? "认识作曲家" : "Meet the composer")}</p>
+        <p className="eyebrow">{t("Meet the composer")}</p>
         <div className="artist-emblem" aria-hidden="true">
           <Music2 strokeWidth={1.1}/>
           <span>{t("C.S.")}</span>
         </div>
-        <h1 id="conversation-title">{t(zh ? "卡米耶·圣桑" : "Camille Saint-Saëns")}</h1>
+        <h1 id="conversation-title">{t("Camille Saint-Saëns")}</h1>
         <p className="artist-years">{t("1835 \u2014 1921")}</p>
-        <p className="artist-roles">{t(zh ? "作曲家 · 钢琴家 · 管风琴师" : "Composer. Pianist. Organist.")}</p>
+        <p className="artist-roles">{t("Composer. Pianist. Organist.")}</p>
         <div className="composer-illustration" aria-hidden="true"><svg viewBox="0 0 240 130" fill="none"><path d="M35 82V45c0-20 105-32 140 0l30 23v30H35Z" fill="#a593e033" stroke="#a593e0" strokeWidth="2"/><path d="M35 81h170M55 82v18m22-18v18m22-18v18m22-18v18m22-18v18m22-18v18m22-18v18M48 101v19m145-19v19" stroke="#ffda8e" strokeWidth="3"/><circle cx="181" cy="24" r="8" fill="#ee2560"/><path d="M188 24V5l18 5" stroke="#ee2560" strokeWidth="3"/></svg></div>
-        <p className="composer-story">{t(zh ? '我是卡米耶·圣桑。钢琴、管风琴、创作和教学，都是我的音乐生活。欢迎坐下来，听听音乐，也聊聊它背后的故事。' : "I’m Camille. Piano, organ, composing and teaching filled my musical life. Take a seat—let’s discover the person and the ideas behind this music.")}</p>
-        <div className="composer-facts"><span><b>{t("1835")}</b>{t(zh ? '出生于巴黎' : 'Born in Paris')}</span><span><b>{t("1886")}</b>{t(zh ? '写下《动物狂欢节》' : 'The Carnival takes shape')}</span></div>
-        <details className="composer-biography"><summary>{t(zh ? '读一读他的故事' : 'Read his story')}</summary><p>{t(zh ? '圣桑曾在巴黎玛德莲教堂担任二十年管风琴师，也在尼德迈尔学校教音乐。他的学生中有加布里埃尔·福雷。' : 'For twenty years, Saint-Saëns was organist at La Madeleine in Paris. He also taught at the École Niedermeyer; Gabriel Fauré was among his pupils.')}</p><p>{t(zh ? '1886年的《动物狂欢节》原本是朋友间的音乐趣作。《水族馆》是其中第七乐章。这里的对话是参考史料的想象演绎，不是历史引语。' : 'The Carnival of the Animals began as a private musical amusement in 1886. Aquarium is its seventh movement. Our conversation is an imagined adaptation guided by historical sources, not a quotation.')}</p></details>
+        <p className="composer-story">{t("Saint-Saëns was a French composer, pianist and organist. Aquarium is one of fourteen movements in The Carnival of the Animals.")}</p>
+        <div className="composer-facts"><span><b>{t("1835")}</b>{t('Born in Paris')}</span><span><b>{t("1886")}</b>{t('The Carnival takes shape')}</span></div>
+        <details className="composer-biography"><summary>{t('Read his story')}</summary><p>{t('For twenty years, Saint-Saëns was organist at La Madeleine in Paris. He also taught at the École Niedermeyer; Gabriel Fauré was among his pupils.')}</p><p>{t('The Carnival of the Animals began as a private musical amusement in 1886. Aquarium is its seventh movement. Our conversation is an imagined adaptation guided by historical sources, not a quotation.')}</p></details>
         <KnowledgeShelf />
       </aside>
       <div className="chat-main">
         <header className="chat-room-heading">
-          <h2>{t(zh ? "和圣桑聊一聊" : "A moment with Camille.")}</h2>
+          <h2>{t("A moment with Camille.")}</h2>
           <Hint id="conversation-note" label={t("About this conversation")}>{t("An imagined educational conversation, not historical quotations. AI replies may contain mistakes; check the sources shown.")}</Hint>
           <ChatSettings config={chat.config} enabled={chat.aiEnabled} pending={pending} model={chat.model} onModel={chat.setModel} onEnable={chat.setAI}/>
         </header>
@@ -97,7 +97,7 @@ export function Conversation({ journey = false, chat, }: {
             <div className="chat-message incoming" data-speaker="camille">
               <span className="speaker-name">{t("Camille")}</span>
               <p>
-                {t(zh ? '你好，我是这里的“圣桑”——一个根据史料想象的音乐伙伴。刚才的音乐里，有什么让你好奇？' : "Hello, I’m your imagined Camille. What caught your ear in the music? Let’s start there.")}
+                {t("Hello! Ask me about Aquarium, my other pieces, or how music works. Choose a question below or write your own.")}
               </p>
             </div>
             {turns.map((turn) => {
@@ -157,11 +157,11 @@ export function Conversation({ journey = false, chat, }: {
             {t(pending && (<div className="typing-indicator" role="status">{t("Looking through the knowledge shelf\u2026")}</div>))}
           </div>
           <div className="chat-prompts">
-            <div className="chat-modebar" aria-label={t("Conversation controls")}><button role="switch" aria-label={t("AI conversation")} aria-checked={chat.aiEnabled} disabled={pending || !chat.config?.enabled} onClick={() => chat.aiEnabled ? chat.setAI(false) : setConsent(true)}><i />{t(zh ? 'AI 对话' : 'AI conversation')} {t(chat.aiEnabled ? 'On' : 'Off')}</button><select aria-label={t("AI model")} value={chat.model} disabled={pending} onChange={e => chat.setModel(e.target.value)}>{t((chat.config?.models || []).map(m => <option key={m.id} value={m.id}>{t(m.label)}</option>))}</select><select aria-label={t("Conversation language")} value={chat.language} disabled={pending} onChange={e => chat.setLanguage(e.target.value as 'en' | 'zh')}><option value="en">{t("English")}</option><option value="zh">{t("\u4E2D\u6587")}</option></select></div>
-            <dialog ref={consentDialog} className="inline-consent discovery-dialog" aria-label={t("AI privacy")} onClose={() => setConsent(false)}><p>{t(zh ? '开启后，你的问题和最多三轮对话将发送至阿里云百炼。请不要填写个人信息；儿童请在家长或老师陪伴下使用。' : 'AI sends your question and up to three exchanges to Alibaba Cloud. Leave out private details; children should ask a parent or teacher first.')}</p><button onClick={() => { chat.setAI(true); setConsent(false); }}>{t("Enable AI conversation")}</button><button onClick={() => setConsent(false)}>{t(zh ? '暂不开启' : 'Not now')}</button></dialog>
+            <div className="chat-modebar" aria-label={t("Conversation controls")}><button role="switch" aria-label={t("AI conversation")} aria-checked={chat.aiEnabled} disabled={pending || !chat.config?.enabled} onClick={() => chat.aiEnabled ? chat.setAI(false) : setConsent(true)}><i />{t('AI conversation')} {t(chat.aiEnabled ? 'On' : 'Off')}</button><select aria-label={t("AI model")} value={chat.model} disabled={pending} onChange={e => chat.setModel(e.target.value)}>{t((chat.config?.models || []).map(m => <option key={m.id} value={m.id}>{t(m.label)}</option>))}</select><select aria-label={t("Conversation language")} value={chat.language} disabled={pending} onChange={e => chat.setLanguage(e.target.value as 'en' | 'zh')}><option value="en">{t("English")}</option><option value="zh">{t("\u4E2D\u6587")}</option></select></div>
+            <dialog ref={consentDialog} className="inline-consent discovery-dialog" aria-label={t("AI privacy")} onClose={() => setConsent(false)}><p>{t('AI sends your question and up to three exchanges to Alibaba Cloud. Leave out private details; children should ask a parent or teacher first.')}</p><button onClick={() => { chat.setAI(true); setConsent(false); }}>{t("Enable AI conversation")}</button><button onClick={() => setConsent(false)}>{t('Not now')}</button></dialog>
 
             <div className="prompt-heading">
-              <p>{t(zh ? "试着问问" : "Try asking")}</p>
+              <p>{t("Try asking")}</p>
               <div className="question-rail-actions">
                 <button aria-label={t("Previous questions")} onClick={() => questionRail.current?.scrollBy({
             left: -260,
@@ -207,10 +207,10 @@ export function Conversation({ journey = false, chat, }: {
                 }
             }}>
                 <label className="sr-only" htmlFor="music-question">{t("Your music question")}</label>
-                <input id="music-question" type="text" autoComplete="off" placeholder={t(zh ? "你想问圣桑什么？" : "What would you like to ask Camille?")} maxLength={600} value={draft} onChange={(e) => setDraft(e.target.value)} disabled={pending} aria-describedby="chat-input-note"/>
+                <input id="music-question" type="text" autoComplete="off" placeholder={t("What would you like to ask Camille?")} maxLength={600} value={draft} onChange={(e) => setDraft(e.target.value)} disabled={pending} aria-describedby="chat-input-note"/>
                 <button type="submit" aria-label={t("Send question")} disabled={pending || !draft.trim()}>
                   <Send size={19}/>
-                  <span>{t(zh ? "发送" : "Send")}</span>
+                  <span>{t("Send")}</span>
                 </button>
               </form>))}
             <p className="chat-note" id="chat-input-note">
