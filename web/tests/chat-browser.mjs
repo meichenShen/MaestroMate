@@ -280,6 +280,7 @@ test("retry stays in place and uses only earlier context; prepared mode hides AI
       .waitFor();
     await p.getByRole("button", { name: "Chat settings" }).click();
     await p
+      .getByRole("dialog")
       .getByRole("button", { name: "Use prepared questions", exact: true })
       .click();
     assert.equal(
