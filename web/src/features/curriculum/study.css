@@ -676,3 +676,4 @@
 .study-exit{background:#ffda8e!important;color:#211721!important;font-size:15px!important;white-space:nowrap}
 .study-top>div>p{font-size:15px;margin-top:8px}
 @media(max-width:950px){.study-top .lesson-tools .study-exit{font-size:14px!important;padding:8px 12px}}
+.study-top .lesson-tools a.study-exit{color:#211721!important}

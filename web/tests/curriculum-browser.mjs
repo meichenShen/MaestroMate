@@ -204,6 +204,8 @@ test("short desktop keeps every primary action inside its page, with no vertical
       await p.goto(base + "/#play/create/" + id);
       const b = await p.locator(".studio-transport").boundingBox();
       assert.ok(b && b.y + b.height <= 601, id + JSON.stringify(b));
+      await p.locator("#main").waitFor();
+      await p.evaluate(()=>document.fonts.ready);
       assert.ok(
         await p.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
@@ -245,6 +247,8 @@ test("sources restore focus, reduced motion has no particles, and mobile has no 
       "#play/works/aquarium/aquarium-composer",
     ]) {
       await p.goto(base + "/" + hash);
+      await p.locator("#main").waitFor();
+      await p.evaluate(()=>document.fonts.ready);
       assert.ok(
         await p.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,

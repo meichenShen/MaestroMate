@@ -1,3 +1,4 @@
+import {useLocale} from "../../i18n/locale";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {chineseQuestions} from "../../content/knowledge/chinese";
 import { questions } from "../../content/aquarium";
@@ -23,8 +24,8 @@ export interface ChatTurn {
   error?: string;
 }
 export function useComposerChat() {
+  const {language,setLanguage}=useLocale();
   const [turns, setTurns] = useState<ChatTurn[]>([]),
-    [language,setLanguage] = useState<"en"|"zh">("en"),
     [pending, setPending] = useState(false),
     [config, setConfig] = useState<ChatConfig | null>(null),
     [aiEnabled, setAiEnabled] = useState(false),
