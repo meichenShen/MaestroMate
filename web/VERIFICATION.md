@@ -324,7 +324,7 @@ Final regression update: the legacy browser command passed answer layout, celebr
 
 ### Final public delivery — 2026-11-25, Site version20
 
-- Runtime GitHub commit: `f1902cda9426881319825ffcc95899a76f110a58`. Sites source: `d8064c8252e492293942a16d541b6736d923c604`. Version `appgprj_6af14ade2f2c8191825208668540e338~appgver_23aacc87f60081918b1a678423ce9de7` is the diagnostic version19, superseded by the final version20 recorded by its deployment below.
+- Runtime GitHub commit: `f1902cda9426881319825ffcc95899a76f110a58`. Sites source: `d8064c8252e492293942a16d541b6736d923c604`. Final Site version20: `appgprj_6af14ade2f2c8191825208668540e338~appgver_f0b68eadbe788191845726081d781655`.
 - Final deployment: `appgdep_6b06960152ac8191aa7e7cf95f1102ff`, succeeded, production environment revision1. Public URL: https://maestromate-aquarium.chirpyapple14.chatgpt.site . Audience remains public. Version16 was saved only;17–19 exposed and diagnosed a server runtime compatibility issue and are superseded.
 - Public AI initially returned502 even though Cloud calls worked. Private redacted diagnostics identified Cloudflare's rejection of Fetch `redirect:"error"`. Changed to `manual`, reject any3xx and never forward credentials to another host. A regression asserts the actual redirect mode outside the mocked provider boundary. No provider/credential change was necessary.
 - Final `npm test`:66/66 pass; build passes. The20 existing browser scripts all passed across the original six-script batch and the continuation after updating the old Program entry-title expectation. The18 targeted Chat/curriculum/browser regression cases passed as one batch. No claim that the earlier stopped aggregate command passed.
