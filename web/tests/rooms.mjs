@@ -1,3 +1,4 @@
+import { units } from "../src/content/curriculum.ts";
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import { chromium } from "playwright";
@@ -142,7 +143,10 @@ try {
   );
   await page.getByRole("link", { name: /Next: Play/ }).click();
   await page
-    .getByRole("heading", { name: "Below the ripples", exact: true })
+    .getByRole("heading", {
+      name: units.find((u) => u.area === "works").title,
+      exact: true,
+    })
     .waitFor();
   await page.getByRole("link", { name: "Finish visit", exact: true }).click();
   await page
