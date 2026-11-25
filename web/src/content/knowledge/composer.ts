@@ -53,7 +53,7 @@ const preparedQuestions = [
     id: "carnival",
     prompt: "Was your music always so serious?",
     answer:
-      "Not always! I wrote the Carnival in 1886 for a Mardi Gras gathering among friends. I kept most of it from publication during my lifetime, with The Swan an exception; I was concerned it might overshadow my other music. A private musical joke took on a life far beyond that room.",
+      "Not always! I wrote the Carnival in 1886 for a Mardi Gras gathering among friends. I kept most of it from publication during my lifetime, with The Swan an exception. A private musical joke took on a life far beyond that room.",
     sourceLabel: "BnF exhibition: private origins and publication (p.15)",
     source: "https://www.bnf.fr/sites/default/files/2021-06/DP_Saint_Saens.pdf",
     clip: undefined,
