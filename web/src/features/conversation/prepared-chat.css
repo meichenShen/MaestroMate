@@ -538,3 +538,12 @@
 @media(min-width:951px) and (max-height:750px){.chat-studio .artist-profile{padding:16px}.composer-story{font-size:15px;line-height:1.5}.chat-studio .composer-illustration svg{max-height:65px;margin:4px 0}.composer-facts{margin:8px 0}.chat-studio .chat-prompts{display:flex;flex-direction:column;align-items:stretch;gap:3px}.chat-modebar{margin:0;flex-wrap:nowrap}.chat-studio .prompt-heading{display:none}.chat-studio .question-tile{min-height:48px;flex-basis:225px}.chat-studio .question-tile strong{display:none}.chat-studio .question-tile .question-full{grid-row:1}.chat-studio .question-tiles{padding:0 0 3px}.chat-studio .chat-note{display:none}.chat-studio .chat-compose{margin:0}.chat-studio .chat-room-heading{min-height:35px}.chat-studio .chat-settings-open{font-size:0;gap:0}.chat-studio .chat-room-heading h2{font-size:24px}}
 .composer-biography{font-size:15px;line-height:1.65;margin-top:16px;color:#ddd1e6}.composer-biography summary{cursor:pointer;min-height:44px;padding:10px 14px;background:#ffffff08;border-radius:18px}.inline-consent.discovery-dialog{max-width:540px;font-size:17px;padding:28px}.inline-consent p{line-height:1.7;margin-bottom:16px}.inline-consent button{margin-top:8px}
 @media(min-width:951px) and (max-height:650px){.chat-studio .prepared-disclosure{display:none}.chat-studio .chat-message .speaker-name{display:none}.chat-studio .reply-label{font-size:11px;margin-bottom:3px}}
+
+.composer-biography-chapters{display:grid;gap:18px;margin-top:20px}
+.composer-biography-chapters section{min-width:0}
+.composer-biography-chapters h3{font:500 17px/1.5 var(--font);margin:0 0 8px;color:#ffda8e}
+.composer-biography-chapters p{font-size:16px;margin:0;line-height:1.8}
+.composer-biography-sources{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:22px 0 6px;font-size:14px}
+.composer-biography-sources>span{color:#bdb0ca}
+.composer-biography-sources a{color:#80d4f6;line-height:1.6;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+@media(max-width:950px){.chat-studio .artist-profile{display:block}}

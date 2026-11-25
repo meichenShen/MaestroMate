@@ -6,6 +6,7 @@ import { questions, questionPresentation } from "../../content/aquarium";
 import { ClipButton } from "../../components/ClipButton";
 import { Hint } from "../../components/Hint";
 import { KnowledgeShelf } from "./KnowledgeShelf";
+import { ComposerBiography } from "./ComposerBiography";
 import { unitHash } from "../curriculum/PlayCatalog";
 import type { useComposerChat } from "./useComposerChat";
 import { ChatSettings } from "./ChatSettings";
@@ -74,7 +75,7 @@ export function Conversation({ journey = false, chat, }: {
         <div className="composer-illustration" aria-hidden="true"><svg viewBox="0 0 240 130" fill="none"><path d="M35 82V45c0-20 105-32 140 0l30 23v30H35Z" fill="#a593e033" stroke="#a593e0" strokeWidth="2"/><path d="M35 81h170M55 82v18m22-18v18m22-18v18m22-18v18m22-18v18m22-18v18m22-18v18M48 101v19m145-19v19" stroke="#ffda8e" strokeWidth="3"/><circle cx="181" cy="24" r="8" fill="#ee2560"/><path d="M188 24V5l18 5" stroke="#ee2560" strokeWidth="3"/></svg></div>
         <p className="composer-story">{t("Saint-Saëns was a French composer, pianist and organist. Aquarium is one of fourteen movements in The Carnival of the Animals.")}</p>
         <div className="composer-facts"><span><b>{t("1835")}</b>{t('Born in Paris')}</span><span><b>{t("1886")}</b>{t('The Carnival takes shape')}</span></div>
-        <details className="composer-biography"><summary>{t('Read his story')}</summary><p>{t('For twenty years, Saint-Saëns was organist at La Madeleine in Paris. He also taught at the École Niedermeyer; Gabriel Fauré was among his pupils.')}</p><p>{t('The Carnival of the Animals began as a private musical amusement in 1886. Aquarium is its seventh movement. Our conversation is an imagined adaptation guided by historical sources, not a quotation.')}</p></details>
+        <ComposerBiography />
         <KnowledgeShelf />
       </aside>
       <div className="chat-main">

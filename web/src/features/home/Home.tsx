@@ -26,7 +26,7 @@ export function Home({ motion }: {
         <TheatreStage motion={motion}/>
         <div className="welcome-copy" data-enter="left">
           <p className="eyebrow">{t("A little music. A little curiosity.")}</p>
-          <LetterHeading as="h1" text={t("Make yourself\nat home.")}/>
+          <LetterHeading as="h1" text={t("Explore\nmusic.")}/>
           <p>{t("Listen for a while. Ask a question.")}<br />{t("Or come and play. There's no wrong way in.")}</p>
           <a className="solid-button" href="#explore">{t("Where shall we go? ")}<ArrowUpRight size={23}/>
           </a>
