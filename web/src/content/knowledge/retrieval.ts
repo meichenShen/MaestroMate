@@ -13,14 +13,14 @@ export const knowledgeEntries: KnowledgeEntry[] = [
     id: "person",
     keywords:
       "born birth childhood child early pianist organist musician composer Camille Saint Saens life",
-    text: "Camille Saint-Saëns (1835–1921) was a French composer, pianist, organist and teacher, born in Paris. He played piano as a child and studied at the Paris Conservatoire, including organ.",
+    text: "Camille Saint-Saëns (1835–1921) was a French composer, pianist, organist and teacher, born in Paris. He played piano as a child and studied at the Paris Conservatoire, including organ, winning its first prize for organ in 1851.",
     sourceIds: ["biography"],
   },
   {
     id: "paris",
     keywords:
       "Paris life teach teaching teacher Faure Fauré friends Madeleine organ society",
-    text: "Saint-Saëns was organist at La Madeleine from 1857 to 1877, taught at the École Niedermeyer (Gabriel Fauré was a pupil), and helped found the Société nationale de musique in 1871 to support French music.",
+    text: "Saint-Saëns was organist at La Madeleine from 1857 to 1877, taught piano at the École Niedermeyer from 1861 to 1865 (Gabriel Fauré was a pupil), and helped found the Société nationale de musique in 1871 to support French music.",
     sourceIds: ["biography"],
   },
   {
