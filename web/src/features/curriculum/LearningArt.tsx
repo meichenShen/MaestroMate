@@ -10,7 +10,12 @@ export function LearningArt({
     | "colour"
     | "return"
     | "pitch"
-    | "rhythm";
+    | "rhythm"
+    | "steps"
+    | "people"
+    | "timeline"
+    | "recording"
+    | "families";
 }) {
   const id = useId().replace(/:/g, "");
   return (
@@ -33,7 +38,101 @@ export function LearningArt({
           <stop offset="1" stopColor="currentColor" stopOpacity=".18" />
         </linearGradient>
       </defs>
-      {kind === "work" ? (
+      {kind === "people" ? (
+        <g className="art-float">
+          <circle cx="180" cy="85" r="38" fill={`url(#${id})`} />
+          <path
+            d="M105 220v-35a75 75 0 0 1 150 0v35Z"
+            fill="currentColor"
+            opacity=".28"
+          />
+          <path d="m220 150 35-35 12 12-35 35-18 6Z" fill="#fffff3" />
+          <circle
+            cx="98"
+            cy="96"
+            r="12"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+        </g>
+      ) : kind === "timeline" ? (
+        <g>
+          {[80, 180, 280].map((x, i) => (
+            <g key={x}>
+              <circle cx={x} cy={145 - i * 22} r="30" fill={`url(#${id})`} />
+              <path
+                d={`M${x} ${115 - i * 22}v-26`}
+                stroke="currentColor"
+                strokeWidth="3"
+              />
+            </g>
+          ))}
+          <path
+            d="m80 145 100-22 100-22"
+            stroke="currentColor"
+            strokeWidth="3"
+            opacity=".5"
+          />
+        </g>
+      ) : kind === "recording" ? (
+        <g>
+          <circle cx="180" cy="135" r="84" fill={`url(#${id})`} />
+          <circle
+            cx="180"
+            cy="135"
+            r="42"
+            stroke="#fffff3"
+            strokeWidth="2"
+            opacity=".65"
+          />
+          <circle cx="180" cy="135" r="12" fill="#14111c" />
+          <path
+            d="M278 55v100l-27 22"
+            stroke="currentColor"
+            strokeWidth="9"
+            strokeLinecap="round"
+          />
+        </g>
+      ) : kind === "steps" ? (
+        <g>
+          {[0, 1, 2, 3, 4].map((n) => (
+            <g key={n}>
+              <path
+                d={`M${65 + n * 57} 210V${175 - n * 27}`}
+                stroke="currentColor"
+                strokeWidth="2"
+                opacity=".25"
+              />
+              <circle
+                cx={65 + n * 57}
+                cy={175 - n * 27}
+                r={18}
+                fill={`url(#${id})`}
+              />
+            </g>
+          ))}
+        </g>
+      ) : kind === "families" ? (
+        <g>
+          {[0, 1, 2].map((n) => (
+            <g key={n}>
+              <rect
+                x={65 + n * 85}
+                y={65 + (n % 2) * 25}
+                width="48"
+                height="115"
+                rx="23"
+                fill={`url(#${id})`}
+              />
+              <path
+                d={`M${88 + n * 85} 90v80`}
+                stroke="#fffff3"
+                strokeWidth="3"
+              />
+            </g>
+          ))}
+        </g>
+      ) : kind === "work" ? (
         <g className="art-float">
           <path d="M82 73 212 35 289 98 163 149Z" fill={`url(#${id})`} />
           <path d="m82 73 81 76v88l-81-76Z" fill="currentColor" opacity=".25" />

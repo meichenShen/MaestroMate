@@ -120,3 +120,27 @@ test("layered teaching audio cancels pending startup and schedules both parts on
   assert.equal(f.ctx.created, 14);
   engine.dispose();
 });
+test("studio BPM controls the actual spacing of eighth-note steps", async () => {
+  for (const bpm of [60, 140]) {
+    const f = fakeContext(),
+      starts = [];
+    const make = f.ctx.createOscillator;
+    f.ctx.createOscillator = () => {
+      const osc = make();
+      osc.start = (t) => starts.push(t);
+      return osc;
+    };
+    const engine = new PoolAudio(() => f.ctx);
+    const pending = engine.playLayers(
+      [{ notes: [0, 1] }],
+      () => {},
+      () => {},
+      2,
+      bpm,
+    );
+    f.release();
+    assert.equal(await pending, true);
+    assert.ok(Math.abs(starts[2] - starts[0] - 60 / bpm / 2) < 1e-8);
+    engine.dispose();
+  }
+});

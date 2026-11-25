@@ -1669,3 +1669,8 @@
   color: #10111b;
 }
 .full-mix-label{display:inline;font-size:12px;color:#b5b3c1;margin-left:9px}
+.play-catalog .lesson-cards{flex:initial;align-items:stretch}
+.course-chapters{display:flex;gap:18px;justify-content:space-between;padding:16px 0}
+.course-chapters>span{font-size:20px;color:#f1e9f9}
+.course-chapters small{display:block;color:#b8adc6;font-size:14px;margin-top:7px}
+@media(max-width:950px){.course-chapters{flex-wrap:wrap;gap:18px}.course-chapters>span{font-size:17px}}

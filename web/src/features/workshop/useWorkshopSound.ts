@@ -48,6 +48,7 @@ export function useWorkshopSound(enabled: boolean) {
   const practice = async (
     notes: Melody,
     options?: {
+      bpm?: number;
       gain?: number;
       colour?: "smooth" | "sparkling";
       accompaniment?: boolean;
@@ -88,6 +89,7 @@ export function useWorkshopSound(enabled: boolean) {
           }
         },
         notes.length,
+        options?.bpm,
       );
       if (alive.current && id === ticket.current && !ok) setPlaying(false);
     } catch {

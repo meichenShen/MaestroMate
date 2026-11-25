@@ -1,3 +1,4 @@
+import { BackLink } from "../../navigation/BackLink";
 import { BookOpen, Music2, Waves, Check } from "lucide-react";
 import {
   units,
@@ -72,7 +73,7 @@ export function PlayCatalog({
               title: "Create & play",
               kind: "create",
               Icon: Waves,
-              tag: "Your turn to make a ripple",
+              tag: "A studio for your own ideas",
               text: "A few notes. A world of possibilities.",
               colour: "#FFDA8E",
             },
@@ -98,7 +99,7 @@ export function PlayCatalog({
           ))}
         </div>
         <p className="curriculum-footnote">
-          No timer. No rush. Just follow your ears.
+          Choose a path. We’ll guide the next little step.
         </p>
       </main>
     );
@@ -107,7 +108,7 @@ export function PlayCatalog({
   return (
     <main id="main" tabIndex={-1} className="play-catalog page-room">
       <header className="catalog-top">
-        <a href="#play">Back to Play</a>
+        <BackLink href="#play">Back to Play</BackLink>
         <PillarLinks active={area} />
       </header>
       <header className="curriculum-intro">
@@ -127,12 +128,25 @@ export function PlayCatalog({
         </h1>
         <p>
           {work
-            ? "Three ideas from the piece you just heard."
+            ? "Six ways into the piece: people, history, instruments and sound."
             : create
-              ? "Bring an idea from a lesson, or start with a splash."
-              : "Learn first. Try it out. Then make something of your own."}
+              ? "Three independent studios. No quizzes, no right answers."
+              : "First sounds → building music → people and instruments."}
         </p>
       </header>
+      {area === "lessons" && (
+        <div className="course-chapters" aria-label="Course progression">
+          <span>
+            01 First sounds <small>Lessons 1–3</small>
+          </span>
+          <span>
+            02 Building music <small>Lessons 4–5</small>
+          </span>
+          <span>
+            03 People & instruments <small>Lessons 6–8</small>
+          </span>
+        </div>
+      )}
       <div className="lesson-cards">
         {create ? (
           <>
@@ -150,32 +164,36 @@ export function PlayCatalog({
               <p>Tap, paint and replay your own eight-note tune.</p>
               <span className="pill-action">Open the pool</span>
             </a>
-            {["rhythm", "layers"].map((id) => {
-              const u = units.find((u) => u.id === id)!;
-              return (
-                <a
-                  className="lesson-cover"
-                  key={id}
-                  href={unitHash(id)}
-                  aria-label={
-                    id === "rhythm" ? "Ripple rhythms" : "A little duet"
-                  }
-                  style={{ "--unit-colour": u.colour } as React.CSSProperties}
-                >
-                  <LearningArt kind={u.kind} />
-                  <span className="lesson-kicker">A guided making session</span>
-                  <h2>
-                    {id === "rhythm" ? "Ripple rhythms" : "A little duet"}
-                  </h2>
-                  <p>
-                    {id === "rhythm"
-                      ? "Place sounds and spaces on a steady beat."
-                      : "Give a tune a moving accompaniment."}
-                  </p>
-                  <span className="pill-action">Learn & make</span>
-                </a>
-              );
-            })}
+            {[
+              {
+                id: "beats",
+                title: "Beat Studio",
+                kind: "rhythm" as const,
+                text: "Tap eight lights. Leave spaces. Hear your groove.",
+                colour: "#FFDA8E",
+              },
+              {
+                id: "melody",
+                title: "Melody Studio",
+                kind: "pitch" as const,
+                text: "Draw a tune with notes. Give it some company.",
+                colour: "#A593E0",
+              },
+            ].map((s) => (
+              <a
+                className="lesson-cover"
+                key={s.id}
+                href={"#play/create/" + s.id}
+                aria-label={s.title}
+                style={{ "--unit-colour": s.colour } as React.CSSProperties}
+              >
+                <LearningArt kind={s.kind} />
+                <span className="lesson-kicker">Free creation</span>
+                <h2>{s.title}</h2>
+                <p>{s.text}</p>
+                <span className="pill-action">Open the studio</span>
+              </a>
+            ))}
           </>
         ) : (
           units
@@ -200,7 +218,7 @@ export function PlayCatalog({
                 <span className="pill-action">
                   {unitDone(u, progress[u.id])
                     ? "Visit again"
-                    : "Learn · Try · Make"}
+                    : "Learn · Play · Discover"}
                 </span>
               </a>
             ))
@@ -216,7 +234,7 @@ export function PlayCatalog({
         <p className="curriculum-footnote">
           {create
             ? "Your sketches stay with you while you explore this visit."
-            : "Start anywhere. Come back whenever you like."}
+            : "Follow the lesson numbers from the beginning, or revisit any idea."}
         </p>
       )}
     </main>

@@ -69,7 +69,7 @@ export const knowledgeEntries: KnowledgeEntry[] = [
     id: "making",
     keywords:
       "make create pool Play game four note variation ending tune lesson learning",
-    text: "EDITORIAL: Play has Explore a piece, Music lessons, and Create & play. Units separate Learn, two Try checks, and Make. The four-note tunes, smooth/sparkling synth colours, beat patterns and Music Pool are original teaching examples, not score transcriptions. Keep Aquarium examples connected to listening; general lessons can teach pitch, rhythm and layers.",
+    text: "EDITORIAL: Play has Explore a piece, Music lessons, and Create & play. Learning units separate Learn, three varied checks, and completion. Music Pool, Beat Studio and Melody Studio are independent creative spaces; they are not lesson gates. The four-note tunes, smooth/sparkling synth colours, beat patterns and Music Pool are original teaching examples, not score transcriptions. Keep Aquarium examples connected to listening; general lessons can teach pitch, rhythm and layers.",
     sourceIds: ["editorial", "theory"],
   },
 ];

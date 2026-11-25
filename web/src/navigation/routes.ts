@@ -6,10 +6,13 @@ export type Route =
   | { kind: "activity"; activity: ActivityId; journey: boolean }
   | { kind: "games" }
   | { kind: "pool" }
+  | { kind: "studio"; studioId: string }
   | { kind: "playcatalog"; area: "works" | "lessons" | "create" }
   | {
       kind: "lesson";
       unitId: string;
+      phase?: "learn" | "try" | "done";
+      question?: number;
       journey: boolean;
       area: "works" | "lessons";
       workId?: string;
@@ -43,6 +46,21 @@ export function parseRoute(hash: string): Route {
     return {
       kind: "playcatalog",
       area: catalogue[1] as "works" | "lessons" | "create",
+    };
+  const studio = path.match(/^play\/create\/([a-zA-Z0-9_-]+)$/);
+  if (studio) return { kind: "studio", studioId: studio[1] };
+  const stage = path.match(
+    /^(play\/lessons\/([a-zA-Z0-9_-]+)|play\/works\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)|program\/aquarium\/learn\/([a-zA-Z0-9_-]+))\/(learn|try|done)(?:\/(\d+))?$/,
+  );
+  if (stage)
+    return {
+      kind: "lesson",
+      unitId: stage[2] || stage[4] || stage[5],
+      area: stage[2] ? "lessons" : "works",
+      ...(stage[2] ? {} : { workId: stage[3] || "aquarium" }),
+      journey: !!stage[5],
+      phase: stage[6] as "learn" | "try" | "done",
+      question: Number(stage[7] || 0),
     };
   const workLesson = path.match(
     /^play\/works\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/,

@@ -1,4 +1,4 @@
-import { midiFrequency, poolNotes, stepSeconds, type Melody } from "./model.ts";
+import { midiFrequency, poolNotes, type Melody } from "./model.ts";
 
 // A local instrument, unrelated to the historical recording. No audio files,
 // network requests or second HTMLAudioElement. Creation requires an interaction.
@@ -96,6 +96,7 @@ export class PoolAudio {
     onStep: (step: number) => void,
     onDone: () => void,
     length = 8,
+    bpm = 100,
   ) {
     return this.playLayers([{ notes: melody }], onStep, onDone, length);
   }
@@ -104,6 +105,7 @@ export class PoolAudio {
     onStep: (step: number) => void,
     onDone: () => void,
     length = 8,
+    bpm = 100,
   ) {
     this.stop();
     const ticket = this.generation;
@@ -112,6 +114,8 @@ export class PoolAudio {
       1,
       Math.min(8, Math.floor(Number.isFinite(length) ? length : 8)),
     );
+    const interval =
+      60 / Math.max(60, Math.min(140, Number.isFinite(bpm) ? bpm : 100)) / 2;
     const start = this.context!.currentTime + 0.025;
     const later = (seconds: number, action: () => void) => {
       const timer = setTimeout(() => {
@@ -126,15 +130,15 @@ export class PoolAudio {
         if (typeof note === "number" && poolNotes[note])
           this.voice(
             note,
-            start + i * stepSeconds,
+            start + i * interval,
             Math.min(0.8, Math.max(0.05, layer.duration ?? 0.27)),
             Math.min(1, Math.max(0, layer.gain ?? 1)),
             layer.colour,
           );
       }
-      later(0.025 + i * stepSeconds, () => onStep(i));
+      later(0.025 + i * interval, () => onStep(i));
     }
-    later(0.025 + slots * stepSeconds, () => {
+    later(0.025 + slots * interval, () => {
       this.stop();
       onDone();
     });

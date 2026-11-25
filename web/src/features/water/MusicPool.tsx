@@ -1,3 +1,4 @@
+import {BackLink} from "../../navigation/BackLink";
 import {
   useCallback,
   useEffect,
@@ -223,10 +224,10 @@ export function MusicPool({
     >
       <header className="pool-heading">
         <div>
-          <a href="#play" className="pool-back">
+          <BackLink href="#play/create" className="pool-back">
             <ArrowLeft size={18} />
             Back to the play room
-          </a>
+          </BackLink>
           <p className="eyebrow">Aquarium · Music Pool</p>
           <h1>Make a little ripple.</h1>
           <p>Paint the water. Or follow a little fish.</p>

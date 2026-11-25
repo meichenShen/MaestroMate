@@ -1,3 +1,10 @@
+import { BackLink } from "./navigation/BackLink";
+import { resetProgramProgress } from "./features/curriculum/study-flow";
+import {
+  CreativeStudio,
+  emptyStudio,
+  type StudioDraft,
+} from "./features/creation/CreativeStudio";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AudioProvider, useAudio } from "./audio/AudioProvider";
 import type { ActivityId } from "./content/aquarium";
@@ -39,6 +46,9 @@ function Site() {
     [motion, setMotion] = useState(true),
     [visited, setVisited] = useState<ActivityId[]>([]);
   const [curriculum, setCurriculum] = useState<CurriculumProgress>({});
+  const [studioDrafts, setStudioDrafts] = useState<Record<string, StudioDraft>>(
+    {},
+  );
   const [melody, setMelody] = useState(emptyMelody);
   const [guide, setGuide] = useState(() => {
     try {
@@ -62,9 +72,12 @@ function Site() {
       ? route
       : route.kind === "learning"
         ? {
-            unitId: ["aquarium-layers", "aquarium-colour", "aquarium-return"][
-              route.level || 0
-            ],
+            unitId:
+              route.journey && route.level === undefined
+                ? "aquarium-composer"
+                : ["aquarium-layers", "aquarium-colour", "aquarium-return"][
+                    route.level || 0
+                  ],
             area: "works" as const,
             workId: route.workId || "aquarium",
             journey: route.journey,
@@ -189,10 +202,18 @@ function Site() {
           }
           enabled={!guide && !entrance}
           journey={route.journey}
-          onSendToPool={(notes) => {
-            setMelody([...notes]);
-            navigate("#play/pool");
-          }}
+          phase={route.kind === "lesson" ? route.phase : undefined}
+          question={route.kind === "lesson" ? route.question : undefined}
+        />
+      ) : route.kind === "studio" ? (
+        <CreativeStudio
+          key={route.studioId}
+          id={route.studioId}
+          draft={studioDrafts[route.studioId] || emptyStudio()}
+          onChange={(v) =>
+            setStudioDrafts((old) => ({ ...old, [route.studioId]: v }))
+          }
+          enabled={!guide && !entrance}
         />
       ) : route.kind === "pool" ? (
         <MusicPool
@@ -206,7 +227,7 @@ function Site() {
           motion={!guide && !entrance}
           onRestart={() => {
             setProgress(initialProgress);
-            setCurriculum({});
+            setCurriculum(resetProgramProgress);
             chat.reset();
             startProgram();
           }}
@@ -224,12 +245,12 @@ function Site() {
             <JourneyProgress active={route.activity} visited={visited} />
           ) : (
             <div className="room-back">
-              <a
+              <BackLink
                 href={
                   route.activity === "theater"
                     ? "#listen"
                     : route.activity === "detective"
-                      ? "#play"
+                      ? "#play/works"
                       : "#explore"
                 }
               >
@@ -239,7 +260,7 @@ function Site() {
                   : route.activity === "detective"
                     ? "Back to the play room"
                     : "Back to the rooms"}
-              </a>
+              </BackLink>
             </div>
           )}
           <div className="room-layout">
@@ -256,10 +277,7 @@ function Site() {
                   onMotionChange={setMotion}
                 />
               ) : activity === "conversation" ? (
-                <Conversation
-                  journey={route.journey}
-                  chat={chat}
-                />
+                <Conversation journey={route.journey} chat={chat} />
               ) : (
                 <Detective progress={progress} onChange={setProgress} />
               )}

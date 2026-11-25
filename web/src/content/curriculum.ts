@@ -1,8 +1,21 @@
 import type { Clip } from "./aquarium.ts";
 import type { ReferenceId } from "./knowledge/sources.ts";
+import { expansionUnits, extraChecks } from "./curriculum-extra.ts";
 export type LearningArea = "works" | "lessons";
-export type VisualKind = "layers" | "colour" | "return" | "pitch" | "rhythm";
+export type VisualKind =
+  | "layers"
+  | "colour"
+  | "return"
+  | "pitch"
+  | "rhythm"
+  | "steps"
+  | "people"
+  | "timeline"
+  | "recording"
+  | "families";
 export interface LearningCheck {
+  interaction?: "order" | "pattern";
+  target?: number[];
   prompt: string;
   options: { label: string; icon: string }[];
   answer: number;
@@ -232,7 +245,7 @@ export const units: LearningUnit[] = [
     id: "layers",
     area: "lessons",
     title: "Two parts, one little world",
-    subtitle: "Lesson 3 · Melody and accompaniment.",
+    subtitle: "Melody and accompaniment.",
     colour: "#FFDA8E",
     kind: "layers",
     concept: "Melody + accompaniment",
@@ -265,6 +278,32 @@ export const units: LearningUnit[] = [
     starter: [null, null, null, null],
   },
 ];
+for (const unit of units) unit.checks.push(extraChecks[unit.id]);
+units.push(...expansionUnits);
+for (const u of units)
+  u.checks.forEach((q, i) => {
+    if (q.interaction) return;
+    const offset = (u.id.length + i) % q.options.length;
+    q.options = [...q.options.slice(offset), ...q.options.slice(0, offset)];
+    q.answer = (q.answer - offset + q.options.length) % q.options.length;
+  });
+const order = [
+  "aquarium-composer",
+  "aquarium-carnival",
+  "aquarium-colour",
+  "aquarium-layers",
+  "aquarium-recording",
+  "aquarium-return",
+  "pitch",
+  "rhythm",
+  "steps",
+  "layers",
+  "patterns",
+  "ensemble",
+  "music-makers",
+  "music-in-time",
+];
+units.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
 const registry: Record<string, LearningUnit> = Object.assign(
   Object.create(null),
   Object.fromEntries(units.map((u) => [u.id, u])),
@@ -272,6 +311,7 @@ const registry: Record<string, LearningUnit> = Object.assign(
 export const resolveUnit = (id: string) => registry[id];
 export interface UnitProgress {
   answers: (number | null)[];
+  responses?: number[][];
   checked: boolean[];
   notes: (number | null)[];
   beats: boolean[];
@@ -282,8 +322,9 @@ export interface UnitProgress {
 }
 export type CurriculumProgress = Record<string, UnitProgress>;
 export const emptyUnitProgress = (u: LearningUnit): UnitProgress => ({
-  answers: [null, null],
-  checked: [false, false],
+  answers: u.checks.map(() => null),
+  checked: u.checks.map(() => false),
+  responses: u.checks.map(() => []),
   notes: [...u.starter],
   beats: [false, false, false, false],
   colour: "smooth",
@@ -323,17 +364,23 @@ export function evaluateCreation(
     };
   return { correct: true, message: "Your four notes are ready to hear." };
 }
+export function checkCorrect(
+  q: LearningCheck,
+  answer: number | null,
+  response: number[] = [],
+) {
+  return q.interaction
+    ? !!q.target &&
+        response.length === q.target.length &&
+        response.every((v, i) => v === q.target![i])
+    : answer === q.answer;
+}
 export const checksDone = (u: LearningUnit, p: UnitProgress) =>
-  u.checks.every((q, i) => p.checked[i] && p.answers[i] === q.answer);
+  u.checks.every(
+    (q, i) => p.checked[i] && checkCorrect(q, p.answers[i], p.responses?.[i]),
+  );
 export const unitDone = (u: LearningUnit, p?: UnitProgress) =>
-  !!p &&
-  checksDone(u, p) &&
-  p.made &&
-  evaluateCreation(u, p.notes, p.beats).correct &&
-  (u.kind !== "layers" || p.accompaniment) &&
-  (u.kind !== "colour" ||
-    (p.heardColours.includes("smooth") &&
-      p.heardColours.includes("sparkling")));
+  !!p && checksDone(u, p);
 
 export function resolveUnitInArea(
   id: string,

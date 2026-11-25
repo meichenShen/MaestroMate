@@ -33,7 +33,7 @@ export function ProgramComplete({
                 (u) => u.area === "works" && unitDone(u, curriculum[u.id]),
               ).length
             }
-            /3 explored
+            /{units.filter((u) => u.area === "works").length} explored
           </p>
           {units
             .filter((u) => u.area === "works")
@@ -41,7 +41,7 @@ export function ProgramComplete({
               <p key={u.id}>
                 {u.title} ·{" "}
                 {unitDone(u, curriculum[u.id])
-                  ? "Learned, tried & made"
+                  ? "Learned & explored"
                   : "Still yours to explore"}
               </p>
             ))}

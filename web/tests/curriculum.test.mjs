@@ -8,16 +8,17 @@ import {
   unitDone,
 } from "../src/content/curriculum.ts";
 import { work } from "../src/content/aquarium.ts";
-test("six focused units teach two checks with bounded recording passages and real sources", () => {
-  assert.equal(units.length, 6);
-  assert.equal(units.filter((u) => u.area === "works").length, 3);
+test("fourteen focused units teach three varied checks with bounded recording passages and real sources", () => {
+  assert.equal(units.length, 14);
+  assert.equal(units.filter((u) => u.area === "works").length, 6);
   for (const u of units) {
-    assert.equal(u.checks.length, 2);
+    assert.equal(u.checks.length, 3);
     assert.ok(u.teach.length < 330);
     assert.ok(u.sourceIds.length);
     for (const q of u.checks) {
       assert.ok(q.prompt.length < 100);
-      assert.ok(q.answer >= 0 && q.answer < q.options.length);
+      if (q.interaction) assert.ok(q.target.length);
+      else assert.ok(q.answer >= 0 && q.answer < q.options.length);
     }
     if (u.clip)
       assert.ok(
@@ -29,17 +30,16 @@ test("six focused units teach two checks with bounded recording passages and rea
   for (const id of ["constructor", "toString", "__proto__", "swan", "missing"])
     assert.equal(resolveUnit(id), undefined);
 });
-test("completion needs both correct checked answers and an actually successful creative application", () => {
+test("learning completion is independent of creation and requires all three correct checks", () => {
   const u = units[0],
     p = emptyUnitProgress(u);
   assert.equal(unitDone(u, p), false);
   p.answers = u.checks.map((q) => q.answer);
-  p.checked = [true, true];
-  assert.equal(unitDone(u, p), false);
-  p.notes = [0, 1, 2, 4];
-  p.made = true;
+  p.responses = u.checks.map((q) => q.target || []);
+  p.checked = u.checks.map(() => true);
+  assert.equal(p.made, false);
   assert.equal(unitDone(u, p), true);
-  p.answers[1] = -1;
+  p.checked[1] = false;
   assert.equal(unitDone(u, p), false);
 });
 test("creative assessment accepts multiple musical solutions but rejects silence and malformed notes", () => {

@@ -1,181 +1,220 @@
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
-import { units } from "../src/content/curriculum.ts";
 let b;
 const base = process.env.QA_BASE_URL || "http://127.0.0.1:4173";
 before(
   async () =>
     (b = await chromium.launch({
       executablePath: "/usr/bin/chromium",
-      args: ["--no-sandbox", "--enable-unsafe-swiftshader"],
+      args: ["--no-sandbox"],
     })),
 );
 after(async () => b?.close());
-async function visit(hash) {
-  const p = await b.newPage({
-    viewport: { width: 1366, height: 768 },
-    reducedMotion: "reduce",
-  });
-  p.setDefaultTimeout(15000);
+async function visit(h) {
+  const p = await b.newPage({ reducedMotion: "reduce" });
+  p.setDefaultTimeout(12000);
   await p.addInitScript(() => {
     sessionStorage.setItem("maestromate-guide-v2", "seen");
     sessionStorage.setItem("maestromate-entry-v2", "seen");
   });
-  await p.goto(base + "/" + hash);
+  await p.goto(base + "/" + h);
   return p;
 }
-async function make(p, u) {
-  await p.getByRole("button", { name: "Start practice", exact: true }).click();
-  for (let i = 0; i < 2; i++) {
-    await p
-      .getByRole("button", {
-        name: u.checks[i].options[u.checks[i].answer].label,
-        exact: true,
-      })
-      .click();
-    await p.getByRole("button", { name: "Check answer", exact: true }).click();
-    await p
-      .getByRole("button", {
-        name: i ? "Make something" : "Next question",
-        exact: true,
-      })
-      .click();
-  }
-}
-test("work, area and unit IDs must agree, including legacy and prototype-like work URLs", async () => {
-  const p = await visit("#play/learn/pitch");
+test("unit, area and work must agree, and an unearned completion URL cannot mark progress", async () => {
+  const p = await visit("#play");
   try {
     for (const h of [
-      "#play/learn/pitch",
-      "#play/learn/aquarium-return",
-      "#play/learn/__proto__",
-      "#play/works/aquarium/pitch",
       "#play/works/swan/aquarium-layers",
       "#play/lessons/aquarium-layers",
+      "#play/works/aquarium/pitch",
+      "#program/aquarium/learn/pitch",
+      "#play/lessons/constructor",
     ]) {
-      await p.evaluate((h) => (location.hash = h), h);
+      await p.goto(base + "/" + h);
       await p
         .getByRole("heading", { name: "This lesson is still backstage." })
         .waitFor();
-      assert.equal(await p.locator(".lesson-recording").count(), 0);
     }
+    await p.goto(base + "/#play/lessons/pitch/done");
+    assert.equal(
+      await p.locator(".study-room").getAttribute("data-phase"),
+      "try",
+    );
+    assert.equal(await p.locator(".study-complete").count(), 0);
   } finally {
     await p.close();
   }
 });
-test("Program knowledge links retain journey and learning visits mark Play as visited", async () => {
+test("Chat keeps guided Play links and Program summary uses the actual discovery count", async () => {
   const p = await visit("#program/aquarium/chat");
   try {
     await p
       .getByRole("button", { name: "Why an aquarium?", exact: true })
       .click();
-    await p.locator(".chat-play-link").waitFor();
-    assert.match(
-      await p.locator(".chat-play-link").getAttribute("href"),
-      /^#program\/aquarium\/learn\//,
-    );
     await p.locator(".chat-play-link").click();
-    await p.getByRole("link", { name: "Finish visit", exact: true }).waitFor();
-    await p
-      .getByRole("navigation", { name: "Your Program", exact: true })
-      .getByRole("link", { name: "Listen", exact: true })
-      .click();
-    await p
-      .getByRole("button", { name: "Something to listen for", exact: false })
-      .click();
-    assert.match(
-      await p
-        .getByRole("link", { name: "Try the idea in Play", exact: false })
-        .getAttribute("href"),
-      /^#program\/aquarium\/learn\//,
-    );
-    await p.keyboard.press("Escape");
+    assert.match(p.url(), /#program\/aquarium\/learn\/aquarium-layers$/);
+    await p.getByRole("link", { name: "Finish visit", exact: true }).click();
+    await p.getByText("/6 explored", { exact: false }).waitFor();
     assert.equal(
       await p
-        .getByRole("navigation", { name: "Your Program", exact: true })
-        .getByRole("button", { name: /Play/ })
-        .locator("svg")
+        .locator(".completion-actions a,.completion-actions button")
         .count(),
-      1,
+      3,
     );
   } finally {
     await p.close();
   }
 });
-test("repetition display follows the sound and rhythm highlights the second four-beat cycle", async () => {
-  const p = await visit("#play/works/aquarium/aquarium-return");
+test("normal Program starts with the first of six discoveries and follows the complete ordered path", async () => {
+  const p = await visit("#program/aquarium/learn");
   try {
-    await p.getByRole("button", { name: "Same + same", exact: true }).click();
-    assert.deepEqual(
+    const { units } = await import("../src/content/curriculum.ts");
+    for (const u of units.filter((u) => u.area === "works")) {
+      await p.locator('.study-room[data-unit="' + u.id + '"]').waitFor();
       await p
-        .locator(".phrase-pair>div")
-        .nth(1)
-        .locator(".note-ribbon b")
-        .allTextContents(),
-      ["C", "D", "E", "G"],
+        .getByRole("button", { name: "Start practice →", exact: true })
+        .click();
+      for (const q of u.checks) {
+        if (q.interaction === "order") {
+          for (const n of q.target)
+            await p
+              .getByRole("button", { name: q.options[n].label, exact: true })
+              .click();
+        } else
+          await p
+            .getByRole("button", {
+              name: q.options[q.answer].label,
+              exact: true,
+            })
+            .click();
+        await p
+          .getByRole("button", { name: "Check answer", exact: true })
+          .click();
+        await p
+          .getByRole("button", {
+            name:
+              q === u.checks.at(-1) ? "Finish discovery →" : "Next question →",
+            exact: true,
+          })
+          .click();
+      }
+      await p.locator(".study-complete").waitFor();
+      await p.locator(".study-action a").click();
+    }
+    await p.waitForURL("**/#program/aquarium/done");
+    await p.getByText("6/6 explored", { exact: false }).waitFor();
+  } finally {
+    await p.close();
+  }
+});
+test("in-app Back followed by browser Back continues upwards instead of reopening the child", async () => {
+  const p = await visit("#play");
+  try {
+    const { units } = await import("../src/content/curriculum.ts");
+    await p.getByRole("link", { name: "Music lessons", exact: true }).click();
+    await p
+      .getByRole("link", {
+        name: units.find((u) => u.id === "pitch").title,
+        exact: true,
+      })
+      .click();
+    await p
+      .getByRole("button", { name: "Start practice →", exact: true })
+      .click();
+    await p.getByRole("link", { name: "← Back one step", exact: true }).click();
+    await p.waitForURL("**/#play/lessons/pitch");
+    await p.goBack();
+    await p.waitForURL("**/#play/lessons");
+    await p.goBack();
+    await p.waitForURL("**/#play");
+  } finally {
+    await p.close();
+  }
+});
+test("creative tempo persists per studio and every note row fits without vertical grid scrolling", async () => {
+  const p = await visit("#play/create/melody");
+  try {
+    await p.setViewportSize({ width: 1366, height: 600 });
+    await p
+      .getByRole("combobox", { name: "Studio tempo", exact: true })
+      .selectOption("60");
+    assert.equal(
+      await p
+        .locator(".studio-grid-scroll")
+        .evaluate((e) => e.scrollHeight <= e.clientHeight),
+      true,
     );
     await p
-      .getByRole("button", { name: "Same + new ending", exact: true })
+      .getByRole("link", { name: "← Back to Create & play", exact: true })
       .click();
-    assert.deepEqual(
-      await p
-        .locator(".phrase-pair>div")
-        .nth(1)
-        .locator(".note-ribbon b")
-        .allTextContents(),
-      ["C", "D", "E", "C"],
-    );
-    await p.evaluate(() => (location.hash = "#play/lessons/rhythm"));
+    await p.getByRole("link", { name: "Beat Studio", exact: true }).click();
     await p
-      .getByRole("button", { name: "Hear the pattern", exact: true })
+      .getByRole("combobox", { name: "Studio tempo", exact: true })
+      .selectOption("140");
+    await p
+      .getByRole("link", { name: "← Back to Create & play", exact: true })
       .click();
-    await p.locator('[data-demo-beat="4"]').waitFor();
-    assert.match(
+    await p.getByRole("link", { name: "Melody Studio", exact: true }).click();
+    assert.equal(
       await p
-        .getByRole("button", { name: "Demo beat 1", exact: true })
-        .getAttribute("class"),
-      /pulse-active/,
+        .getByRole("combobox", { name: "Studio tempo", exact: true })
+        .inputValue(),
+      "60",
     );
   } finally {
     await p.close();
   }
 });
-test("making requires a musical decision, colour requires both characters and preserves selected character", async () => {
-  for (const id of ["aquarium-layers", "layers", "rhythm", "aquarium-colour"]) {
-    const u = units.find((u) => u.id === id),
-      p = await visit(
-        "#play/" + (u.area === "works" ? "works/aquarium/" : "lessons/") + id,
-      );
-    try {
-      await make(p, u);
-      await p
-        .getByRole("button", { name: "Hear my creation", exact: true })
-        .click();
-      if (id === "aquarium-colour") {
-        await p
-          .getByRole("button", { name: "Stop my creation", exact: true })
-          .waitFor({ state: "hidden" });
-        assert.equal(await p.locator(".creation-kept").count(), 0);
-        await p.getByRole("button", { name: "Sparkling", exact: true }).click();
-        await p
-          .getByRole("button", { name: "Hear my creation", exact: true })
-          .click();
-        await p.locator(".creation-kept").waitFor();
-        await p.getByRole("button", { name: "Learn", exact: true }).click();
-        await p.getByRole("button", { name: "Make", exact: false }).click();
-        assert.equal(
+test("restarting Aquarium preserves independently completed general lessons and Detective Back stays local", async () => {
+  const p = await visit("#play/lessons/pitch");
+  try {
+    const { units } = await import("../src/content/curriculum.ts");
+    const u = units.find((u) => u.id === "pitch");
+    await p
+      .getByRole("button", { name: "Start practice →", exact: true })
+      .click();
+    for (const q of u.checks) {
+      if (q.interaction === "order") {
+        for (const n of q.target)
           await p
-            .getByRole("button", { name: "Sparkling", exact: true })
-            .getAttribute("aria-pressed"),
-          "true",
-        );
-      } else {
-        await p.locator(".creation-nudge").waitFor();
-        assert.equal(await p.locator(".creation-kept").count(), 0);
-      }
-    } finally {
-      await p.close();
+            .getByRole("button", { name: q.options[n].label, exact: true })
+            .click();
+      } else
+        await p
+          .getByRole("button", { name: q.options[q.answer].label, exact: true })
+          .click();
+      await p
+        .getByRole("button", { name: "Check answer", exact: true })
+        .click();
+      await p
+        .getByRole("button", {
+          name:
+            q === u.checks.at(-1) ? "Finish discovery →" : "Next question →",
+          exact: true,
+        })
+        .click();
     }
+    await p.evaluate(() => (location.hash = "#program/aquarium/done"));
+    await p
+      .getByRole("button", { name: "Restart Program", exact: true })
+      .click();
+    await p.waitForURL("**/#program/aquarium/listen");
+    await p.evaluate(() => (location.hash = "#play/lessons"));
+    await p
+      .getByRole("link", { name: u.title, exact: true })
+      .locator("svg[aria-label=Completed]")
+      .waitFor();
+    await p.evaluate(() => (location.hash = "#play/works"));
+    await p
+      .getByRole("link", {
+        name: "Sound Detective · extra listening clues",
+        exact: true,
+      })
+      .click();
+    await p.locator(".room-back a").click();
+    await p.waitForURL("**/#play/works");
+  } finally {
+    await p.close();
   }
 });

@@ -14,7 +14,7 @@ const steps = [
   {
     number: "03",
     title: "Make it your own.",
-    text: "The rooms work on their own. Play has three spaces: Explore a piece, Music lessons and Create & play. Learn an idea, try two little checks, then make something. A Program connects the rooms around Aquarium. Leave or come back whenever you like.",
+    text: "The rooms work on their own. Play has three spaces: Explore a piece, Music lessons and Create & play. Explore a visual idea, then try three little checks. Free creation has its own studios. A Program connects the rooms around Aquarium. Leave or come back whenever you like.",
   },
 ];
 export function Guide({ onClose }: { onClose: () => void }) {
