@@ -1,4 +1,5 @@
 import type { ReferenceId } from "./sources.ts";
+import { questions } from "./composer.ts";
 export interface KnowledgeEntry {
   id: string;
   keywords: string;
@@ -72,9 +73,34 @@ export const knowledgeEntries: KnowledgeEntry[] = [
     sourceIds: ["editorial", "theory"],
   },
 ];
-export function retrieveKnowledge(question: string): KnowledgeEntry[] {
+const questionNotes: Record<string, string[]> = {
+  aquarium: ["carnival", "score", "layers"],
+  layers: ["layers", "score"],
+  composer: ["person"],
+  paris: ["paris"],
+  carnival: ["carnival"],
+  scene: ["scene"],
+  glass: ["score", "recording"],
+  variation: ["theory", "making"],
+  fauré: ["paris"],
+  whole: ["carnival"],
+};
+export function retrieveKnowledge(
+  question: string,
+  questionId?: string,
+  followUpContext = "",
+): KnowledgeEntry[] {
+  const suggestion =
+    questionId || questions.find((q) => q.prompt === question.trim())?.id;
+  const anchors =
+    suggestion && Object.hasOwn(questionNotes, suggestion)
+      ? questionNotes[suggestion].map(
+          (id) => knowledgeEntries.find((n) => n.id === id)!,
+        )
+      : [];
+
   const words =
-    question
+    (question + " " + (anchors.length ? "" : followUpContext))
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
@@ -99,6 +125,7 @@ export function retrieveKnowledge(question: string): KnowledgeEntry[] {
     .sort((a, b) => b.score - a.score || a.i - b.i);
   // The persona, work and editorial boundary are always available, even for follow-ups.
   const selected = [
+    ...anchors,
     ...ranked
       .filter((x) => x.score > 0)
       .slice(0, 4)

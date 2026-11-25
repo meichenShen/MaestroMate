@@ -177,7 +177,12 @@ export function Conversation({
                       {q?.clip && <ClipButton clip={q.clip} />}
                       <details className="message-source">
                         <summary>Behind this reply</summary>
-                        {turn.mode === "prepared" ? (
+                        {turn.reply?.mode === "guidance" ? (
+                          <p>
+                            This reminder is written by MaestroMate. No AI
+                            request was made for this reply.
+                          </p>
+                        ) : turn.mode === "prepared" ? (
                           q?.source ? (
                             <a href={q.source} target="_blank" rel="noreferrer">
                               {q.sourceLabel} ↗
@@ -194,16 +199,27 @@ export function Conversation({
                             </p>
                             {turn.reply?.sourceIds.map((id) =>
                               Object.hasOwn(references, id) ? (
-                                <a
-                                  key={id}
-                                  href={references[id as ReferenceId].url}
-                                  target={
-                                    id === "editorial" ? undefined : "_blank"
-                                  }
-                                  rel="noreferrer"
-                                >
-                                  {references[id as ReferenceId].label} ↗
-                                </a>
+                                id === "editorial" ? (
+                                  <div key={id} className="editorial-source">
+                                    <strong>
+                                      {references.editorial.label}
+                                    </strong>
+                                    {turn.reply?.editorialNotes?.map(
+                                      (note, i) => (
+                                        <p key={i}>{note}</p>
+                                      ),
+                                    )}
+                                  </div>
+                                ) : (
+                                  <a
+                                    key={id}
+                                    href={references[id as ReferenceId].url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    {references[id as ReferenceId].label} ↗
+                                  </a>
+                                )
                               ) : null,
                             )}
                             {!turn.reply?.sourceIds.length && (
@@ -230,12 +246,14 @@ export function Conversation({
                           : "That reply could not be checked. Try again, or use our prepared questions."}
                       </p>
                       <div>
-                        <button
-                          disabled={pending}
-                          onClick={() => chat.retry(turn.id)}
-                        >
-                          Try that question again
-                        </button>
+                        {chat.aiEnabled && (
+                          <button
+                            disabled={pending}
+                            onClick={() => chat.retry(turn.id)}
+                          >
+                            Try that question again
+                          </button>
+                        )}
                         {q ? (
                           <button
                             disabled={pending}

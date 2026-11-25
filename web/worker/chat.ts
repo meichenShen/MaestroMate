@@ -184,35 +184,40 @@ export async function handleChat(
         answer:
           "Let’s keep private details out of our conversation. Ask me about the music, my life as a musician, or an idea you would like to try in Play.",
       } satisfies ChatReply);
+    const paidAt = Date.now();
+    if (cap.expires_at <= paidAt) return fail(403, "invalid_session");
     // One conditional write atomically reserves a paid attempt. Provider failures
     // count too; switching sessions or tabs cannot bypass the shared daily cap.
     const reserve = await env.DB.prepare(
       `INSERT INTO chat_requests(id,session_hash,created_at) SELECT ?,?,?
    WHERE (SELECT count(*) FROM chat_requests WHERE session_hash=? AND created_at>=?)<20
    AND NOT EXISTS(SELECT 1 FROM chat_requests WHERE session_hash=? AND created_at>=?)
-   AND (SELECT count(*) FROM chat_requests WHERE created_at>=?)<100 ON CONFLICT(id) DO NOTHING`,
+   AND (SELECT count(*) FROM chat_requests WHERE created_at>=?)<100
+   AND EXISTS(SELECT 1 FROM chat_sessions WHERE token_hash=? AND expires_at>?) ON CONFLICT(id) DO NOTHING`,
     )
       .bind(
         input.id,
         tokenHash,
-        now,
+        paidAt,
         tokenHash,
-        now - hour,
+        paidAt - hour,
         tokenHash,
-        now - 2500,
-        now - day,
+        paidAt - 2500,
+        paidAt - day,
+        tokenHash,
+        paidAt,
       )
       .run();
     if (!reserve.meta.changes)
       return fail(429, "rate_limited", { "Retry-After": "60" });
     const notes = retrieveKnowledge(
-      input.question +
-        " " +
-        input.history
-          .filter((x) => x.role === "user")
-          .slice(-1)
-          .map((x) => x.content)
-          .join(" "),
+      input.question,
+      undefined,
+      input.history
+        .filter((x) => x.role === "user")
+        .slice(-1)
+        .map((x) => x.content)
+        .join(" "),
     );
     const allowed = new Set<string>(notes.flatMap((x) => x.sourceIds));
     const controller = new AbortController();
@@ -295,6 +300,13 @@ export async function handleChat(
         sourceIds: [...new Set<string>(reply.sourceIds)],
         kind: reply.kind,
         mode: "ai",
+        ...(reply.sourceIds.includes("editorial")
+          ? {
+              editorialNotes: notes
+                .filter((n) => n.sourceIds.includes("editorial"))
+                .map((n) => n.text),
+            }
+          : {}),
       } satisfies ChatReply);
     } catch {
       return fail(502, "answer_unavailable");

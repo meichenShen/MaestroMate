@@ -6,6 +6,7 @@ export const chatModels = [
 export type ChatModelId = (typeof chatModels)[number]["id"];
 export type ReplyKind = "fact" | "listening" | "unknown";
 export interface ChatReply {
+  editorialNotes?: string[];
   answer: string;
   sourceIds: string[];
   kind: ReplyKind;

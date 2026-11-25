@@ -282,3 +282,104 @@ test("only allowlisted alternate Qwen model is forwarded unchanged", async () =>
     DB.close();
   }
 });
+test("a session expiring while the bounded body is read cannot reserve paid usage", async () => {
+  const { DB, env, token } = await setup();
+  const original = Date.now;
+  let clock = original();
+  try {
+    await DB.prepare("update chat_sessions set expires_at=?")
+      .bind(clock + 1000)
+      .run();
+    Date.now = () => clock;
+    const request = req("", body(), { "x-chat-token": token });
+    let sent = false;
+    Object.defineProperty(request, "body", {
+      value: {
+        getReader() {
+          return {
+            async read() {
+              if (sent) return { done: true };
+              sent = true;
+              clock += 1500;
+              return {
+                done: false,
+                value: new TextEncoder().encode(JSON.stringify(body())),
+              };
+            },
+            releaseLock() {},
+          };
+        },
+      },
+    });
+    let calls = 0;
+    const r = await handleChat(request, env, async () => {
+      calls++;
+      return answer();
+    });
+    assert.equal(r.status, 403);
+    assert.equal(calls, 0);
+    assert.equal(
+      (await DB.prepare("select count(*) as n from chat_requests").first()).n,
+      0,
+    );
+  } finally {
+    Date.now = original;
+    DB.close();
+  }
+});
+test("all suggested questions retrieve their reviewed anchor notes even when keywords are vague", async () => {
+  const { questions } = await import("../src/content/knowledge/composer.ts");
+  const expected = {
+    aquarium: ["carnival", "score", "layers"],
+    layers: ["layers"],
+    composer: ["person"],
+    paris: ["paris"],
+    carnival: ["carnival"],
+    scene: ["scene"],
+    glass: ["score", "recording"],
+    variation: ["theory", "making"],
+    fauré: ["paris"],
+    whole: ["carnival"],
+  };
+  for (const q of questions) {
+    const notes = retrieveKnowledge(q.prompt, q.id).map((n) => n.id);
+    for (const id of expected[q.id])
+      assert.ok(notes.includes(id), q.id + " missing " + id);
+  }
+});
+test("an editorial citation carries inspectable source notes, not only a home link", async () => {
+  const { DB, env, token } = await setup();
+  try {
+    const r = await handleChat(
+      req(
+        "",
+        { ...body(), question: "Did you imagine these fish?" },
+        { "x-chat-token": token },
+      ),
+      env,
+      async () =>
+        Response.json({
+          choices: [
+            {
+              finish_reason: "stop",
+              message: {
+                content: JSON.stringify({
+                  answer: "MaestroMate created these visuals.",
+                  kind: "listening",
+                  sourceIds: ["editorial"],
+                }),
+              },
+            },
+          ],
+        }),
+    );
+    const reply = await r.json();
+    assert.ok(
+      reply.editorialNotes?.some((s) =>
+        s.includes("contemporary underwater visuals"),
+      ),
+    );
+  } finally {
+    DB.close();
+  }
+});

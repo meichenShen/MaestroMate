@@ -69,8 +69,17 @@ export function useComposerChat() {
         replied: !aiEnabled,
         mode,
       };
-      const previous = items.current.filter((t) => t.id !== retryId);
-      setTurns(retryId ? previous.concat(turn) : [...previous, turn]);
+      const retryIndex =
+        retryId === undefined
+          ? -1
+          : items.current.findIndex((t) => t.id === retryId);
+      const previous =
+        retryIndex < 0 ? items.current : items.current.slice(0, retryIndex);
+      setTurns((list) =>
+        retryIndex < 0
+          ? [...list, turn]
+          : list.map((t) => (t.id === retryId ? turn : t)),
+      );
       if (!aiEnabled) {
         busy.current = false;
         setPending(false);
@@ -132,9 +141,9 @@ export function useComposerChat() {
   const retry = useCallback(
     (id: number) => {
       const t = items.current.find((x) => x.id === id);
-      if (t?.error) void run(t.question, t.questionId, id);
+      if (aiEnabled && t?.error) void run(t.question, t.questionId, id);
     },
-    [run],
+    [run, aiEnabled],
   );
   const reset = useCallback(() => {
     controller.current?.abort();

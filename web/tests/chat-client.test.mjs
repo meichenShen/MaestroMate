@@ -100,3 +100,16 @@ test("non-ASCII conversation stays within the byte-limited request envelope", ()
   );
   assert.ok(new TextEncoder().encode(JSON.stringify(h)).length <= 4500);
 });
+test("local privacy guidance is never replayed into AI history", () => {
+  assert.deepEqual(
+    historyForRequest([
+      {
+        question: "email kid@example.test",
+        replied: true,
+        mode: "ai",
+        reply: { answer: "Keep private details out.", mode: "guidance" },
+      },
+    ]),
+    [],
+  );
+});

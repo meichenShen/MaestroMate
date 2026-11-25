@@ -76,13 +76,16 @@ export async function requestChat(
 export function historyForRequest(
   turns: {
     question: string;
-    reply?: { answer: string };
+    reply?: { answer: string; mode?: string };
     mode: string;
     replied: boolean;
   }[],
 ): ChatHistoryItem[] {
   const pairs = turns
-    .filter((t) => t.mode === "ai" && t.replied && t.reply)
+    .filter(
+      (t) =>
+        t.mode === "ai" && t.replied && t.reply && t.reply.mode !== "guidance",
+    )
     .slice(-3)
     .map((t) => [
       { role: "user" as const, content: t.question.slice(0, 600) },

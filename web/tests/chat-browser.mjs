@@ -230,3 +230,65 @@ test("mobile and short Program keep essential chat controls accessible", async (
     await p.close();
   }
 });
+test("retry stays in place and uses only earlier context; prepared mode hides AI retry", async () => {
+  const p = await visit();
+  try {
+    const submitted = [];
+    let n = 0;
+    await p.route("**/api/chat", async (r) => {
+      submitted.push(r.request().postDataJSON());
+      n++;
+      await r.fulfill(
+        n === 1
+          ? { status: 502, json: { error: "answer_unavailable" } }
+          : {
+              json: {
+                answer: "Checked reply " + n,
+                mode: "ai",
+                kind: "fact",
+                sourceIds: ["score"],
+              },
+            },
+      );
+    });
+    await enable(p);
+    const input = p.getByRole("textbox", { name: "Your music question" });
+    await input.fill("My first question");
+    await p.getByRole("button", { name: "Send question", exact: true }).click();
+    await p
+      .getByRole("button", { name: "Try that question again", exact: true })
+      .waitFor();
+    await input.fill("My later question");
+    await p.getByRole("button", { name: "Send question", exact: true }).click();
+    await p.getByText("Checked reply 2", { exact: true }).waitFor();
+    await p
+      .getByRole("button", { name: "Try that question again", exact: true })
+      .click();
+    await p.getByText("Checked reply 3", { exact: true }).waitFor();
+    assert.deepEqual(
+      await p.locator(".chat-turn .outgoing p").allTextContents(),
+      ["My first question", "My later question"],
+    );
+    assert.deepEqual(submitted[2].history, []);
+    await p.route("**/api/chat", (r) =>
+      r.fulfill({ status: 502, json: { error: "answer_unavailable" } }),
+    );
+    await input.fill("Another question");
+    await p.getByRole("button", { name: "Send question", exact: true }).click();
+    await p
+      .getByRole("button", { name: "Try that question again", exact: true })
+      .waitFor();
+    await p.getByRole("button", { name: "Chat settings" }).click();
+    await p
+      .getByRole("button", { name: "Use prepared questions", exact: true })
+      .click();
+    assert.equal(
+      await p
+        .getByRole("button", { name: "Try that question again", exact: true })
+        .count(),
+      0,
+    );
+  } finally {
+    await p.close();
+  }
+});
