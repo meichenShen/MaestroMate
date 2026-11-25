@@ -594,3 +594,6 @@
 .pool-feedback{padding:10px 16px;border-radius:20px;background:#ffffff07;font-size:15px}
 .pool-actions{align-items:center}
 @media(min-width:951px) and (max-height:750px){.pool-heading,.pool-composer{padding:10px 16px}.pool-heading h1{font-size:28px;margin:4px 0}.pool-heading>div>p:last-child{display:none}}
+.pool-instrument{display:inline-flex;align-items:center;gap:8px;font-size:15px;color:#d9d0e5}
+.pool-instrument select{font:inherit;min-height:44px;padding:8px 12px;border-radius:24px;background:#262132;color:#f4edf9;border:1px solid #a593e044;max-width:160px}
+.pool-footnote a{color:#80d4f6;text-underline-offset:3px}

@@ -1,5 +1,5 @@
 import {t,useLocale} from "../i18n/locale";
-import { Compass, ArrowUpRight } from "lucide-react";
+import { Compass, ArrowUpRight, ChevronDown } from "lucide-react";
 import type { Route } from "../navigation/routes";
 export function BrandHeader({ route, onGuide, onEntry, }: {
     route: Route;
@@ -26,7 +26,13 @@ export function BrandHeader({ route, onGuide, onEntry, }: {
                         : "";
     return (<header className="brand-header">
       <a className="brand" href="#home" aria-label={t("MaestroMate home")}>{t("MaestroMate")}</a>
-      <label className="site-language"><span className="sr-only">Site language / 网站语言</span><select aria-label="Site language / 网站语言" value={language} onChange={e=>setLanguage(e.target.value as 'en'|'zh')}><option value="en">English</option><option value="zh">中文</option></select></label>
+      <label className="site-language">
+        <span className="sr-only">Site language / 网站语言</span>
+        <select aria-label="Site language / 网站语言" value={language} onChange={e=>setLanguage(e.target.value as 'en'|'zh')}>
+          <option value="en">English</option><option value="zh">中文</option>
+        </select>
+        <ChevronDown size={14} aria-hidden="true"/>
+      </label>
       <nav aria-label={t("Main navigation")}>
         <div className="room-links">
           {t([

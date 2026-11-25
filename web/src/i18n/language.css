@@ -1,7 +1,13 @@
 /* Global language control remains available in every room and modal backdrop. */
-.site-language{margin-left:auto;margin-right:18px;flex-shrink:0}.site-language select{min-height:44px;border:1px solid #a593e044;background:#252030;color:#f4edf9;border-radius:24px;padding:8px 13px;font:inherit;font-size:14px;cursor:pointer}
+.site-language{display:inline-flex;align-items:center;position:relative;margin-left:auto;margin-right:18px;flex-shrink:0;line-height:1}
+.site-language select{display:block;appearance:none;height:44px;border:1px solid #a593e044;background:#252030;color:#f4edf9;border-radius:24px;padding:10px 34px 10px 16px;font:inherit;font-size:16px;line-height:22px;cursor:pointer}
+.site-language>svg{position:absolute;right:13px;pointer-events:none;color:#f4edf9}
+.brand-header>nav{line-height:1.25}
+.brand-header .program-link{min-height:44px;white-space:nowrap}
+.site-language select:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
+@media(min-width:721px) and (max-width:950px){.brand-header{gap:18px}.brand-header .brand{font-size:24px}.site-language{margin-right:0}.site-language select{font-size:14px;padding-left:13px}.brand-header>nav{gap:14px;font-size:14px}.brand-header .room-links{gap:18px}.brand-header .program-link{padding:10px 14px;gap:8px}}
 html[lang=zh-CN]{--font:Onest,"PingFang SC","Microsoft YaHei",sans-serif;--display:Outfit,"PingFang SC","Microsoft YaHei",sans-serif}
-@media(max-width:720px){.site-language{margin-right:8px}.site-language select{padding:6px 8px;font-size:13px}.brand-header .guide-link,.brand-header .entry-reopen{display:none}.brand-header .brand{font-size:22px}.brand-header nav{gap:10px}.brand-header .program-link{padding:8px 10px;font-size:13px}}
+@media(max-width:720px){.brand-header{gap:2px 10px;padding-top:8px;padding-bottom:8px}.site-language{margin-right:0}.site-language select{padding:10px 30px 10px 12px;font-size:13px}.site-language>svg{right:10px}.brand-header .guide-link,.brand-header .entry-reopen{display:none}.brand-header .brand{font-size:22px}.brand-header nav{gap:10px}.brand-header .program-link{padding:8px 10px;font-size:13px}}
 @media(max-width:420px){.brand-header{flex-wrap:wrap;height:auto;min-height:var(--header-height);gap:2px 10px;padding-top:8px;padding-bottom:8px}.brand-header nav{width:100%;justify-content:center}.site-language{margin-left:auto;margin-right:0}.brand-header .room-links{gap:18px}}
 
 @media(max-width:720px){.brand-header .guide-link,.brand-header .entry-reopen{display:inline-flex!important;width:32px;min-width:32px;min-height:44px;justify-content:center;font-size:0;padding:4px}.brand-header .guide-link:before{content:"?";font-size:18px}.brand-header .entry-reopen svg{width:18px;height:18px}.brand-header nav{gap:6px}.brand-header .room-links{gap:8px;font-size:13px}.brand-header .program-link{font-size:12px;padding:8px 10px}}

@@ -110,12 +110,18 @@ export function PlayCatalog({ area, progress, }: {
         </p>
       </header>
       {t(area === "lessons" && (<div className="course-chapters" aria-label={t("Course progression")}>
-          <span>{t("01 First sounds ")}<small>{t("Lessons 1\u20133")}</small>
-          </span>
-          <span>{t("02 Building music ")}<small>{t("Lessons 4\u20135")}</small>
-          </span>
-          <span>{t("03 People & instruments ")}<small>{t("Lessons 6\u20138")}</small>
-          </span>
+          <div className="course-chapter">
+            <span className="chapter-number">01</span><span className="chapter-title">{t("First sounds")}</span>
+            <small>{t("Lessons 1\u20133")}</small>
+          </div>
+          <div className="course-chapter">
+            <span className="chapter-number">02</span><span className="chapter-title">{t("Building music")}</span>
+            <small>{t("Lessons 4\u20135")}</small>
+          </div>
+          <div className="course-chapter">
+            <span className="chapter-number">03</span><span className="chapter-title">{t("People & instruments")}</span>
+            <small>{t("Lessons 6\u20138")}</small>
+          </div>
         </div>))}
       <div className="lesson-cards">
         {t(create ? (<>

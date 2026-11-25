@@ -3,7 +3,9 @@ import { BackLink } from "../../navigation/BackLink";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, } from "react";
 import { ArrowLeft, Play, Square, RotateCcw, Volume2, VolumeX, Waves, } from "lucide-react";
 import { MusicPoolView, type PoolViewHandle, } from "../../components/MusicPoolView";
-import { PoolAudio } from "./audio";
+import { preloadPiano } from "./piano";
+import { melodyIdeas } from "../creation/music";
+import { PoolAudio, type PitchedInstrument } from "./audio";
 import { emptyMelody, poolNotes, putNote, type Melody } from "./model";
 import { getPoolLayout } from "./layout";
 import "./music-pool.css";
@@ -16,6 +18,7 @@ export function MusicPool({ melody, onChange, enabled, }: {
     enabled: boolean;
 }) {
     useLocale();
+    const [instrument,setInstrument]=useState<PitchedInstrument>("piano"), [idea,setIdea]=useState(0);
     const [selected, setSelected] = useState(0), [playing, setPlaying] = useState(false), [sounding, setSounding] = useState<number | null>(null), [beat, setBeat] = useState<number | null>(null);
     const [error, setError] = useState(""), [muted, setMuted] = useState(false), [motion, setMotion] = useState(() => !matchMedia("(prefers-reduced-motion: reduce)").matches);
     const [layout, setLayout] = useState(() => getPoolLayout(900, 360));
@@ -65,6 +68,10 @@ export function MusicPool({ melody, onChange, enabled, }: {
             audio.current = null;
         };
     }, []);
+    useEffect(() => {
+        audio.current?.setInstrument(instrument);
+        if(enabled && instrument === "piano") void preloadPiano().catch(()=>{});
+    },[instrument,enabled]);
     useEffect(() => {
         if (!enabled)
             stop();
@@ -183,6 +190,7 @@ export function MusicPool({ melody, onChange, enabled, }: {
           <p>{t("Tap a light. Make a tune.")}</p>
         </div>
         <div className="pool-switches">
+          <label className="pool-instrument">{t("Instrument")}<select aria-label={t("Creative instrument")} value={instrument} disabled={!enabled} onChange={e=>{stop();setInstrument(e.target.value as PitchedInstrument)}}><option value="piano">{t("Piano")}</option><option value="glass">{t("Glass bells")}</option><option value="pluck">{t("Bright pluck")}</option></select></label>
           <PoolMission melody={melody} onOpen={stop} onStart={() => {
             stop();
             echo.free();
@@ -319,6 +327,7 @@ export function MusicPool({ melody, onChange, enabled, }: {
             {t(playing ? <Square size={18}/> : <Play size={18}/>)}{t(" ")}
             {t(playing ? "Stop" : "Play my melody")}
           </button>
+          <button className="pool-clear" disabled={!enabled || echo.active} onClick={()=>{stop();onChange([...melodyIdeas[idea % melodyIdeas.length]]);setIdea(idea+1);setSelected(0)}}>{t("Try an idea")}</button>
           <button className="pool-clear" aria-label={t("Clear melody")} disabled={echo.active} onClick={() => {
             stop();
             onChange(emptyMelody());
@@ -331,10 +340,10 @@ export function MusicPool({ melody, onChange, enabled, }: {
                 ? "That’s your melody."
                 : muted
                     ? "Sound is off. Your notes still make ripples."
-                    : "① Tap a light → ② Fill your melody → ③ Press Play"))}
+                    : "Tap a light. Fill the steps. Press Play."))}
           </p>
         </div>
       </section>
-      <p className="pool-footnote">{t("Original synth sounds \u00B7 not the Aquarium recording.")}</p>
+      <p className="pool-footnote">{t("Piano and original synth sounds · not the Aquarium recording.")} <a href="/audio/piano/ATTRIBUTION.txt" target="_blank" rel="noreferrer">{t("Sound credits")}</a></p>
     </main>);
 }

@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAudio } from "../../audio/AudioProvider";
-import { PoolAudio, type SoundLayer } from "../water/audio";
+import { PoolAudio, type SoundLayer, type Instrument } from "../water/audio";
 import type { Melody } from "../water/model";
+import { preloadPiano } from "../water/piano";
+import { backingLayers, type BackingStyle } from "../creation/music";
 import type { Clip } from "../../content/aquarium";
-export function useWorkshopSound(enabled: boolean) {
+export function useWorkshopSound(enabled: boolean, instrument: Instrument = "smooth") {
   const recording = useAudio(),
     synth = useRef<PoolAudio | null>(null),
     alive = useRef(false),
@@ -45,10 +47,17 @@ export function useWorkshopSound(enabled: boolean) {
   useEffect(() => {
     synth.current?.setVolume(muted ? 0 : 0.2);
   }, [muted]);
+  useEffect(() => {
+    stop(); synth.current?.setInstrument(instrument);
+    if(enabled && instrument === 'piano') void preloadPiano().catch(()=>{});
+  }, [instrument, enabled, stop]);
   const practice = async (
     notes: Melody,
     options?: {
       bpm?: number;
+      backing?: BackingStyle;
+      repeats?: number;
+      extraLayers?: SoundLayer[];
       gain?: number;
       colour?: "smooth" | "sparkling";
       accompaniment?: boolean;
@@ -70,16 +79,20 @@ export function useWorkshopSound(enabled: boolean) {
           duration: options?.duration,
         },
       ];
-      if (options?.accompaniment)
+      if(options?.extraLayers) layers.push(...options.extraLayers.slice(0,2));
+      if(options?.backing) layers.push(...backingLayers(options.backing));
+      if (options?.accompaniment && !options.backing)
         layers.push({
           notes: notes.map((_, i) => (i % 2 ? 1 : 0)),
           gain: 0.35,
           duration: 0.12,
         });
+      const repeats=Math.min(4, Math.max(1, options?.repeats ?? 1));
+      const sequence=layers.map(layer=>({...layer,notes:Array.from({length:repeats},()=>layer.notes).flat()}));
       const ok = await synth.current?.playLayers(
-        layers,
+        sequence,
         (i) => {
-          if (alive.current && ticket.current === id) setBeat(i);
+          if (alive.current && ticket.current === id) setBeat(i % notes.length);
         },
         () => {
           if (alive.current && ticket.current === id) {
@@ -88,14 +101,14 @@ export function useWorkshopSound(enabled: boolean) {
             options?.onDone?.();
           }
         },
-        notes.length,
+        Math.min(32,notes.length*repeats),
         options?.bpm,
       );
       if (alive.current && id === ticket.current && !ok) setPlaying(false);
     } catch {
       if (alive.current && id === ticket.current) {
         setPlaying(false);
-        setError("Sound did not start. Tap Hear again.");
+        setError(instrument === "piano" ? "Piano sound could not start. Try again or choose another sound." : instrument !== "smooth" ? "Sound could not start. Try again." : "Sound did not start. Tap Hear again.");
       }
     }
   };

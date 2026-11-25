@@ -17,3 +17,19 @@ try {
   console.error(cause.message);
   process.exitCode = 1;
 }
+
+// Keep the small sampled instrument complete and unchanged from its credited source.
+try {
+  const { createHash } = await import('node:crypto');
+  const root = new URL('../public/audio/piano/', import.meta.url);
+  const manifest = JSON.parse(await readFile(new URL('manifest.json', root), 'utf8'));
+  for (const file of manifest) {
+    const bytes = await readFile(new URL(file.file, root));
+    if (bytes.length !== file.bytes || createHash('sha256').update(bytes).digest('hex') !== file.sha256)
+      throw new Error(`Piano sample does not match its manifest: ${file.file}`);
+  }
+  await stat(new URL('ATTRIBUTION.txt', root));
+  console.log(`Piano sample assets verified: ${manifest.length} files`);
+} catch (error) {
+  console.error(error.message); process.exitCode = 1;
+}

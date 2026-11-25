@@ -70,11 +70,21 @@ Reference license: /credits/particle-reference-MIT.txt
 
 Music Pool and tactile surfaces
 Original procedural Three.js water, five-note Web Audio instrument and CSS springs.
-These synthesized sounds are not extracted from the Aquarium recording.
-Interaction references (no code, textures or audio copied in this iteration):
+Creation uses self-hosted piano recordings and original synth/percussion sounds;
+none are extracted from the Aquarium recording.
+Visual interaction references (no code or textures copied):
 https://html-in-canvas.dev/demos/wishing-pond/
 https://html-in-canvas.dev/demos/3d-room-live-content/
 https://html-in-canvas.dev/demos/elastic-bulge/
 Showcase source: https://github.com/en-dash-consulting/html-in-canvas-dot-dev
 Aquarium/water research references: WebGLSamples Aquarium and Evan Wallace's
 WebGL Water. Their assets/code are not included in this Music Pool prototype.
+
+Creative piano instrument
+Salamander Grand Piano by Alexander Holm, Yamaha C5 recordings, CC BY 3.0.
+MP3 distribution: https://github.com/Tonejs/audio/tree/master/salamander
+Original collection: https://github.com/sfzinstruments/SalamanderGrandPiano
+License: https://creativecommons.org/licenses/by/3.0/
+Eight self-hosted MP3 notes (~582kB), repitched and enveloped at runtime.
+Source README, per-file hashes and changes: /audio/piano/ATTRIBUTION.txt
+Glass/pluck/percussion and starting phrases are original MaestroMate synthesis.

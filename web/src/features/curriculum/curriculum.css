@@ -1670,7 +1670,8 @@
 }
 .full-mix-label{display:inline;font-size:12px;color:#b5b3c1;margin-left:9px}
 .play-catalog .lesson-cards{flex:initial;align-items:stretch}
-.course-chapters{display:flex;gap:18px;justify-content:space-between;padding:16px 0}
-.course-chapters>span{font-size:20px;color:#f1e9f9}
-.course-chapters small{display:block;color:#b8adc6;font-size:14px;margin-top:7px}
-@media(max-width:950px){.course-chapters{flex-wrap:wrap;gap:18px}.course-chapters>span{font-size:17px}}
+.course-chapters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,50px);padding:16px 0}
+.course-chapter{display:grid;grid-template-columns:2ch minmax(0,1fr);gap:7px 12px;align-content:start;min-width:0;font-size:20px;line-height:1.4;color:#f1e9f9}
+.chapter-number{font-variant-numeric:tabular-nums}
+.course-chapters small{grid-column:2;color:#b8adc6;font-size:14px;line-height:1.5}
+@media(max-width:950px){.course-chapters{grid-template-columns:1fr;gap:18px}.course-chapter{font-size:17px}}
