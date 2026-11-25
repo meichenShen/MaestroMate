@@ -226,11 +226,11 @@ export function MusicPool({
         <div>
           <BackLink href="#play/create" className="pool-back">
             <ArrowLeft size={18} />
-            Back to the play room
+            Back to Create & play
           </BackLink>
           <p className="eyebrow">Aquarium · Music Pool</p>
-          <h1>Make a little ripple.</h1>
-          <p>Paint the water. Or follow a little fish.</p>
+          <h1>Music Pool</h1>
+          <p>Tap a light. Make a tune.</p>
         </div>
         <div className="pool-switches">
           <PoolMission
@@ -506,13 +506,12 @@ export function MusicPool({
                 ? "That’s your melody."
                 : muted
                   ? "Sound is off. Your notes still make ripples."
-                  : "Tap the water to paint a tune.")}
+                  : "① Tap a light → ② Fill your melody → ③ Press Play")}
           </p>
         </div>
       </section>
       <p className="pool-footnote">
-        An instrument of your own. These sounds are created here, separate from
-        the Aquarium recording.
+        Original synth sounds · not the Aquarium recording.
       </p>
     </main>
   );

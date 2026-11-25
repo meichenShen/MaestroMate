@@ -138,12 +138,12 @@ html.home-route {
   top: 0;
   color: var(--accent);
 }
-.chat-node {
+.play-node {
   right: 11%;
   top: 10%;
   color: var(--rose);
 }
-.play-node {
+.chat-node {
   left: 38%;
   bottom: 0;
   color: var(--lilac);
@@ -245,10 +245,10 @@ html.home-route {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
-.scene-visible .chat-node {
+.scene-visible .play-node {
   transition-delay: 0.1s;
 }
-.scene-visible .play-node {
+.scene-visible .chat-node {
   transition-delay: 0.2s;
 }
 .programme-section {
@@ -496,11 +496,11 @@ html.home-route {
     left: 0;
     top: 0;
   }
-  .chat-node {
+  .play-node {
     right: 0;
     top: 31%;
   }
-  .play-node {
+  .chat-node {
     left: 7%;
     bottom: 0;
   }
@@ -618,7 +618,7 @@ html.home-route {
     font-size: 13px;
     max-width: 140px;
   }
-  .chat-node {
+  .play-node {
     right: -1px;
   }
   .program-teaser h2 {
@@ -641,8 +641,8 @@ html.home-route {
     opacity: 1;
     transform: none !important;
   }
-  .scene-visible .chat-node,
-  .scene-visible .play-node {
+  .scene-visible .play-node,
+  .scene-visible .chat-node {
     transition-delay: 0s;
   }
 }
@@ -693,12 +693,12 @@ html.home-route {
   top: -3%;
   color: var(--listen);
 }
-.chat-node {
+.play-node {
   right: 7%;
   top: 7%;
   color: var(--chat);
 }
-.play-node {
+.chat-node {
   left: 40%;
   bottom: -4%;
   color: var(--play);
@@ -736,7 +736,7 @@ html.home-route {
   .portal-node {
     min-height: 295px;
   }
-  .play-node {
+  .chat-node {
     left: 39%;
     bottom: -5%;
   }
@@ -760,10 +760,10 @@ html.home-route {
   .listen-node {
     left: 0;
   }
-  .chat-node {
+  .play-node {
     right: 0;
   }
-  .play-node {
+  .chat-node {
     left: 37%;
   }
 }
@@ -797,11 +797,11 @@ html.home-route {
     left: 0;
     top: 0;
   }
-  .chat-node {
+  .play-node {
     right: 0;
     top: 31%;
   }
-  .play-node {
+  .chat-node {
     left: 7%;
     bottom: 0;
   }
@@ -816,3 +816,6 @@ html.home-route {
   color: inherit;
   margin-top: 0;
 }
+
+.chat-node{color:var(--chat)}.play-node{color:var(--play)}
+@media(max-width:720px){.chat-node{right:0;left:auto;top:31%;bottom:auto}.play-node{left:7%;right:auto;bottom:0;top:auto}}

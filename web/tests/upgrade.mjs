@@ -92,14 +92,7 @@ test("activity information really reveals on pointer hover and keyboard focus", 
 test("composer topic navigation changes prompts without losing messages", async () => {
   const p = await page("#chat");
   try {
-    const life = p.getByRole("button", { name: "Life", exact: true });
-    assert.equal(await life.count(), 1);
-    await life.click();
-    assert.equal(
-      await p.locator(".question-tile").count(),
-      questions.filter((q) => questionPresentation[q.id].topic === "life")
-        .length,
-    );
+    assert.equal(await p.locator(".question-tile").count(),questions.length);
     await p
       .getByRole("button", {
         name: "How did you become a musician?",
@@ -109,11 +102,11 @@ test("composer topic navigation changes prompts without losing messages", async 
     await p.waitForFunction(
       () => document.querySelectorAll('[data-speaker="camille"]').length === 2,
     );
-    await p.getByRole("button", { name: "Music", exact: true }).click();
+    await p.getByRole("combobox", { name: "Conversation language" }).selectOption("zh");
     assert.equal(await p.locator('[data-speaker="you"]').count(), 1);
     assert.equal(
       await p
-        .getByRole("button", { name: "Why an aquarium?", exact: true })
+        .getByRole("button", { name: "为什么叫《水族馆》？", exact: true })
         .count(),
       1,
     );

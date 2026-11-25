@@ -1,3 +1,4 @@
+import {chineseQuestions} from "../../content/knowledge/chinese";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
@@ -50,6 +51,10 @@ export function Conversation({
 }) {
   const { turns, pending, ask: onAsk } = chat;
   const [draft, setDraft] = useState("");
+  const [consent,setConsent]=useState(false);
+  const zh=chat.language === "zh";
+  const consentDialog=useRef<HTMLDialogElement>(null);
+  useEffect(()=>{if(consent)consentDialog.current?.showModal();else consentDialog.current?.close()},[consent]);
   const thread = useRef<HTMLDivElement>(null),
     follow = useRef(true),
     questionRail = useRef<HTMLDivElement>(null);
@@ -57,13 +62,7 @@ export function Conversation({
   useEffect(() => {
     questionRail.current?.scrollTo({ left: 0 });
   }, [topic]);
-  const latest = () =>
-    thread.current?.scrollTo({
-      top: thread.current.scrollHeight,
-      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "instant"
-        : "smooth",
-    });
+  const latest = () => {const host=thread.current;if(!host)return;const target=host.querySelector<HTMLElement>('.chat-turn:last-of-type .incoming')||host.querySelector<HTMLElement>('.chat-turn:last-of-type .outgoing');host.scrollTo({top:target?host.scrollTop+target.getBoundingClientRect().top-host.getBoundingClientRect().top-8:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})};
   useEffect(() => {
     if (follow.current) latest();
   }, [turns, pending]);
@@ -72,37 +71,24 @@ export function Conversation({
       className="conversation-feature chat-studio"
       aria-labelledby="conversation-title"
     >
-      <aside className="artist-profile">
-        <p className="eyebrow">Meet the artist</p>
+      <aside className="artist-profile" data-lenis-prevent>
+        <p className="eyebrow">{zh?"认识作曲家":"Meet the composer"}</p>
         <div className="artist-emblem" aria-hidden="true">
           <Music2 strokeWidth={1.1} />
           <span>C.S.</span>
         </div>
-        <h1 id="conversation-title">Camille Saint-Saëns</h1>
+        <h1 id="conversation-title">{zh?"卡米耶·圣桑":"Camille Saint-Saëns"}</h1>
         <p className="artist-years">1835 — 1921</p>
-        <p className="artist-roles">Composer. Pianist. Organist.</p>
-        <nav className="chat-topics" aria-label="Conversation topics">
-          {topics.map(({ id, label, hint, Icon }) => (
-            <button
-              key={id}
-              aria-label={label}
-              aria-pressed={topic === id}
-              aria-describedby={`topic-${id}-hint`}
-              onClick={() => setTopic(id)}
-            >
-              <Icon size={21} />
-              <span>{label}</span>
-              <span className="topic-tip" id={`topic-${id}-hint`}>
-                {hint}
-              </span>
-            </button>
-          ))}
-        </nav>
+        <p className="artist-roles">{zh?"作曲家 · 钢琴家 · 管风琴师":"Composer. Pianist. Organist."}</p>
+        <div className="composer-illustration" aria-hidden="true"><svg viewBox="0 0 240 130" fill="none"><path d="M35 82V45c0-20 105-32 140 0l30 23v30H35Z" fill="#a593e033" stroke="#a593e0" strokeWidth="2"/><path d="M35 81h170M55 82v18m22-18v18m22-18v18m22-18v18m22-18v18m22-18v18m22-18v18M48 101v19m145-19v19" stroke="#ffda8e" strokeWidth="3"/><circle cx="181" cy="24" r="8" fill="#ee2560"/><path d="M188 24V5l18 5" stroke="#ee2560" strokeWidth="3"/></svg></div>
+        <p className="composer-story">{zh?'我是卡米耶·圣桑。钢琴、管风琴、创作和教学，都是我的音乐生活。欢迎坐下来，听听音乐，也聊聊它背后的故事。':"I’m Camille. Piano, organ, composing and teaching filled my musical life. Take a seat—let’s discover the person and the ideas behind this music."}</p>
+        <div className="composer-facts"><span><b>1835</b>{zh?'出生于巴黎':'Born in Paris'}</span><span><b>1886</b>{zh?'写下《动物狂欢节》':'The Carnival takes shape'}</span></div>
+        <details className="composer-biography"><summary>{zh?'读一读他的故事':'Read his story'}</summary><p>{zh?'圣桑曾在巴黎玛德莲教堂担任二十年管风琴师，也在尼德迈尔学校教音乐。他的学生中有加布里埃尔·福雷。':'For twenty years, Saint-Saëns was organist at La Madeleine in Paris. He also taught at the École Niedermeyer; Gabriel Fauré was among his pupils.'}</p><p>{zh?'1886年的《动物狂欢节》原本是朋友间的音乐趣作。《水族馆》是其中第七乐章。这里的对话是参考史料的想象演绎，不是历史引语。':'The Carnival of the Animals began as a private musical amusement in 1886. Aquarium is its seventh movement. Our conversation is an imagined adaptation guided by historical sources, not a quotation.'}</p></details>
         <KnowledgeShelf />
       </aside>
       <div className="chat-main">
         <header className="chat-room-heading">
-          <h2>Pull up a chair.</h2>
+          <h2>{zh?"和圣桑聊一聊":"A moment with Camille."}</h2>
           <Hint id="conversation-note" label="About this conversation">
             An imagined educational conversation, not historical quotations. AI
             replies may contain mistakes; check the sources shown.
@@ -140,8 +126,7 @@ export function Conversation({
             <div className="chat-message incoming" data-speaker="camille">
               <span className="speaker-name">Camille</span>
               <p>
-                I'm Camille. Shall we begin with a life, a sound, or a little
-                mischief?
+                {zh?'你好，我是这里的“圣桑”——一个根据史料想象的音乐伙伴。刚才的音乐里，有什么让你好奇？':"Hello, I’m your imagined Camille. What caught your ear in the music? Let’s start there."}
               </p>
             </div>
             {turns.map((turn) => {
@@ -171,7 +156,7 @@ export function Conversation({
                       </span>
                       <p>
                         {turn.mode === "prepared"
-                          ? q?.answer
+                          ? (turn.language === "zh" && q ? chineseQuestions[q.id].answer : q?.answer)
                           : turn.reply?.answer}
                       </p>
                       {q?.clip && <ClipButton clip={q.clip} />}
@@ -282,8 +267,11 @@ export function Conversation({
             )}
           </div>
           <div className="chat-prompts">
+            <div className="chat-modebar" aria-label="Conversation controls"><button role="switch" aria-label="AI conversation" aria-checked={chat.aiEnabled} disabled={pending||!chat.config?.enabled} onClick={()=>chat.aiEnabled?chat.setAI(false):setConsent(true)}><i/>{zh?'AI 对话':'AI conversation'} {chat.aiEnabled?'On':'Off'}</button><select aria-label="AI model" value={chat.model} disabled={pending} onChange={e=>chat.setModel(e.target.value)}>{(chat.config?.models||[]).map(m=><option key={m.id} value={m.id}>{m.label}</option>)}</select><select aria-label="Conversation language" value={chat.language} disabled={pending} onChange={e=>chat.setLanguage(e.target.value as 'en'|'zh')}><option value="en">English</option><option value="zh">中文</option></select></div>
+            <dialog ref={consentDialog} className="inline-consent discovery-dialog" aria-label="AI privacy" onClose={()=>setConsent(false)}><p>{zh?'开启后，你的问题和最多三轮对话将发送至阿里云百炼。请不要填写个人信息；儿童请在家长或老师陪伴下使用。':'AI sends your question and up to three exchanges to Alibaba Cloud. Leave out private details; children should ask a parent or teacher first.'}</p><button onClick={()=>{chat.setAI(true);setConsent(false)}}>Enable AI conversation</button><button onClick={()=>setConsent(false)}>{zh?'暂不开启':'Not now'}</button></dialog>
+
             <div className="prompt-heading">
-              <p>Choose a question</p>
+              <p>{zh?"试着问问":"Try asking"}</p>
               <div className="question-rail-actions">
                 <button
                   aria-label="Previous questions"
@@ -341,16 +329,16 @@ export function Conversation({
                   <button
                     className="question-tile"
                     key={q.id}
-                    aria-label={q.prompt}
+                    aria-label={zh?chineseQuestions[q.id].prompt:q.prompt}
                     disabled={pending}
                     onClick={() => {
                       follow.current = true;
                       onAsk(q.id);
                     }}
                   >
-                    <strong>{questionPresentation[q.id].label}</strong>
+                    <strong>{zh?"聊聊这个":questionPresentation[q.id].label}</strong>
                     <Send size={16} />
-                    <span className="question-full">{q.prompt}</span>
+                    <span className="question-full">{zh?chineseQuestions[q.id].prompt:q.prompt}</span>
                   </button>
                 ))}
             </div>
@@ -373,7 +361,7 @@ export function Conversation({
                   id="music-question"
                   type="text"
                   autoComplete="off"
-                  placeholder="Ask about the music…"
+                  placeholder={zh?"你想问圣桑什么？":"What would you like to ask Camille?"}
                   maxLength={600}
                   value={draft}
                   onChange={(e) => setDraft(e.target.value)}
@@ -386,7 +374,7 @@ export function Conversation({
                   disabled={pending || !draft.trim()}
                 >
                   <Send size={19} />
-                  <span>Send</span>
+                  <span>{zh?"发送":"Send"}</span>
                 </button>
               </form>
             )}

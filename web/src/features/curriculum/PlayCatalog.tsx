@@ -45,7 +45,7 @@ export function PlayCatalog({
       <main id="main" tabIndex={-1} className="play-hub page-room">
         <header className="curriculum-intro">
           <p className="eyebrow">A little curiosity goes a long way.</p>
-          <h1>Hear it. Get it. Make it yours.</h1>
+          <h1>Play</h1>
           <p>Start with a piece, meet a musical idea, or make a sound.</p>
         </header>
         <div className="play-pillars">
@@ -121,10 +121,10 @@ export function PlayCatalog({
         </p>
         <h1>
           {work
-            ? "Go a little deeper."
+            ? "Explore Aquarium"
             : create
-              ? "What will you make?"
-              : "Music starts to make sense."}
+              ? "Create & play"
+              : "Music lessons"}
         </h1>
         <p>
           {work

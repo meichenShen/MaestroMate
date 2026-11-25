@@ -17,6 +17,8 @@ export async function requestChat(
   input: {
     question: string;
     model: string;
+    language?: "en"|"zh";
+    questionId?: string;
     history: ChatHistoryItem[];
     signal: AbortSignal;
     session?: ChatSession;
@@ -60,6 +62,8 @@ export async function requestChat(
         id: crypto.randomUUID(),
         question: input.question,
         model: input.model,
+        language: input.language,
+        questionId: input.questionId,
         history: input.history,
       }),
       signal: input.signal,

@@ -204,7 +204,7 @@ test("mobile and short Program keep essential chat controls accessible", async (
     await enable(p);
     await p.evaluate(() => (location.hash = "#program/aquarium/chat"));
     await p.getByRole("log").waitFor();
-    for (const name of ["Chat settings", "Send question", "More questions"]) {
+    for (const name of ["Chat settings", "Send question"]) {
       const b = await p
         .getByRole("button", { name, exact: true })
         .boundingBox();

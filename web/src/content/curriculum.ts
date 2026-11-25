@@ -304,6 +304,8 @@ const order = [
   "music-in-time",
 ];
 units.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+const chapterNames:Record<string,string>={pitch:'Pitch and loudness',rhythm:'Pulse, rhythm and rests',steps:'Steps and leaps',layers:'Melody and accompaniment',patterns:'Repetition and variation',ensemble:'Instrument families','music-makers':'Composers, players and conductors','music-in-time':'Music through time','aquarium-composer':'The composer','aquarium-carnival':'The Carnival','aquarium-colour':'The instruments','aquarium-layers':'The musical layers','aquarium-recording':'The score and the recording','aquarium-return':'Repetition and variation'};
+for(const u of units){u.title=chapterNames[u.id]||u.title;u.subtitle=u.area==='works'?'Aquarium · '+u.concept:u.concept;}
 const registry: Record<string, LearningUnit> = Object.assign(
   Object.create(null),
   Object.fromEntries(units.map((u) => [u.id, u])),

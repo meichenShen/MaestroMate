@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import {chineseQuestions} from "../../content/knowledge/chinese";
 import { questions } from "../../content/aquarium";
 import {
   type ChatConfig,
@@ -14,6 +15,7 @@ import {
 export interface ChatTurn {
   id: number;
   questionId?: string;
+  language?: "en"|"zh";
   question: string;
   replied: boolean;
   mode: "prepared" | "ai";
@@ -22,6 +24,7 @@ export interface ChatTurn {
 }
 export function useComposerChat() {
   const [turns, setTurns] = useState<ChatTurn[]>([]),
+    [language,setLanguage] = useState<"en"|"zh">("en"),
     [pending, setPending] = useState(false),
     [config, setConfig] = useState<ChatConfig | null>(null),
     [aiEnabled, setAiEnabled] = useState(false),
@@ -66,6 +69,7 @@ export function useComposerChat() {
         id,
         question,
         questionId,
+        language,
         replied: !aiEnabled,
         mode,
       };
@@ -90,6 +94,8 @@ export function useComposerChat() {
         const result = await requestChat({
           question,
           model,
+          language,
+          questionId,
           history: historyForRequest(previous),
           session: session.current,
           onSession: (s) => {
@@ -123,20 +129,20 @@ export function useComposerChat() {
         }
       }
     },
-    [aiEnabled, model],
+    [aiEnabled, model, language],
   );
   const ask = useCallback(
     (questionId: string) => {
       const q = questions.find((q) => q.id === questionId);
-      if (q) void run(q.prompt, q.id);
+      if (q) void run(language === "zh" ? chineseQuestions[q.id].prompt : q.prompt, q.id);
     },
-    [run],
+    [run,language],
   );
   const askText = useCallback(
     (text: string) => {
       void run(text);
     },
-    [run],
+    [run,language],
   );
   const retry = useCallback(
     (id: number) => {
@@ -176,6 +182,7 @@ export function useComposerChat() {
   }, []);
   return {
     turns,
+    language,setLanguage,
     pending,
     ask,
     askText,

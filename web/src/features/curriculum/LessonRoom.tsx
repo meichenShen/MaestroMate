@@ -148,11 +148,11 @@ function StudyRoom({
           <p>
             {u.area === "works" ? "Aquarium discoveries" : "Music lessons"}{" "}
             <span>
-              {position + 1} / {siblings.length}
+              Chapter {String(position + 1).padStart(2,"0")} / {String(siblings.length).padStart(2,"0")}
             </span>
           </p>
         </div>
-        <div className="lesson-tools">
+        <div className="lesson-tools"><BackLink className="study-exit" href={journey?"#program":"#play/"+u.area}>Exit lesson ↗</BackLink>
           <button
             onClick={sound.toggleMute}
             aria-label={sound.muted ? "Turn sound on" : "Turn sound off"}

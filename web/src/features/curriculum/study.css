@@ -672,3 +672,7 @@
     transform: none !important;
   }
 }
+.study-top>div>a,.study-exit{background:#282232;border-radius:22px;padding:9px 15px;min-height:44px!important;color:#f3edf9!important;display:inline-flex;align-items:center}
+.study-exit{background:#ffda8e!important;color:#211721!important;font-size:15px!important;white-space:nowrap}
+.study-top>div>p{font-size:15px;margin-top:8px}
+@media(max-width:950px){.study-top .lesson-tools .study-exit{font-size:14px!important;padding:8px 12px}}

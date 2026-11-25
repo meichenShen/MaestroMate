@@ -99,6 +99,8 @@ export function retrieveKnowledge(
         )
       : [];
 
+  const chineseTerms:Record<string,string>={乐器:'instruments',玻璃:'glass harmonica',钢琴:'piano',旋律:'melody',伴奏:'accompaniment',巴黎:'Paris',福雷:'Fauré teaching',学生:'teaching',生平:'biography life',出生:'born',节奏:'rhythm',音高:'pitch',录音:'recording',鱼:'fish scene',创作:'making variation',狂欢节:'Carnival history'};
+  question += ' ' + Object.entries(chineseTerms).filter(([term])=>question.includes(term)).map(([,word])=>word).join(' ');
   const words =
     (question + " " + (anchors.length ? "" : followUpContext))
       .toLowerCase()
