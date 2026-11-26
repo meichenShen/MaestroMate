@@ -1,3 +1,4 @@
+import { broaderKnowledge } from "./breadth.ts";
 import type { ReferenceId } from "./sources.ts";
 import { questions } from "./composer.ts";
 export interface KnowledgeEntry {
@@ -12,7 +13,7 @@ export const knowledgeEntries: KnowledgeEntry[] = [
   {
     id: "person",
     keywords:
-      "born birth childhood child early pianist organist musician composer Camille Saint Saens life",
+      "author composed born birth childhood child early pianist organist musician composer Camille Saint Saens life",
     text: "Camille Saint-Saëns (1835–1921) was a French composer, pianist, organist and teacher, born in Paris. He played piano as a child and studied at the Paris Conservatoire, including organ, winning its first prize for organ in 1851.",
     sourceIds: ["biography"],
   },
@@ -87,22 +88,24 @@ knowledgeEntries.push(
   {id:"scales",keywords:"scale scales major minor key keys happy sad emotion mood intervals semitone whole tone tonal",text:"Major and natural-minor scales arrange whole steps and half steps differently. For C major the notes are C D E F G A B; for C natural minor they are C D E-flat F G A-flat B-flat. Major is often described as bright and minor as dark, but these are common associations, not rules for a listener's feelings. Do not infer an exact Aquarium key or harmonic analysis from these introductory examples.",sourceIds:["scales"]},
   {id:"timbre",keywords:"timbre tone colour color distinguish flute violin piano pitch loudness volume high low",text:"Pitch describes how high or low a sound is (on a piano keyboard pitches get higher from left to right); loudness describes how loud or soft it seems. Timbre is the sound quality that helps distinguish, for example, a flute and a violin even at a similar pitch and loudness. Timbre is not the same as pitch or loudness. General comparisons do not identify individual sources in the site's produced mix.",sourceIds:["timbre"]},
 );
+knowledgeEntries.push(...broaderKnowledge);
 const questionNotes: Record<string, string[]> = {
   aquarium: ["carnival", "score", "layers"],
   layers: ["layers", "score"],
   composer: ["person"],
-  paris: ["paris"],
+  paris: ["paris", "paris-network", "writing"],
   carnival: ["carnival"],
   scene: ["scene"],
   glass: ["score", "recording"],
   variation: ["theory", "making"],
-  fauré: ["paris"],
+  fauré: ["paris", "paris-network"],
   whole: ["carnival"],
 };
 export function retrieveKnowledge(
   question: string,
   questionId?: string,
   followUpContext: string | string[] = "",
+  previousAnswers: string[] = [],
 ): KnowledgeEntry[] {
   const suggestion =
     questionId || questions.find((q) => q.prompt === question.trim())?.id;
@@ -113,25 +116,31 @@ export function retrieveKnowledge(
         )
       : [];
 
-  const current = tokens(question);
+  const wantsMore = /还有呢|还有什么|还有别的|再讲一点|anything else|tell me more|what else/i.test(question);
+  const current = tokens(wantsMore ? question.replace(/除了.+?(?=还有)/g, "") : question);
+  const seen = tokens(previousAnswers.slice(-3).join(" "));
+  const contextText = (Array.isArray(followUpContext) ? followUpContext : [followUpContext]).join(" ");
+  const extra = wantsMore && /巴黎|Paris/i.test(contextText) ? new Set(["colleagues","interests","world-context","setbacks"]) : new Set<string>();
   // Expand Chinese context too: pronouns such as 它 otherwise lose their topic.
   const previous = (Array.isArray(followUpContext) ? followUpContext : [followUpContext]).slice(-3).reverse().map(tokens);
   const ranked = knowledgeEntries.map((entry, i) => {
     const keywords = tokens(entry.keywords);
     const score = [...current].reduce((n, w) => n + (keywords.has(w) ? 1 : 0), 0);
     const context = anchors.length ? 0 : previous.reduce((total, words, age) => total + [...words].filter(w=>keywords.has(w)).length/(age+1),0);
-    return {entry, i, score, context};
-  }).filter(x=>x.score>0||x.context>0).sort((a,b)=>b.score-a.score||b.context-a.context||a.i-b.i);
-  const baseIds = ["person","carnival","scene"];
+    const covered = wantsMore && [...keywords].filter(w=>seen.has(w)).length >= 2;
+    return {entry, i, score, context: context + (extra.has(entry.id) ? .5 : 0), covered};
+  }).filter(x=>!x.covered && (x.score>0||x.context>0)).sort((a,b)=>b.score-a.score||b.context-a.context||a.i-b.i);
+  const baseIds = ["scene"];
   const topics = [...anchors, ...ranked.slice(0,5).map(x=>x.entry)].filter(x=>!baseIds.includes(x.id));
   const selected = [...new Map(topics.map(x=>[x.id,x])).values()].slice(0,6);
-  // Reserve the persona and interpretation boundary; never truncate them away.
+  // Keep the interpretation boundary; retrieve biographical/work facts only
+  // when relevant, rather than injecting the same life summary into every turn.
   for(const id of baseIds)
     selected.push(knowledgeEntries.find(n=>n.id===id)!);
   return [...new Map(selected.map(x=>[x.id,x])).values()].slice(0,9);
 }
 const aliases:Record<string,string> = {
-  水族馆:"Aquarium",开头:"theme layers",乐器:"instruments",玻璃:"glass harmonica",发声:"vibration",钢琴:"piano",长笛:"flute",小提琴:"violin",
+  作者:"author",谁写:"author",谁作曲:"author",兴趣:"interests",爱好:"hobbies",研究:"research",天文:"astronomy",星星:"stars",数学:"mathematics",科学:"science",哲学:"philosophy",文学:"literature",除了音乐:"outside interests",李斯特:"Liszt",柏辽兹:"Berlioz",瓦格纳:"Wagner",朋友:"friends colleagues",认识:"knew colleagues",写书:"books writing",写过书:"books writing",编辑:"editor editions",评论:"criticism",公报:"newspaper press",协会:"society",报纸:"newspaper",文章:"articles",比赛:"competition",失利:"failure",失败:"failed",罗马:"Rome",时代:"era",日本:"Japan",好笑:"humour funny",幽默:"humor",玩笑:"joke",生活:"life",水族馆:"Aquarium",开头:"theme layers",乐器:"instruments",玻璃:"glass harmonica",发声:"vibration",钢琴:"piano",长笛:"flute",小提琴:"violin",
   音色:"timbre",音高:"pitch",响度:"loudness",音量:"volume",旋律:"melody",伴奏:"accompaniment",
   教堂:"Madeleine",巴黎:"Paris",福雷:"Faure teaching",学生:"teaching",老师:"teaching",生平:"life",小时候:"childhood",童年:"childhood",出生:"born",
   拍点:"beat pulse",一拍:"beat pulse",节奏:"rhythm",节拍:"beat",拍子:"beat",速度:"tempo",快慢:"tempo",休止:"rest",谁演奏:"recording performer",谁做的:"recording",录制:"recording",录音:"recording",版本:"recording",演奏者:"performer",

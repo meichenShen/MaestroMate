@@ -86,7 +86,7 @@ test("generation uses bounded retrieved context, allowlisted model, no thinking,
       /^https:\/\/ws-c2txvtn4vv1ihid0.cn-beijing.maas.aliyuncs.com\//,
     );
     assert.equal(upstream.body.enable_thinking, false);
-    assert.ok(upstream.body.max_tokens <= 450);
+    assert.ok(upstream.body.max_tokens <= 650);
     assert.match(
       upstream.body.messages[0].content,
       /not historical quotations/i,

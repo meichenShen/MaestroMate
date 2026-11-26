@@ -1,4 +1,14 @@
 export const references = {
+  portrait: {
+    label: "Philharmonie de Paris · Saint-Saëns portrait",
+    url: "https://pad.philharmoniedeparis.fr/0051564-biographie-camille-saint-saens.aspx?_lg=fr-FR",
+    note: "Scientific and literary interests, musical contemporaries and career context.",
+  },
+  era: {
+    label: "Paris Opera · Saint-Saëns in his time",
+    url: "https://www.operadeparis.fr/visites/expositions/saint-saens-un-esprit-libre/saint-saens-en-son-temps",
+    note: "Musical exchanges, travel and the distinction between an imagined setting and a visited place.",
+  },
   editorial: {
     label: "MaestroMate · Listening and visual interpretation",
     url: "#about",

@@ -31,3 +31,19 @@ test('explicit new topic outranks even a long unrelated previous question',()=>{
 test('several elliptical follow-ups retain the last explicit topic',()=>{
  assert.ok(retrieveKnowledge('这部片叫什么？',undefined,['你给电影配过乐吗？','那是哪一年？']).some(n=>n.id==='film'));
 });
+test('broad conversation reaches interests, colleagues, writing and musical humour',()=>{
+ for(const[q,id]of[['除了音乐你还喜欢研究什么？','interests'],['你认识李斯特吗？','colleagues'],['你写过书和报纸文章吗？','writing'],['你有没有比赛失利过？','setbacks'],['乌龟的音乐为什么好笑？','musical-jokes']])assert.ok(retrieveKnowledge(q).some(n=>n.id===id),q);
+});
+test('the screenshot Paris prompt has several distinct angles available',()=>{
+ const ids=retrieveKnowledge('你在巴黎的生活是什么样的？','paris').map(n=>n.id);
+ assert.ok(ids.includes('paris-network'));assert.ok(ids.includes('writing'));
+});
+test('unrelated questions no longer get a compulsory birth and Carnival paragraph',()=>{
+ const ids=retrieveKnowledge('和弦是什么意思？').map(n=>n.id);
+ assert.ok(!ids.includes('person'));assert.ok(!ids.includes('carnival'));assert.ok(ids.includes('scene'));
+});
+test('more-about-Paris retrieves fresh facets instead of facts already told',()=>{
+ const n=retrieveKnowledge('除了教堂和教课，还有呢？',undefined,['你在巴黎的生活是什么样的？'],['我在玛德莱娜教堂演奏管风琴，教过福雷，也创立了音乐协会。我给报纸写音乐评论，编辑其他人的乐谱。']);
+ assert.ok(n.some(x=>x.id==='interests'||x.id==='colleagues'));
+ assert.ok(!n.some(x=>x.id==='writing'));
+});
