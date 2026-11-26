@@ -47,3 +47,7 @@ test('more-about-Paris retrieves fresh facets instead of facts already told',()=
  assert.ok(n.some(x=>x.id==='interests'||x.id==='colleagues'));
  assert.ok(!n.some(x=>x.id==='writing'));
 });
+test('the composing-difficulty question retrieves relevant evidence and musical reasoning',()=>{
+ const notes=retrieveKnowledge('你写的时候遇过什么困难嘛？');
+ assert.ok(notes.some(n=>n.id==='opera-obstacles'));assert.ok(notes.some(n=>n.id==='composing-choices'));
+});

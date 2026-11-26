@@ -1,4 +1,9 @@
 export const references = {
+  stage: {
+    label: "Paris Opera · Saint-Saëns and the stage",
+    url: "https://www.operadeparis.fr/en/visits/exhibitions/saint-saens-a-free-spirit/saint-saens-and-stage",
+    note: "Documented production delays and Liszt’s support for Samson et Dalila.",
+  },
   portrait: {
     label: "Philharmonie de Paris · Saint-Saëns portrait",
     url: "https://pad.philharmoniedeparis.fr/0051564-biographie-camille-saint-saens.aspx?_lg=fr-FR",

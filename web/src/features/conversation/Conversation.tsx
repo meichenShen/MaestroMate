@@ -1,8 +1,8 @@
 import {t,useLocale} from "../../i18n/locale";
 import { chineseQuestions } from "../../content/knowledge/chinese";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, Send, Music2, BookOpen, Sparkles, Compass, } from "lucide-react";
-import { questions, questionPresentation } from "../../content/aquarium";
+import { ArrowDown, Send, Music2, Maximize2, Minimize2, ChevronLeft, ChevronRight, } from "lucide-react";
+import { questions } from "../../content/aquarium";
 import { ClipButton } from "../../components/ClipButton";
 import { Hint } from "../../components/Hint";
 import { KnowledgeShelf } from "./KnowledgeShelf";
@@ -11,32 +11,6 @@ import { unitHash } from "../curriculum/PlayCatalog";
 import type { useComposerChat } from "./useComposerChat";
 import { ChatSettings } from "./ChatSettings";
 import { references, type ReferenceId } from "../../content/knowledge/sources";
-const topics = [
-    {
-        id: "all",
-        label: "All",
-        hint: "Follow any question that catches your ear.",
-        Icon: Compass,
-    },
-    {
-        id: "life",
-        label: "Life",
-        hint: "The early years, Paris and a life in music.",
-        Icon: BookOpen,
-    },
-    {
-        id: "music",
-        label: "Music",
-        hint: "The piece, its textures and a closer listen.",
-        Icon: Music2,
-    },
-    {
-        id: "play",
-        label: "Mischief",
-        hint: "A private musical joke and your own imagination.",
-        Icon: Sparkles,
-    },
-];
 export function Conversation({ journey = false, chat, }: {
     journey?: boolean;
     chat: ReturnType<typeof useComposerChat>;
@@ -45,25 +19,34 @@ export function Conversation({ journey = false, chat, }: {
     const { turns, pending, ask: onAsk } = chat;
     const [draft, setDraft] = useState("");
     const [consent, setConsent] = useState(false);
+    const [expanded, setExpanded] = useState(false);
     const zh = chat.language === "zh";
     const consentDialog = useRef<HTMLDialogElement>(null);
     useEffect(() => { if (consent)
         consentDialog.current?.showModal();
     else
         consentDialog.current?.close(); }, [consent]);
-    const thread = useRef<HTMLDivElement>(null), follow = useRef(true), questionRail = useRef<HTMLDivElement>(null);
-    const [topic, setTopic] = useState("all");
-    useEffect(() => {
-        questionRail.current?.scrollTo({ left: 0 });
-    }, [topic]);
-    const latest = () => { const host = thread.current; if (!host)
-        return; const target = host.querySelector<HTMLElement>('.chat-turn:last-of-type .incoming') || host.querySelector<HTMLElement>('.chat-turn:last-of-type .outgoing'); host.scrollTo({ top: target ? host.scrollTop + target.getBoundingClientRect().top - host.getBoundingClientRect().top - 8 : 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' }); };
+    const thread = useRef<HTMLDivElement>(null), follow = useRef(true), automaticScroll = useRef(false), questionRail = useRef<HTMLDivElement>(null);
+    const latest = () => {
+        const host = thread.current;
+        if (!host) return;
+        // The typing indicator is also a div, so :last-of-type skips the latest
+        // turn while a reply is pending. Select the turn before its message.
+        const turn = host.querySelectorAll<HTMLElement>(".chat-turn");
+        const lastTurn = turn.item(turn.length - 1);
+        const target = lastTurn?.querySelector<HTMLElement>(".incoming") || lastTurn?.querySelector<HTMLElement>(".outgoing");
+        automaticScroll.current = true;
+        host.scrollTo({
+            top: target ? target.offsetTop - 8 : 0,
+            behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        });
+    };
     useEffect(() => {
         if (follow.current)
             latest();
     }, [turns, pending]);
-    return (<section className="conversation-feature chat-studio" aria-labelledby="conversation-title">
-      <aside className="artist-profile" data-lenis-prevent>
+    return (<section className={`conversation-feature chat-studio${expanded ? " conversation-expanded" : ""}`} aria-labelledby="conversation-room-title">
+      <aside className="artist-profile" id="conversation-profile" data-lenis-prevent>
         <p className="eyebrow">{t("Meet the composer")}</p>
         <div className="artist-emblem" aria-hidden="true">
           <Music2 strokeWidth={1.1}/>
@@ -80,17 +63,18 @@ export function Conversation({ journey = false, chat, }: {
       </aside>
       <div className="chat-main">
         <header className="chat-room-heading">
-          <h2>{t("A moment with Camille.")}</h2>
+          <div className="chat-room-title"><h2 id="conversation-room-title">{t("A moment with Camille.")}</h2>
+          <p className="prepared-disclosure">{t(chat.aiEnabled ? "AI preview · An imagined Camille, with sources" : "Prepared conversation · Imagined replies, with sources")}</p></div>
+          <button className="chat-expand" aria-label={t(expanded ? "Restore two panels" : "Expand conversation")} title={t(expanded ? "Restore two panels" : "Expand conversation")} aria-expanded={expanded} aria-controls="conversation-reading-area" onClick={() => setExpanded(!expanded)}>{expanded ? <Minimize2 size={18}/> : <Maximize2 size={18}/>}</button>
+          <button className="thread-bottom" aria-label={t("Show latest messages")} onClick={() => { follow.current = true; latest(); }}><ArrowDown size={18}/></button>
           <Hint id="conversation-note" label={t("About this conversation")}>{t("An imagined educational conversation, not historical quotations. AI replies may contain mistakes; check the sources shown.")}</Hint>
           <ChatSettings config={chat.config} enabled={chat.aiEnabled} pending={pending} model={chat.model} onModel={chat.setModel} onEnable={chat.setAI}/>
         </header>
-        <p className="prepared-disclosure">
-          {t(chat.aiEnabled
-            ? "AI preview · An imagined Camille, with sources"
-            : "Prepared conversation · Imagined replies, with sources")}
-        </p>
-        <div className="chat-window">
-          <div ref={thread} tabIndex={0} className="chat-thread" role="log" aria-label={t("Conversation with Camille")} aria-live="polite" aria-relevant="additions" data-lenis-prevent onScroll={() => {
+        <div className="chat-window" id="conversation-reading-area">
+          <div ref={thread} tabIndex={0} className="chat-thread" role="log" aria-label={t("Conversation with Camille")} aria-live="polite" aria-relevant="additions" data-lenis-prevent onWheel={() => { automaticScroll.current = false; }} onPointerDown={() => { automaticScroll.current = false; }} onKeyDown={(event) => {
+            if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(event.key)) automaticScroll.current = false;
+        }} onScroll={() => {
+            if (automaticScroll.current) return;
             const e = thread.current!;
             follow.current =
                 e.scrollHeight - e.scrollTop - e.clientHeight < 120;
@@ -158,53 +142,33 @@ export function Conversation({ journey = false, chat, }: {
             {t(pending && (<div className="typing-indicator" role="status">{t("Looking through the knowledge shelf\u2026")}</div>))}
           </div>
           <div className="chat-prompts">
-            <div className="chat-modebar" aria-label={t("Conversation controls")}><button role="switch" aria-label={t("AI conversation")} aria-checked={chat.aiEnabled} disabled={pending || !chat.config?.enabled} onClick={() => chat.aiEnabled ? chat.setAI(false) : setConsent(true)}><i />{t('AI conversation')} {t(chat.aiEnabled ? 'On' : 'Off')}</button><select aria-label={t("AI model")} value={chat.model} disabled={pending} onChange={e => chat.setModel(e.target.value)}>{t((chat.config?.models || []).map(m => <option key={m.id} value={m.id}>{t(m.label)}</option>))}</select><select aria-label={t("Conversation language")} value={chat.language} disabled={pending} onChange={e => chat.setLanguage(e.target.value as 'en' | 'zh')}><option value="en">{t("English")}</option><option value="zh">{t("\u4E2D\u6587")}</option></select></div>
             <dialog ref={consentDialog} className="inline-consent discovery-dialog" aria-label={t("AI privacy")} onClose={() => setConsent(false)}><p>{t('AI sends your question and up to three exchanges to Alibaba Cloud. Leave out private details; children should ask a parent or teacher first.')}</p><button onClick={() => { chat.setAI(true); setConsent(false); }}>{t("Enable AI conversation")}</button><button onClick={() => setConsent(false)}>{t('Not now')}</button></dialog>
 
+            <div className="chat-suggestions">
             <div className="prompt-heading">
               <p>{t("Try asking")}</p>
               <div className="question-rail-actions">
-                <button aria-label={t("Previous questions")} onClick={() => questionRail.current?.scrollBy({
-            left: -260,
-            behavior: matchMedia("(prefers-reduced-motion: reduce)")
-                .matches
-                ? "instant"
-                : "smooth",
-        })}>{t("Previous")}</button>
-                <button aria-label={t("More questions")} onClick={() => questionRail.current?.scrollBy({
-            left: 260,
-            behavior: matchMedia("(prefers-reduced-motion: reduce)")
-                .matches
-                ? "instant"
-                : "smooth",
-        })}>{t("More")}</button>
+                <button aria-label={t("Previous questions")} onClick={() => questionRail.current?.scrollBy({ left: -300, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })}><ChevronLeft size={18}/></button>
+                <button aria-label={t("More questions")} onClick={() => questionRail.current?.scrollBy({ left: 300, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })}><ChevronRight size={18}/></button>
               </div>
-              <button className="thread-bottom" aria-label={t("Show latest messages")} onClick={() => {
-            follow.current = true;
-            latest();
-        }}>
-                <ArrowDown size={18}/>
-              </button>
             </div>
             <div className="question-tiles" ref={questionRail} role="group" aria-label={t("Suggested questions")}>
-              {t(questions
-            .filter((q) => topic === "all" ||
-            questionPresentation[q.id].topic === topic)
-            .map((q) => (<button className="question-tile" key={q.id} aria-label={t(zh ? chineseQuestions[q.id].prompt : q.prompt)} disabled={pending} onClick={() => {
+              {t(questions.map((q) => (<button className="question-tile" key={q.id} aria-label={t(zh ? chineseQuestions[q.id].prompt : q.prompt)} disabled={pending} onClick={() => {
                 follow.current = true;
                 onAsk(q.id);
             }}>
-                    <strong>{t(zh ? "聊聊这个" : questionPresentation[q.id].label)}</strong>
-                    <Send size={16}/>
                     <span className="question-full">{t(zh ? chineseQuestions[q.id].prompt : q.prompt)}</span>
                   </button>)))}
             </div>
+            </div>
+            <div className="chat-ask-row">
+            <div className="chat-modebar" aria-label={t("Conversation controls")}><button role="switch" aria-label={t("AI conversation")} aria-checked={chat.aiEnabled} disabled={pending || !chat.config?.enabled} onClick={() => chat.aiEnabled ? chat.setAI(false) : setConsent(true)}><i />{t('AI conversation')} {t(chat.aiEnabled ? 'On' : 'Off')}</button><select aria-label={t("AI model")} value={chat.model} disabled={pending} onChange={e => chat.setModel(e.target.value)}>{t((chat.config?.models || []).map(m => <option key={m.id} value={m.id}>{t(m.label)}</option>))}</select><select aria-label={t("Conversation language")} value={chat.language} disabled={pending} onChange={e => chat.setLanguage(e.target.value as 'en' | 'zh')}><option value="en">{t("English")}</option><option value="zh">{t("\u4E2D\u6587")}</option></select></div>
             {t(chat.aiEnabled && (<form className="chat-compose" onSubmit={(e) => {
                 e.preventDefault();
                 if (!pending && draft.trim()) {
+                    follow.current = true;
                     chat.askText(draft.trim());
                     setDraft("");
-                    follow.current = true;
                 }
             }}>
                 <label className="sr-only" htmlFor="music-question">{t("Your music question")}</label>
@@ -214,6 +178,7 @@ export function Conversation({ journey = false, chat, }: {
                   <span>{t("Send")}</span>
                 </button>
               </form>))}
+            </div>
             <p className="chat-note" id="chat-input-note">
               {t(chat.aiEnabled
             ? "Keep private details out. AI can make mistakes; check the sources."
