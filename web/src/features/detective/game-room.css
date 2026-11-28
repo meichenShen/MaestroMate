@@ -1,0 +1,195 @@
+.play-activities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 5vw, 90px);
+  align-items: start;
+}
+.play-activities .game-door {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  max-width: none;
+  width: 100%;
+  padding: 12px 0 25px;
+}
+.play-activities .game-door > .drawn-icon,
+.play-activities .game-door > .pool-glyph {
+  width: min(100%, 320px);
+  height: 220px;
+  align-self: center;
+  color: var(--play);
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.play-activities .pool-door > .pool-glyph {
+  color: var(--listen);
+}
+.play-activities .game-door:hover > :first-child {
+  transform: translateY(-8px) rotate(-3deg);
+}
+.play-activities .game-door strong {
+  font-size: clamp(32px, 3.3vw, 48px);
+}
+.play-activities .game-door small {
+  font-size: 17px;
+  max-width: 360px;
+  margin-top: 12px;
+  line-height: 1.6;
+}
+.play-activities .game-cta {
+  color: var(--play);
+  font-size: 18px;
+  margin-top: 20px;
+}
+.play-activities .pool-door .game-cta {
+  color: var(--listen);
+}
+@media (max-width: 650px) {
+  .play-activities {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .play-activities .game-door {
+    gap: 8px;
+  }
+  .play-activities .game-door > .drawn-icon,
+  .play-activities .game-door > .pool-glyph {
+    height: 170px;
+  }
+  .play-activities .game-door strong {
+    font-size: 37px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .play-activities .game-door > :first-child {
+    transition: none;
+  }
+  .play-activities .game-door:hover > :first-child {
+    transform: none;
+  }
+}
+.work-play-cover {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(24px, 4vw, 70px);
+  align-items: center;
+  margin: 10px 0 50px;
+}
+.work-play-art {
+  height: 350px;
+  position: relative;
+  border-radius: 45px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #26233c, #14131c);
+}
+.work-play-art > .aquarium-art {
+  width: 100%;
+  height: 100%;
+}
+.work-play-art > span {
+  position: absolute;
+  bottom: 24px;
+  left: 30px;
+  padding: 9px 18px;
+  background: #11101bcc;
+  backdrop-filter: blur(8px);
+  border-radius: 30px;
+  color: #80d4f6;
+  font-size: 15px;
+}
+.work-play-copy > p {
+  font-size: 18px;
+  color: #bdb5ca;
+  margin: 8px 0;
+}
+.work-play-copy h2 {
+  font: 400 clamp(48px, 5vw, 76px) var(--display);
+  margin: 0;
+}
+.work-level-doors {
+  display: flex;
+  gap: 12px;
+  margin: 24px 0;
+}
+.work-level-doors a {
+  flex: 1;
+  padding: 16px 18px;
+  border-radius: 25px;
+  background: #45d9fd12;
+  min-height: 95px;
+  color: #45d9fd;
+  transition: transform 0.3s;
+}
+.work-level-doors a:nth-child(2) {
+  color: #ff739d;
+  background: #ee256014;
+  transform: translateY(-5px);
+}
+.work-level-doors a:nth-child(3) {
+  color: #ffda8e;
+  background: #ffda8e12;
+  transform: translateY(4px);
+}
+.work-level-doors a:hover {
+  transform: translateY(-7px);
+}
+.work-level-doors span,
+.work-level-doors small {
+  display: block;
+  font-size: 13px;
+}
+.work-level-doors strong {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  font: 400 25px var(--display);
+  margin: 4px 0;
+}
+.work-level-doors strong svg {
+  width: 18px;
+}
+.game-lounge .page-intro {
+  margin-bottom: 10px;
+}
+.game-lounge .page-intro h1 {
+  margin: 10px 0;
+}
+.work-play-copy > .solid-button {
+  min-height: 48px;
+}
+.game-lounge .play-activities .game-door > .drawn-icon,
+.game-lounge .play-activities .game-door > .pool-glyph {
+  height: 160px;
+}
+.game-lounge .play-activities .game-door strong {
+  font-size: 36px;
+}
+@media (max-width: 850px) {
+  .work-play-cover {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 35px;
+  }
+  .work-play-art {
+    height: 220px;
+  }
+  .work-level-doors {
+    gap: 8px;
+  }
+  .work-level-doors a {
+    padding: 13px 10px;
+  }
+  .work-level-doors strong {
+    font-size: 22px;
+  }
+  .work-play-copy h2 {
+    font-size: 54px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .work-level-doors a {
+    transition: none;
+    transform: none !important;
+  }
+}

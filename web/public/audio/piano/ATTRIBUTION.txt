@@ -1,0 +1,11 @@
+Salamander Grand Piano by Alexander Holm — Yamaha C5 recordings.
+Licensed under Creative Commons Attribution 3.0 Unported:
+https://creativecommons.org/licenses/by/3.0/
+Original collection: https://github.com/sfzinstruments/SalamanderGrandPiano
+MP3 distribution: https://github.com/Tonejs/audio/tree/master/salamander
+Downloaded 2026-11-26 from https://tonejs.github.io/audio/salamander/
+Retained C3, D#3, A3, C4, D#4, F#4, A4 and C5 MP3s without file modification.
+MaestroMate repitches nearby samples, applies gain/release envelopes and mixes
+original user-created melodies and accompaniment at runtime. These samples
+are separate from the Aquarium recording. Not a full multi-velocity piano.
+Source's original README and file hashes are included alongside these files.
